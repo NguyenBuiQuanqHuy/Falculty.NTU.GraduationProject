@@ -1,4 +1,4 @@
-package ntu.granduationproject.ntu.controllers;
+package ntu.granduationproject.ntu.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

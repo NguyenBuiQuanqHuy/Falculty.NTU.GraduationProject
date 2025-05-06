@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ntu.granduationproject.ntu.services.UserService;
+
 @Controller
 @RequestMapping("/")
 public class LoginController {
