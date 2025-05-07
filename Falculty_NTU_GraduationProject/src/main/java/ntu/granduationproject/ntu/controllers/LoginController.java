@@ -19,23 +19,23 @@ public class LoginController {
 
   @GetMapping("/login")
   public String LoginForm() {
-    return "views/login";  
+    return "views/Login";
   }
 
   @PostMapping("/login")
-  public String processLogin(@RequestParam String tendn,
+  public String processLogin(@RequestParam String mssv,
                              @RequestParam String matkhau,
                              Model model) {
-    if (userService.Login(tendn, matkhau)) {
+    if (userService.Login(mssv, matkhau)) {
       return "redirect:/home";  
     } else {
       model.addAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng");
-      return "views/login";  
+      return "views/Login";
     }
   }
 
   @GetMapping("/home")
   public String home() {
-    return "views/home"; 
+    return "views/Home";
   }
 }

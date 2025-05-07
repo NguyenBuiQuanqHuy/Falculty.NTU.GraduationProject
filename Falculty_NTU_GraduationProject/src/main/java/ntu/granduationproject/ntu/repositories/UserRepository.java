@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import ntu.granduationproject.ntu.models.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-  Optional<User> findByTendn(String tendn);
+public interface UserRepository extends JpaRepository<User, String> {
+  Optional<User> findByMssv(String mssv);
 }

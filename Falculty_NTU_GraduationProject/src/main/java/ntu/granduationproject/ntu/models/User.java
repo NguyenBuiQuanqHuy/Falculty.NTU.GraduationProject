@@ -7,32 +7,26 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "taikhoan")
+@Table(name = "sinhvien")
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long matk;
-  private String tendn;
+  private String mssv;
   private String matkhau;
-public Long getMatk() {
-	return matk;
-}
-public void setMatk(Long matk) {
-	this.matk = matk;
-}
-public String getTendn() {
-	return tendn;
-}
-public void setTendn(String tendn) {
-	this.tendn = tendn;
-}
-public String getMatkhau() {
-	return matkhau;
-}
-public void setMatkhau(String matkhau) {
-	this.matkhau = matkhau;
-}
-  
-  
-  
+
+	public String getMssv() {
+		return mssv;
+	}
+
+	public void setMssv(String mssv) {
+		this.mssv = mssv;
+	}
+
+	public String getMatkhau() {
+		return matkhau;
+	}
+
+	public void setMatkhau(String matkhau) {
+		this.matkhau = matkhau;
+	}
 }

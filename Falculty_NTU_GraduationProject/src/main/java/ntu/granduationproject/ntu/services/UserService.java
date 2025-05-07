@@ -10,9 +10,10 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
-  public boolean Login(String tendn, String matkhau) {
-    return userRepository.findByTendn(tendn)
-        .map(ten -> ten.getMatkhau().equals(matkhau))
-        .orElse(false);
+  public boolean Login(String mssv, String matkhau) {
+    return userRepository.findByMssv(mssv)
+            .map(ms->ms.getMatkhau().equals(matkhau))
+            .orElse(false);
+
   }
 }
