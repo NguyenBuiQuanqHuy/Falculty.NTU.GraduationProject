@@ -1,5 +1,7 @@
 package ntu.granduationproject.ntu.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,14 +10,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ntu.granduationproject.ntu.services.UserService;
+import jakarta.servlet.http.HttpSession;
+import ntu.granduationproject.ntu.models.GiangVien;
+import ntu.granduationproject.ntu.models.SinhVien;
+import ntu.granduationproject.ntu.repositories.GiangVienRepository;
+import ntu.granduationproject.ntu.repositories.SinhVienRepository;
 
 @Controller
 @RequestMapping("/")
 public class LoginController {
 
   @Autowired
-  private UserService userService;
+  private SinhVienRepository sinhvienRepository;
+  
+  @Autowired
+  private GiangVienRepository giangvienRepository;
 
   @GetMapping("/login")
   public String LoginForm() {
@@ -23,19 +32,39 @@ public class LoginController {
   }
 
   @PostMapping("/login")
-  public String processLogin(@RequestParam String mssv,
-                             @RequestParam String matkhau,
-                             Model model) {
-    if (userService.Login(mssv, matkhau)) {
-      return "redirect:/home";  
-    } else {
-      model.addAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng");
-      return "views/Login";
-    }
-  }
+  public String login(
+          @RequestParam String maso,
+          @RequestParam String matkhau,
+          HttpSession session,
+          Model model
+  ) {
+      Optional<SinhVien> sv = sinhvienRepository.findByMssvAndMatkhau(maso, matkhau);
+      if (sv.isPresent()) {
+          session.setAttribute("user", sv.get());
+          session.setAttribute("role", "sinhvien");
+          session.setAttribute("username", sv.get().getHoten());
+          return "redirect:/sinhvien/home";
+      }
 
-  @GetMapping("/home")
-  public String home() {
-    return "views/Home";
+      Optional<GiangVien> gv = giangvienRepository.findByMsgvAndMatkhau(maso, matkhau);
+      if (gv.isPresent()) {
+          session.setAttribute("user", gv.get());
+          session.setAttribute("role", gv.get().isIsAdmin() ? "admin" : "giangvien");
+          session.setAttribute("username", gv.get().getHoten());
+
+          if (gv.get().isIsAdmin()) {
+              return "redirect:/truongkhoa/home";
+          } else {
+              return "redirect:/giangvien/home";
+          }
+      }
+      model.addAttribute("error","Mã số hoặc mật khẩu không đúng");
+      return "views/Login";
   }
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
+
 }

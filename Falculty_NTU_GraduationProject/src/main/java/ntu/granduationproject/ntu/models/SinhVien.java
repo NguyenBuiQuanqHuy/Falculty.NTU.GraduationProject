@@ -8,11 +8,13 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "sinhvien")
-public class User {
+public class SinhVien {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private String mssv;
   private String matkhau;
+
+  private String hoten;
 
 	public String getMssv() {
 		return mssv;
@@ -29,4 +31,8 @@ public class User {
 	public void setMatkhau(String matkhau) {
 		this.matkhau = matkhau;
 	}
+
+	public String getHoten() { return hoten; }
+
+	public void setHoten(String hoten) { this.hoten = hoten; }
 }

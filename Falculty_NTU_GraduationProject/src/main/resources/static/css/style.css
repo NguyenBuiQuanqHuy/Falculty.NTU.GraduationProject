@@ -13,25 +13,29 @@ body {
 .header {
   display: flex;
   align-items: center;
-  background-color: #800000;
+  background-color: #851F26;
   color: white;
   padding: 10px 20px;
 }
 
-.logo {
-  width: auto;
-  height: auto;
-  margin-right: 15px;
+.nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border-top: 1px solid #861d22;
+    border-bottom: 1px solid #861d22;
 }
 
-.header-text h1 {
-  font-size: 18px;
+.logo img {
+    width: 450px;       
+    height: 80px;       
+    display: block;     
+    margin: 0 auto;    
+    object-fit: contain; 
 }
 
-.header-text p {
-  font-size: 14px;
-  color: #ffd700;
-}
 
 .container {
   display: flex;
@@ -46,6 +50,8 @@ body {
   border-radius: 10px;
   padding: 30px 20px;
   width: 300px;
+  margin-top: 125px;
+  margin-left: 250px;
 }
 
 .login-box h2 {
@@ -84,13 +90,18 @@ body {
   text-decoration: none;
 }
 
+.error {
+	color: red;
+	font-size: 13px;
+}
+
 .announcement {
   background-color: #eee;
   border: 2px solid #800000;
   border-radius: 10px;
   padding: 20px;
-  width: 300px;
-  height: 300px;
+  width: 350px;
+  height: 520px;
 }
 
 .announcement h2 {
