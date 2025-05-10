@@ -10,5 +10,4 @@ import ntu.granduationproject.ntu.models.SinhVien;
 @Repository
 public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
 	Optional<SinhVien> findByMssvAndMatkhau(String mssv, String matkhau);
-
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nhập mã xác thực</title>
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}">
+</head>
+<body>
+<header class="header">
+    <div class="logo-section">
+        <img alt="" th:src="@{/img/banner2.png}">
+    </div>
+</header>
+
+<main style="display: flex; justify-content: center; align-items: center; padding: 2rem;">
+    <form th:action="@{/verifycode}" method="post"
+          style="border: 2px solid #800000; padding: 2rem; border-radius: 1rem; width: 400px;">
+        <h2 style="text-align: center; color: #800000;">NHẬP MÃ</h2>
+        <p style="text-align: center;">Hệ thống đã gửi đến email của bạn mã xác thực</p>
+
+        <div style="margin-bottom: 1rem;">
+            <input type="text" name="code" placeholder="Nhập mã xác thực" required
+                   style="width: 100%; padding: 0.75rem; border-radius: 5px; border: 1px solid #ccc;">
+        </div>
+
+        <button type="submit"
+                style="width: 100%; padding: 0.75rem; background-color: #800000; color: white; border: none; border-radius: 5px;">
+            Xác nhận
+        </button>
+
+        <div style="text-align: center; margin-top: 1rem;">
+            <a th:href="@{/resend-code}" style="color: #800000; text-decoration: underline;">Gửi lại mã</a>
+        </div>
+
+        <div th:if="${error}" style="color: red; margin-top: 1rem; text-align: center;" th:text="${error}"></div>
+        <div th:if="${message}" style="color: green; margin-top: 1rem; text-align: center;" th:text="${message}"></div>
+    </form>
+</main>
+
+<footer class="footer">
+    <p>Design in 2025 by Group 5</p>
+</footer>
+</body>
+</html>
