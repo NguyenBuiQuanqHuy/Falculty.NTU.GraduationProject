@@ -13,14 +13,22 @@ public class SinhVien {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private String mssv;
   private String matkhau;
-
+  private String email;
   private String hoten;
+
+	public String getEmail() {
+	return email;
+}
+
+public void setEmail(String email) {
+	this.email = email;
+}
 
 	public String getMssv() {
 		return mssv;
 	}
 
-	public void setMssv(String mssv) {
+	public void setMssv(String mssv) {	
 		this.mssv = mssv;
 	}
 
