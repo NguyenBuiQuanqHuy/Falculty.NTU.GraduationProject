@@ -21,8 +21,8 @@ body {
 }
 
 .logo-section img {
-    width: 450px;       
-    height: 80px;       
+    width: 450px;
+    height: 80px;
     display: block;
 }
 
@@ -37,7 +37,7 @@ body {
 
 .nav {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     background-color: white;
@@ -56,6 +56,7 @@ body {
     align-items: center;
     gap: 15px;
 }
+
 .nav2 span {
     color: black;
     font-weight: normal;
@@ -83,7 +84,7 @@ body {
     position: absolute;
     background-color: white;
     min-width: 150px;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
     margin-top: 2px;
     border: 1px solid black;
@@ -106,12 +107,14 @@ body {
     font-weight: bold;
     border-bottom: none;
 }
+
 .dropdown-content .logout:hover {
     background-color: #D20003;
     color: white;
     font-weight: bold;
     border-bottom: none;
 }
+
 .dropdown:hover .dropdown-content {
     display: block;
 }
@@ -119,7 +122,6 @@ body {
 .arrow {
     float: right;
 }
-
 
 .nav span {
     margin-right: 15px;
@@ -134,112 +136,112 @@ body {
 
 main {
     padding: 20px;
-  }
-  
-  .tab {
+}
+
+.tab {
     display: flex;
     gap: 20px;
     font-weight: bold;
     border-bottom: 1px solid #aaa;
     margin-bottom: 10px;
-  }
-  
-  .tab span {
+}
+
+.tab span {
     padding: 10px;
     cursor: pointer;
-  }
-  
-  .tab .active {
+}
+
+.tab .active {
     color: #8c1c1c;
     border-bottom: 2px solid #8c1c1c;
-  }
-  
-  .form-box {
+}
+
+.form-box {
     display: flex;
     border: 1px solid #8c1c1c;
     border-radius: 5px;
     overflow: hidden;
-  }
-  
-  .form-left,
-  .form-right {
+    flex-wrap: wrap;
+}
+
+.form-left,
+.form-right {
     flex: 1;
     padding: 20px;
     display: flex;
     flex-direction: column;
-  }
-  
-  .form-left label,
-  .form-right label {
+}
+
+.form-left label,
+.form-right label {
     margin-top: 10px;
     font-weight: bold;
-  }
-  
-  input[type="text"],
-  input[type="number"],
-  select {
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
     padding: 6px;
     margin-top: 4px;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
-
-  input[type="number"].short-input {
-  width: 6ch; /* khoảng vừa cho 3 số */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
 }
 
-  
-  .radio-group {
+input[type="number"].short-input {
+    width: 6ch; /* khoảng vừa cho 3 số */
+}
+
+/* Cho textarea */
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Group radio button */
+.radio-group {
     display: flex;
     gap: 15px;
     margin-top: 5px;
-  }
-  
-  .richtext {
-    margin-top: 10px;
-    border: 1px solid #ccc;
-  }
-  
-  .editor {
-    min-height: 100px;
-    padding: 10px;
-    background-color: white;
-  }
-  
-  .note {
+}
+
+/* Ghi chú nhỏ */
+.note {
     font-size: 12px;
     color: red;
     margin-top: auto;
-  }
-  
-  .actions {
+}
+
+.actions {
     text-align: center;
     margin-top: 20px;
-  }
-  
-  .btn-create,
-  .btn-reset {
+}
+
+.btn-create,
+.btn-reset {
     padding: 10px 20px;
     margin: 0 10px;
     font-weight: bold;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
-  
-  .btn-create {
+}
+
+.btn-create {
     background-color: #8c1c1c;
     color: white;
-  }
-  
-  .btn-reset {
+}
+
+.btn-reset {
     background-color: #ccc;
-  }
-  
-  footer {
+}
+
+footer {
     background-color: #8c1c1c;
     color: white;
     text-align: center;
     padding: 10px;
     margin-top: 30px;
-  }
+}
