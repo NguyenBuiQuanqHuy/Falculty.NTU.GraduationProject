@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tạo đề tài</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+</head>
+<body>
+<header class="header">
+    <div class="logo-section">
+        <img alt="" th:src="@{/img/banner2.png}">
+    </div>
+    <nav class="nav">
+    	<div class ="nav1">
+    		<a href="#">Trang chủ</a>
+        	<a href="#">Trang thông tin</a>
+    	</div>
+        
+        <div class="nav2">
+            <span>Xin chào <strong th:text="${session.username}"></strong></span>
+            <div class="dropdown">
+                <button class="dropbtn">Khác<span class="arrow">▶</span></button>
+                <div class="dropdown-content">
+                    <a href="#">Hồ sơ</a>
+                    <a href="#">Tập riêng tư</a>
+                    <a href="#">Cập nhật mật khẩu</a>
+                    <a href="#">Ngôn ngữ <span class="arrow">▶</span></a>
+                    <a th:href="@{/logout}" class="logout">Đăng xuất</a>
+                </div>
+            </div>
+
+        </div>  
+    </nav>
+</header>
+
+  <main>
+    <div class="tab">
+      <span class="active">TẠO ĐỀ TÀI</span>
+      <span>ĐỀ TÀI CỦA TÔI</span>
+    </div>
+
+    <form class="form-box">
+      <div class="form-left">
+        <label>Mã số đề tài</label>
+        <input type="text" />
+        <label>Tên đề tài <small style="color: red;">*ví dụ về một error!</small></label>
+        <input type="text" />
+        <label>Mô tả đề tài</label>
+        <input type="text" />
+        <label>Chi tiết đề tài</label>
+        <div class="richtext">
+          <div contenteditable="true" class="editor"></div>
+        </div>
+      </div>
+
+      <div class="form-right">
+        <label>Mã số Giảng viên ra đề</label>
+        <input type="text" />
+        <label>Thể loại</label>
+        <div class="radio-group">
+          <label><input type="radio" name="theloai" /> Đồ án</label>
+          <label><input type="radio" name="theloai" /> Chuyên đề</label>
+        </div>
+        <label>Lĩnh vực</label>
+        <select>
+          <option>Chọn lĩnh vực</option>
+        </select>
+        <label>Số lượng sinh viên tối đa</label>
+<input type="number" min="1" value="1" class="short-input" />
+<label>Dành cho khóa</label>
+<input type="number" min="1" value="66" class="short-input" />
+        <p class="note">*sau khi tạo, đề tài sẽ được Khoa kiểm duyệt và chấp nhận</p>
+      </div>
+    </form>
+
+    <div class="actions">
+      <button class="btn-create">Tạo</button>
+      <button class="btn-reset">Làm mới</button>
+    </div>
+  </main>
+
+  <footer>
+    Design in 2025 by Group 5
+  </footer>
+</body>
+</html>

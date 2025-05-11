@@ -1,0 +1,245 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #fff;
+    color: #000;
+}
+
+.header {
+    background-color: #861d22;
+    color: white;
+}
+
+.logo-section {
+    display: flex;
+    padding: 10px 20px;
+}
+
+.logo-section img {
+    width: 450px;       
+    height: 80px;       
+    display: block;
+}
+
+.title-group h1 {
+    font-size: 20px;
+}
+
+.title-group p {
+    font-size: 14px;
+    color: #f0b100;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white;
+    border: 2px solid #861d22;
+}
+
+.nav1 a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.nav2 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.nav2 span {
+    color: black;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin-right: 80px;
+}
+
+.dropbtn {
+    background-color: #333;
+    color: black;
+    padding: 10px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    margin-top: 2px;
+    border: 1px solid black;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #ccc;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown-content .logout {
+    color: black;
+    font-weight: bold;
+    border-bottom: none;
+}
+.dropdown-content .logout:hover {
+    background-color: #D20003;
+    color: white;
+    font-weight: bold;
+    border-bottom: none;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.arrow {
+    float: right;
+}
+
+
+.nav span {
+    margin-right: 15px;
+}
+
+.dropbtn {
+    background: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+main {
+    padding: 20px;
+  }
+  
+  .tab {
+    display: flex;
+    gap: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 10px;
+  }
+  
+  .tab span {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .tab .active {
+    color: #8c1c1c;
+    border-bottom: 2px solid #8c1c1c;
+  }
+  
+  .form-box {
+    display: flex;
+    border: 1px solid #8c1c1c;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .form-left,
+  .form-right {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-left label,
+  .form-right label {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  select {
+    padding: 6px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  input[type="number"].short-input {
+  width: 6ch; /* khoảng vừa cho 3 số */
+}
+
+  
+  .radio-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
+  }
+  
+  .richtext {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .editor {
+    min-height: 100px;
+    padding: 10px;
+    background-color: white;
+  }
+  
+  .note {
+    font-size: 12px;
+    color: red;
+    margin-top: auto;
+  }
+  
+  .actions {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .btn-create,
+  .btn-reset {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-create {
+    background-color: #8c1c1c;
+    color: white;
+  }
+  
+  .btn-reset {
+    background-color: #ccc;
+  }
+  
+  footer {
+    background-color: #8c1c1c;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 30px;
+  }
