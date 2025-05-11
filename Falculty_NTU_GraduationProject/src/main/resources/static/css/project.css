@@ -161,29 +161,46 @@ main {
     border: 1px solid #8c1c1c;
     border-radius: 5px;
     overflow: hidden;
-    flex-wrap: wrap;
 }
 
 .form-left,
 .form-right {
-    flex: 1;
     padding: 20px;
     display: flex;
     flex-direction: column;
 }
 
-.form-left label,
-.form-right label {
-    margin-top: 10px;
-    font-weight: bold;
+.form-left {
+    flex: 1 1 40%;
 }
 
-input[type="text"],
-input[type="number"],
-select,
-textarea {
+.form-right {
+    flex: 1 1 60%;
+    border-left: 1px solid #8c1c1c;
+}
+
+.form-right label{
+    font-weight: bold;
+    margin-bottom:5px;
+}
+
+.input-group-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.input-group-item label {
+    font-weight: bold;
+    width: 180px;
+}
+
+.input-group-item input,
+.input-group-item select,
+.input-group-item textarea {
+    flex: 1;
     padding: 6px;
-    margin-top: 4px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-family: Arial, sans-serif;
@@ -194,20 +211,17 @@ input[type="number"].short-input {
     width: 6ch; /* khoảng vừa cho 3 số */
 }
 
-/* Cho textarea */
 textarea {
     resize: vertical;
     min-height: 100px;
 }
 
-/* Group radio button */
 .radio-group {
     display: flex;
     gap: 15px;
     margin-top: 5px;
 }
 
-/* Ghi chú nhỏ */
 .note {
     font-size: 12px;
     color: red;
@@ -245,3 +259,11 @@ footer {
     padding: 10px;
     margin-top: 30px;
 }
+
+.note {
+    font-size: 12px;
+    color: red;
+    margin-top: 20px; /* Thêm khoảng cách trên */
+}
+
+

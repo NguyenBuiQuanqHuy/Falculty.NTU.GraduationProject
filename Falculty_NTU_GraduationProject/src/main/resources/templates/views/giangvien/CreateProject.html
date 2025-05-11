@@ -47,41 +47,58 @@
 
   <form class="form-box">
     <div class="form-left">
-      <label>Mã số đề tài</label>
-      <input type="text" name="maDeTai" />
+      <div class="input-group-item">
+        <label>Mã số đề tài</label>
+        <input type="text" name="maDeTai" />
+      </div>
 
-      <label>Tên đề tài <small style="color: red;">*ví dụ về một error!</small></label>
-      <input type="text" name="tenDeTai" />
+      <div class="input-group-item">
+        <label>Tên đề tài </label>
+        <input type="text" name="tenDeTai" />
+        
+      </div>
 
-      <label>Mô tả đề tài</label>
-      <input type="text" name="moTa" />
+      <div class="input-group-item">
+        <label>Mô tả đề tài</label>
+        <input type="text" name="moTa" />
+      </div>
 
-      <label>Chi tiết đề tài</label>
-      <textarea class="chiTiet" name="chiTiet" rows="6" style="width: 100%; resize: vertical;"></textarea>
+      <div class="input-group-item">
+        <label>Giảng viên ra đề</label>
+        <input type="text" name="maGV" />
+      </div>
+
+      <div class="input-group-item">
+        <label>Thể loại</label>
+        <div class="radio-group">
+          <label><input type="radio" name="theLoai" value="doan" /> Đồ án</label>
+          <label><input type="radio" name="theLoai" value="chuyende" /> Chuyên đề</label>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-group-item">
+          <label for="soLuong">Số sinh viên tối đa</label>
+          <input type="number" name="soLuong" min="1" value="1" class="short-input" />
+        </div>
+        <div class="input-group-item">
+          <label for="khoa">Dành cho khóa</label>
+          <input type="number" name="khoa" min="1" value="66" class="short-input" />
+        </div>
+      </div>
+
+      <div class="input-group-item">
+        <label>Lĩnh vực</label>
+        <select name="linhVuc">
+          <option>Chọn lĩnh vực</option>
+        </select>
+      </div>
     </div>
 
     <div class="form-right">
-      <label>Mã số Giảng viên ra đề</label>
-      <input type="text" name="maGV" />
-
-      <label>Thể loại</label>
-      <div class="radio-group">
-        <label><input type="radio" name="theLoai" value="doan" /> Đồ án</label>
-        <label><input type="radio" name="theLoai" value="chuyende" /> Chuyên đề</label>
-      </div>
-
-      <label>Lĩnh vực</label>
-      <select name="linhVuc">
-        <option>Chọn lĩnh vực</option>
-      </select>
-
-      <label>Số lượng sinh viên tối đa</label>
-      <input type="number" name="soLuong" min="1" value="1" class="short-input" />
-
-      <label>Dành cho khóa</label>
-      <input type="number" name="khoa" min="1" value="66" class="short-input" />
-
-      <p class="note">*sau khi tạo, đề tài sẽ được Khoa kiểm duyệt và chấp nhận</p>
+      <label>Chi tiết đề tài</label>
+      <textarea class="chiTiet" name="chiTiet" rows="6" style="width: 100%; resize: vertical;"></textarea>
+      <p class="note" >*sau khi tạo, đề tài sẽ được Khoa kiểm duyệt và chấp nhận</p>
     </div>
   </form>
 
@@ -97,14 +114,12 @@
 
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- <script th:src="@{/richtext/jquery.richtext.js}"></script> -->
 <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
 <script>
   $(document).ready(function () {
     $(".chiTiet").richText();
   });
 </script>
-
 
 </body>
 </html>
