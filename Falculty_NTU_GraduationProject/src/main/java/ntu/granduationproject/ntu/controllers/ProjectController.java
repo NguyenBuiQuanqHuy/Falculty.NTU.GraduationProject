@@ -106,7 +106,6 @@ public class ProjectController {
     
     @GetMapping("giangvien/taodetai")
     public String detai() {
-    	
     	return "views/giangvien/createproject";
     }
 }
