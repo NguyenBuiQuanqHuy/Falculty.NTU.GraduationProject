@@ -2,7 +2,10 @@ package ntu.granduationproject.ntu.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -11,17 +14,28 @@ public class Project {
 	@Id
 	private String msdt;
 	private String tendt;
-	private String msgv;
-	private int theloai;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "giangvien",referencedColumnName = "msgv")
+	private GiangVien giangVien;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "matheloai",referencedColumnName = "matheloai")
+	private TheLoai theLoai;
 	private String mota;
 	private String noidung;
-	private int linhvuc;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "malinhvuc",referencedColumnName = "malinhvuc")
+	private LinhVuc linhVuc;
 	private int sosvtoida;
-	private int namhoc;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "manamhoc",referencedColumnName = "manamhoc")
+	private NamHoc namHoc;
 	private int khoasv;
 	private String trangthai;
 	private boolean cosvthuchien;
-	
 	public String getMsdt() {
 		return msdt;
 	}
@@ -34,17 +48,17 @@ public class Project {
 	public void setTendt(String tendt) {
 		this.tendt = tendt;
 	}
-	public String getMsgv() {
-		return msgv;
+	public GiangVien getGiangVien() {
+		return giangVien;
 	}
-	public void setMsgv(String msgv) {
-		this.msgv = msgv;
+	public void setGiangVien(GiangVien giangVien) {
+		this.giangVien = giangVien;
 	}
-	public int getTheloai() {
-		return theloai;
+	public TheLoai getTheLoai() {
+		return theLoai;
 	}
-	public void setTheloai(int theloai) {
-		this.theloai = theloai;
+	public void setTheLoai(TheLoai theLoai) {
+		this.theLoai = theLoai;
 	}
 	public String getMota() {
 		return mota;
@@ -58,11 +72,11 @@ public class Project {
 	public void setNoidung(String noidung) {
 		this.noidung = noidung;
 	}
-	public int getLinhvuc() {
-		return linhvuc;
+	public LinhVuc getLinhVuc() {
+		return linhVuc;
 	}
-	public void setLinhvuc(int linhvuc) {
-		this.linhvuc = linhvuc;
+	public void setLinhVuc(LinhVuc linhVuc) {
+		this.linhVuc = linhVuc;
 	}
 	public int getSosvtoida() {
 		return sosvtoida;
@@ -70,11 +84,11 @@ public class Project {
 	public void setSosvtoida(int sosvtoida) {
 		this.sosvtoida = sosvtoida;
 	}
-	public int getNamhoc() {
-		return namhoc;
+	public NamHoc getNamHoc() {
+		return namHoc;
 	}
-	public void setNamhoc(int namhoc) {
-		this.namhoc = namhoc;
+	public void setNamHoc(NamHoc namHoc) {
+		this.namHoc = namHoc;
 	}
 	public int getKhoasv() {
 		return khoasv;
