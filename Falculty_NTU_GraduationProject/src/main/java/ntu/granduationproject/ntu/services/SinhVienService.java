@@ -9,6 +9,7 @@ public interface SinhVienService {
 	void resetPassword(String mssv, String newPassword);
 	
 	Optional<SinhVien> forgotPasswordSinhVien(String maso, String email);
+	void AddSinhVien(SinhVien sinhvien);
 	
 
 }

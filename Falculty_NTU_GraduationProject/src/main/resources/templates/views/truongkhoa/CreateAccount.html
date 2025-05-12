@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cấp tài khoản</title>
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+   <script>
+    function toggleAdminCheckbox() {
+        var role = document.querySelector('input[name="role"]:checked').value;
+        var isAdminCheckbox = document.getElementById('isAdminCheckbox');
+        var isAdminContainer = document.getElementById('isAdminContainer');
+        var giangVienFields = document.getElementById('giangVienFields');
+
+        if (role === 'giangvien') {
+            isAdminCheckbox.disabled = false;
+            isAdminContainer.style.display = 'flex';
+            giangVienFields.style.display = 'flex'; // Hiện HMHDDA và HMHDCD
+        } else {
+            isAdminCheckbox.disabled = true;
+            isAdminCheckbox.checked = false;
+            isAdminContainer.style.display = 'flex';
+            isAdminCheckbox.style.backgroundColor = "#f0f0f0";
+            giangVienFields.style.display = 'none'; // Ẩn khi không phải giảng viên
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var isAdminCheckbox = document.getElementById('isAdminCheckbox');
+        var role = document.querySelector('input[name="role"]:checked');
+        var giangVienFields = document.getElementById('giangVienFields');
+        if (role && role.value === 'sinhvien') {
+            isAdminCheckbox.checked = false;
+            giangVienFields.style.display = 'none';
+        }
+    });
+</script>
+
+</head>
+<body>
+<header class="header">
+    <div class="logo-section">
+        <img alt="" th:src="@{/img/banner2.png}">
+    </div>
+    <nav class="nav">
+        <div class ="nav1">
+            <a href="#">Trang chủ</a>
+            <a href="#">Trang thông tin</a>
+        </div>
+        <div class="nav2">
+            <span>Xin chào <strong th:text="${session.username}">Tên người dùng</strong></span>
+            <div class="dropdown">
+                <button class="dropbtn">Khác<span class="arrow">▶</span></button>
+                <div class="dropdown-content">
+                    <a href="#">Hồ sơ</a>
+                    <a href="#">Tập riêng tư</a>
+                    <a href="#">Cập nhật mật khẩu</a>
+                    <a href="#">Ngôn ngữ</a>
+                    <a th:href="@{/logout}" class="logout">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="main-content" style="display: flex; flex-direction: column; align-items: center; min-height: 80vh; padding-top: 40px;">
+    <h2 style="color: #861d22; align-self: flex-start; margin-left: 1%; margin-bottom: 10px;">CẤP TÀI KHOẢN</h2>
+
+    <form th:action="@{/createaccount}" method="post"
+          style="border: 2px solid #861d22; border-radius: 10px; padding: 30px; width: 500px; background: white;">
+        <div style="margin-bottom: 15px; display: flex; align-items: center;">
+            <label style="width: 150px;">Mã số tài khoản</label>
+            <input type="text" name="maso" required
+                   style="flex: 1; padding: 8px; border: 1px solid #861d22; border-radius: 5px;">
+        </div>
+
+        <div style="margin-bottom: 15px; display: flex; align-items: center;">
+            <label style="width: 150px;">Họ và tên</label>
+            <input type="text" name="hoten" required
+                   style="flex: 1; padding: 8px; border: 1px solid #861d22; border-radius: 5px;">
+        </div>
+
+        <p style="color: #861d22; font-size: 12px; margin-left: 150px; margin-top: -10px; margin-bottom: 15px;">
+            *ví dụ về một error
+        </p>
+
+        <div style="margin-bottom: 15px; display: flex; align-items: center;">
+            <label style="width: 150px;">Email</label>
+            <input type="email" name="email" required
+                   style="flex: 1; padding: 8px; border: 1px solid #861d22; border-radius: 5px;">
+        </div>
+
+        <div style="margin-bottom: 15px; display: flex; align-items: center;">
+            <label style="width: 150px;">Loại tài khoản</label>
+            <div style="flex: 1;">
+                <input type="radio" name="role" value="giangvien" required onclick="toggleAdminCheckbox()"> Giảng viên
+                <input type="radio" name="role" value="sinhvien" required onclick="toggleAdminCheckbox()" style="margin-left: 20px;"> Sinh viên
+            </div>
+        </div>
+
+        
+        <!-- Chỉ hiển thị khi chọn Giảng viên -->
+<div id="giangVienFields" style="display: none; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+    <div style="display: flex; align-items: center;">
+        <label style="width: 150px;">Số HMHDDA</label>
+        <input type="text" name="hmhdda"
+               style="flex: 1; padding: 8px; border: 1px solid #861d22; border-radius: 5px;">
+    </div>
+    <div style="display: flex; align-items: center;">
+        <label style="width: 150px;">Số HMHDCD</label>
+        <input type="text" name="hmhdcd"
+               style="flex: 1; padding: 8px; border: 1px solid #861d22; border-radius: 5px;">
+    </div>
+</div>
+        
+
+        <p style="color: #861d22; font-size: 12px; margin-left: 150px;">
+            *mật khẩu sẽ được tạo ngẫu nhiên trong lần đầu tiên
+        </p>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit"
+                    style="padding: 10px 20px; background-color: #861d22; color: white; border: none; border-radius: 5px;">
+                Tạo
+            </button>
+            <button type="reset"
+                    style="padding: 10px 20px; background-color: #ddd; border: none; border-radius: 5px; margin-left: 10px;">
+                Làm mới
+            </button>
+        </div>
+    </form>
+</main>
+
+<footer class="footer">
+    <p>Design in 2025 by Group 5</p>
+</footer>
+</body>
+</html>

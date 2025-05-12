@@ -6,9 +6,71 @@ import jakarta.persistence.*;
 @Table(name = "giangvien")
 public class GiangVien {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+ 
     private String msgv;
     private String matkhau;
+    private String email;
+    private int HMHDDA ;
+    private int HMHDCD ;
+    private String sdt ;
+    
+    
+    
+    public GiangVien () {}
+
+
+	public GiangVien(String msgv, String matkhau, String email, int hMHDDA, int hMHDCD, String sdt, String hoten,
+			boolean isAdmin) {
+		super();
+		this.msgv = msgv;
+		this.matkhau = matkhau;
+		this.email = email;
+		HMHDDA = hMHDDA;
+		HMHDCD = hMHDCD;
+		this.sdt = sdt;
+		this.hoten = hoten;
+		this.isAdmin = isAdmin;
+	}
+
+	
+
+	public int getHMHDDA() {
+		return HMHDDA;
+	}
+
+
+	public void setHMHDDA(int hMHDDA) {
+		HMHDDA = hMHDDA;
+	}
+
+
+	public int getHMHDCD() {
+		return HMHDCD;
+	}
+
+
+	public void setHMHDCD(int hMHDCD) {
+		HMHDCD = hMHDCD;
+	}
+
+
+	public String getSdt() {
+		return sdt;
+	}
+
+
+	public void setSdt(String sdt) {
+		this.sdt = sdt;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	private String hoten;
 	@Column(name="isadmin")

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import ntu.granduationproject.ntu.models.GiangVien;
 import ntu.granduationproject.ntu.models.SinhVien;
 import ntu.granduationproject.ntu.services.EmailService;
 import ntu.granduationproject.ntu.services.GiangVienService;
@@ -60,7 +61,7 @@ public class ForgotPasswordController {
     ) {
         var sv = sinhVienService.forgotPasswordSinhVien(maso, email);
         if (sv.isPresent()) {
-            session.setAttribute("user", sv.get());
+            session.setAttribute("userSinhVien", sv.get());
             SinhVien sv1 = sv.get();
             
            
@@ -76,13 +77,33 @@ public class ForgotPasswordController {
 
                 return "redirect:/verifycode";  
             }
+  
         }
         
+        var gv = giangVienService.forgotPasswordGiangVien(maso, email);
+        if (gv.isPresent()) {
+            session.setAttribute("userGiangVien", gv.get());
+            GiangVien gv1 = gv.get();
+            
+           
+            if(gv1.getEmail().equals(email)) {
+               
+                String verificationCode = generateRandomCode();
+                
+        
+                session.setAttribute("verificationCode", verificationCode);
+                
+                emailService.sendVerificationEmail(email, verificationCode);
+                
 
+                return "redirect:/verifycode";  
+            }
+        }
+        
         model.addAttribute("error", "Mã số hoặc email không đúng");
-        return "views/ForgotPassword";  
+        return "redirect:/forgotpassword";  
     }
     
 
- 
+    
 }

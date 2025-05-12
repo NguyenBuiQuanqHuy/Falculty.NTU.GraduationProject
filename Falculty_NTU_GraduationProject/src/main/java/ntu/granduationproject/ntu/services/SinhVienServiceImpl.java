@@ -26,7 +26,6 @@ public class SinhVienServiceImpl implements SinhVienService {
 	    if (optionalSinhVien.isPresent()) {
 	        SinhVien sv = optionalSinhVien.get();
 
-	        // ✅ So sánh mật khẩu nhập vào với mật khẩu đã hash trong DB
 	        if (passwordEncoder.matches(matkhau, sv.getMatkhau())) {
 	            return Optional.of(sv);
 	        }
@@ -46,6 +45,10 @@ public class SinhVienServiceImpl implements SinhVienService {
             
             sinhVienRepository.save(sinhVien);  // Lưu sinh viên với mật khẩu đã mã hóa
         }
+    }
+    @Override
+    public void AddSinhVien(SinhVien sinhvien) {
+    	sinhVienRepository.save(sinhvien);
     }
     
     
