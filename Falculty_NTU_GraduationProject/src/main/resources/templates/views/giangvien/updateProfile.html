@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/updateProfile.css}" />
+<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+<div th:fragment="content">
+  <div class="form-container">
+    <form class="profile-form">
+      <div class="form-left">
+        <label>Mã số</label>
+        <input type="text" name="maso" th:value="${session.maso}" readonly />
+        <label>Họ và tên</label>
+        <input type="text" name="username" th:value="${session.username}" readonly />
+        <label><span>*</span> Email</label>
+        <input type="text" name="email" th:value="${session.email}" readonly />
+        <label><span>*</span> Số điện thoại</label>
+        <input type="tel" name="sdt" th:value="${session.sdt}" readonly />
+        <label>Mật khẩu</label>
+        <a href="#">Cập nhật mật khẩu</a>
+        <div class="button-group">
+          <button type="submit" class="btn save">Lưu</button>
+          <button type="reset" class="btn cancel">Hủy</button>
+        </div>
+      </div>
+
+      < class="form-right">
+        <label><span>*</span> Hồ sơ năng lực /label>
+        <!-- Sử dụng đúng id cho textarea -->
+        <textarea class="cv" name="example"></textarea>
+
+        <script>
+          $(document).ready(function () {
+            $(".cv").richText();
+          });
+        </script>
+    </form>
+  </div>
+</div>
+<div th:replace="~{layout/footer :: footer}"></div>
+</body>
+</html>

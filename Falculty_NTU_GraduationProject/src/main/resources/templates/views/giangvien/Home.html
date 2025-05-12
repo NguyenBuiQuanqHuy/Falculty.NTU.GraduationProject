@@ -13,16 +13,16 @@
     </div>
     <nav class="nav">
     	<div class ="nav1">
-    		<a href="#">Trang chủ</a>
+            <a th:href="@{/giangvien/home}">Trang chủ</a>
         	<a href="#">Trang thông tin</a>
     	</div>
         
         <div class="nav2">
             <span>Xin chào <strong th:text="${session.username}"></strong></span>
             <div class="dropdown">
-                <button class="dropbtn">Khác<span class="arrow">▶</span></button>
+                <button class="dropbtn">Khác<span class="arrow">▼</span></button>
                 <div class="dropdown-content">
-                    <a href="#">Hồ sơ</a>
+                    <a href="/profile">Hồ sơ</a>
                     <a href="#">Tập riêng tư</a>
                     <a href="#">Cập nhật mật khẩu</a>
                     <a href="#">Ngôn ngữ <span class="arrow">▶</span></a>

@@ -16,6 +16,8 @@ public class SinhVien {
   private String email;
   private String hoten;
 
+  private String sdt;
+
 	public String getEmail() {
 	return email;
 }
@@ -43,4 +45,12 @@ public void setEmail(String email) {
 	public String getHoten() { return hoten; }
 
 	public void setHoten(String hoten) { this.hoten = hoten; }
+
+	public String getSdt() {
+		return sdt;
+	}
+
+	public void setSdt(String sdt) {
+		this.sdt = sdt;
+	}
 }

@@ -41,6 +41,11 @@ public class LoginController {
             session.setAttribute("user", sv.get());
             session.setAttribute("role", "sinhvien");
             session.setAttribute("username", sv.get().getHoten());
+            if (sv.get().getEmail() != null || sv.get().getSdt() != null) {
+                session.setAttribute("maso", sv.get().getMssv());
+                session.setAttribute("email",sv.get().getEmail());
+                session.setAttribute("sdt",sv.get().getSdt());
+            }
             return "redirect:/sinhvien/home";
         }
 
