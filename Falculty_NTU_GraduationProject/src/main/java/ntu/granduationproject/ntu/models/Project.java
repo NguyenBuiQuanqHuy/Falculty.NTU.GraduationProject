@@ -16,24 +16,28 @@ public class Project {
 	private String tendt;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "giangvien",referencedColumnName = "msgv")
-	private GiangVien giangVien;
+	@JoinColumn(name = "msgv",referencedColumnName = "msgv")
+	private GiangVien msgv;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "matheloai",referencedColumnName = "matheloai")
+	@JoinColumn(name = "theloai",referencedColumnName = "matheloai")
 	private TheLoai theLoai;
 	private String mota;
 	private String noidung;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "malinhvuc",referencedColumnName = "malinhvuc")
+	@JoinColumn(name = "linhvuc",referencedColumnName = "malinhvuc")
 	private LinhVuc linhVuc;
 	private int sosvtoida;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "manamhoc",referencedColumnName = "manamhoc")
-	private NamHoc namHoc;
+	
+	
 	private int khoasv;
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "namhoc",referencedColumnName = "manamhoc")
+	private NamHoc namHoc;
 	private String trangthai;
 	private boolean cosvthuchien;
 	public String getMsdt() {
@@ -48,11 +52,14 @@ public class Project {
 	public void setTendt(String tendt) {
 		this.tendt = tendt;
 	}
-	public GiangVien getGiangVien() {
-		return giangVien;
+	
+	
+	
+	public GiangVien getMsgv() {
+		return msgv;
 	}
-	public void setGiangVien(GiangVien giangVien) {
-		this.giangVien = giangVien;
+	public void setMsgv(GiangVien msgv) {
+		this.msgv = msgv;
 	}
 	public TheLoai getTheLoai() {
 		return theLoai;

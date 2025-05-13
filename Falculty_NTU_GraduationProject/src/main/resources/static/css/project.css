@@ -160,6 +160,7 @@ main {
 
 .form-box {
     display: flex;
+    flex-direction: row; /* Sắp xếp các phần tử theo chiều ngang */
     border: 1px solid #8c1c1c;
     border-radius: 5px;
     overflow: hidden;
@@ -181,9 +182,9 @@ main {
     border-left: 1px solid #8c1c1c;
 }
 
-.form-right label{
+.form-right label {
     font-weight: bold;
-    margin-bottom:5px;
+    margin-bottom: 5px;
 }
 
 .input-group-item {
@@ -227,18 +228,19 @@ textarea {
 .note {
     font-size: 12px;
     color: red;
-    margin-top: auto;
+    margin-top: 20px; /* Thêm khoảng cách trên */
 }
 
 .actions {
-    text-align: center;
     margin-top: 20px;
+    display: flex;
+    flex-direction: column; /* Đặt các nút theo chiều dọc */
+    gap: 10px;
 }
 
 .btn-create,
 .btn-reset {
     padding: 10px 20px;
-    margin: 0 10px;
     font-weight: bold;
     border: none;
     border-radius: 4px;
@@ -267,5 +269,3 @@ footer {
     color: red;
     margin-top: 20px; /* Thêm khoảng cách trên */
 }
-
-
