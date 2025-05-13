@@ -13,7 +13,7 @@ public class SinhVien {
     private String hoten;
 
     @Lob
-    @Column(name = "CVHoSo", columnDefinition = "TEXT")
+    @Column(name = "CVHoSo", columnDefinition = "LONGTEXT")
     private String cv;
 
     public SinhVien() {}

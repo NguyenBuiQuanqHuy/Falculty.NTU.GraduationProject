@@ -4,22 +4,19 @@
     <meta charset="UTF-8">
     <title>Chỉnh sửa hồ sơ</title>
     <link rel="stylesheet" th:href="@{/css/updateProfile.css}" />
-    <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+    <script src="https://cdn.tiny.cloud/1/2dywnvukp3hvbouvd54bf9lxkgr40hwpk46kpiy6ugiqsxcl/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <style>
         a { text-decoration: none; }
     </style>
 </head>
 <body>
 <div th:replace="~{layout/header :: header}"></div>
-
 <div th:fragment="content">
     <div class="form-container">
         <form th:action="@{/updateProfile}" method="post" class="profile-form">
             <div class="form-right">
-                <label><span>*</span> Hồ sơ sinh viên</label>
+                <label>Hồ sơ sinh viên</label>
                 <textarea id="cv" name="cv" class="cv" th:text="${sinhvien.cv}"></textarea>
                 <div class="button-group">
                     <button type="submit" class="btn save">Lưu</button>
@@ -29,13 +26,43 @@
         </form>
     </div>
 </div>
-
-<script>
-    $(document).ready(function () {
-        $(".cv").richText();
-    });
-</script>
-
 <div th:replace="~{layout/footer :: footer}"></div>
 </body>
 </html>
+<script>
+    tinymce.init({
+        selector: 'textarea.cv',
+        language: 'vi',
+        height: 350,
+        plugins: 'print preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+        toolbar: 'undo redo | styles | bold italic underline strikethrough | forecolor backcolor | fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | emoticons charmap | image media link | table | code fullscreen preview | insertfile template hr pagebreak',
+        menubar: 'file edit view insert format tools table help',
+        toolbar_mode: 'sliding',
+        image_title: true,
+        automatic_uploads: true,
+        file_picker_types: 'image',
+        file_picker_callback: function (cb, value, meta) {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.onchange = function () {
+                const file = this.files[0];
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const id = 'blobid' + (new Date()).getTime();
+                    const blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                    const base64 = reader.result.split(',')[1];
+                    const blobInfo = blobCache.create(id, file, base64);
+                    blobCache.add(blobInfo);
+                    cb(blobInfo.blobUri(), { title: file.name });
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        },
+        autosave_interval: '30s',
+        autosave_retention: '5m',
+        table_advtab: true, // Hiển thị tab nâng cao trong chỉnh bảng
+        content_style: 'body { font-family:Arial,sans-serif; font-size:14px }'
+    });
+</script>

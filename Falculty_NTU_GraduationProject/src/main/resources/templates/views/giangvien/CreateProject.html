@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tạo đề tài</title>
+    <link rel="stylesheet" th:href="@{/css/project.css}" />
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <script src="https://cdn.tiny.cloud/1/2dywnvukp3hvbouvd54bf9lxkgr40hwpk46kpiy6ugiqsxcl/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body>
+    <div th:replace="~{layout/header :: header}"></div>
+    <div th:fragment="content">
+        <div class="main">
+            <div class="tab">
+                <span class="active">TẠO ĐỀ TÀI</span>
+                <span>ĐỀ TÀI CỦA TÔI</span>
+            </div>
+
+            <form class="form-box" method="post" th:action="@{/giangvien/taodetai}">
+                <div class="form-left">
+                    <div class="input-group-item">
+                        <label>Mã số đề tài</label>
+                        <input type="text" name="msdt" required />
+                        <span th:if="${error}" th:text="${error}" style="color: red;"></span>
+                    </div>
+
+                    <div class="input-group-item">
+                        <label>Tên đề tài</label>
+                        <input type="text" name="tendt" required />
+                    </div>
+
+                    <div class="input-group-item">
+                        <label>Mô tả ngắn</label>
+                        <input type="text" name="mota" />
+                    </div>
+
+                    <div class="input-group-item">
+                        <label>Giảng viên ra đề</label>
+                        <input type="text" name="msgv" th:value="${tenGiangVien}" readonly />
+                    </div>
+
+                    <div class="input-group-item">
+                        <label>Thể loại</label>
+                        <div class="radio-group">
+                            <label th:each="tl : ${theLoais}">
+                                <input type="radio" name="theloai" th:value="${tl.matheloai}" required />
+                                <span th:text="${tl.tentheloai}">Tên thể loại</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-item">
+                            <div>
+                                <label>Số sinh viên tối đa</label>
+                                <input type="number" name="sosvtoida" min="1" value="1" class="short-input" />
+                            </div>
+                            <div>
+                                <label>Dành cho khóa</label>
+                                <input type="number" name="khoasv" min="1" value="66" class="short-input" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group-item">
+                        <div >
+                            <label>Năm Học</label>
+                            <select class="session-group" name="namhoc" required>
+                                <option value="">-- Chọn năm học --</option>
+                                <option th:each="nh : ${namhocs}" th:value="${nh.manamhoc}" th:text="${nh.tennamhoc}"></option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Lĩnh vực</label>
+                            <select class="session-group2" name="linhvuc" required>
+                                <option value="">-- Chọn lĩnh vực --</option>
+                                <option th:each="lv : ${linhVucs}" th:value="${lv.malinhvuc}" th:text="${lv.tenlinhvuc}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button type="submit" class="btn-create">Tạo</button>
+                        <button type="reset" class="btn-reset">Làm mới</button>
+                    </div>
+
+                    <div th:if="${message != null}">
+                        <p th:text="${message}" th:style="${messageType == 'error' ? 'color: red;' : 'color: green;'}"></p>
+                    </div>
+                </div>
+
+                <div class="form-right">
+                    <label>Chi tiết đề tài</label>
+                    <textarea class="chiTiet" name="noidung" rows="6"
+                              style="width: 100%; resize: vertical;"></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div th:replace="~{layout/footer :: footer}"></div>
+</body>
+</html>
+<script>
+    tinymce.init({
+        selector: 'textarea.chiTiet',
+        language: 'vi',
+        height: 380,
+        plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code fullscreen table emoticons autosave',
+        toolbar: 'undo redo | styles | bold italic underline strikethrough | forecolor backcolor | fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | emoticons | fullscreen preview code',
+        menubar: 'file edit view insert format tools table',
+        image_title: true,
+        automatic_uploads: true,
+        file_picker_types: 'image',
+        file_picker_callback: function (cb, value, meta) {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.onchange = function () {
+                const file = this.files[0];
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const id = 'blobid' + (new Date()).getTime();
+                    const blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                    const base64 = reader.result.split(',')[1];
+                    const blobInfo = blobCache.create(id, file, base64);
+                    blobCache.add(blobInfo);
+                    cb(blobInfo.blobUri(), { title: file.name });
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        },
+        autosave_interval: '30s',
+        autosave_retention: '5m',
+        content_style: "body { font-family:Arial,sans-serif; font-size:14px }"
+    });
+</script>
+
+
+<!-- Nút reset -->
+<script>
+    document.querySelector('.btn-reset').addEventListener('click', function(event) {
+        event.preventDefault();  // Ngừng hành động mặc định của nút reset
+        document.querySelector('form').reset();  // Làm mới form
+        tinymce.get('chiTiet').setContent('');  // Xóa nội dung TinyMCE (nếu cần)
+    });
+</script>

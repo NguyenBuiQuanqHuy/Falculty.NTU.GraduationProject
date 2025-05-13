@@ -16,7 +16,7 @@ public class GiangVien {
 	private boolean isAdmin;
 
 	@Lob
-	@Column(name = "CVNangLuc", columnDefinition = "TEXT")
+	@Column(name = "CVNangLuc", columnDefinition = "LONGTEXT")
 	private String cv;
 
     public GiangVien () {}
