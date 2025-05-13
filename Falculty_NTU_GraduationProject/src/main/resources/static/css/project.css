@@ -21,8 +21,8 @@ body {
 }
 
 .logo-section img {
-    width: 450px;       
-    height: 80px;       
+    width: 450px;
+    height: 80px;
     display: block;
 }
 
@@ -37,7 +37,7 @@ body {
 
 .nav {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     background-color: white;
@@ -55,7 +55,10 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
+    position: relative;
+    z-index: 10;
 }
+
 .nav2 span {
     color: black;
     font-weight: normal;
@@ -83,7 +86,7 @@ body {
     position: absolute;
     background-color: white;
     min-width: 150px;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
     margin-top: 2px;
     border: 1px solid black;
@@ -106,12 +109,14 @@ body {
     font-weight: bold;
     border-bottom: none;
 }
+
 .dropdown-content .logout:hover {
     background-color: #D20003;
     color: white;
     font-weight: bold;
     border-bottom: none;
 }
+
 .dropdown:hover .dropdown-content {
     display: block;
 }
@@ -119,7 +124,6 @@ body {
 .arrow {
     float: right;
 }
-
 
 .nav span {
     margin-right: 15px;
@@ -132,73 +136,136 @@ body {
     cursor: pointer;
 }
 
-.main {
-    padding: 40px 20px;
-    text-align: center;
+main {
+    padding: 20px;
 }
 
-.menu-grid {
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
+.tab {
+    display: flex;
     gap: 20px;
-    padding: 100px;
-    margin-left: 120px;
-}
-
-.menu-item {
-    display: flex;
-    border: 1px solid #8B1C1C;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: white;
-    cursor: pointer;
-    transition: transform 0.2s;
-    width:470px;
-    height: 120px;
-}
-
-.menu-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.menu-icon {
-    background-color: #8B1C1C;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.menu-icon img {
-    width: 100px;
-    height: 100px;
-}
-
-.menu-text {
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
     font-weight: bold;
-    color: black;
-    text-align: center;
-    font-size: 20px;
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 10px;
+}
+
+.tab span {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.tab .active {
+    color: #8c1c1c;
+    border-bottom: 2px solid #8c1c1c;
+}
+
+.form-box {
+    display: flex;
+    flex-direction: row; /* Sắp xếp các phần tử theo chiều ngang */
+    border: 1px solid #8c1c1c;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.form-left,
+.form-right {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-left {
+    flex: 1 1 40%;
+}
+
+.form-right {
+    flex: 1 1 60%;
+    border-left: 1px solid #8c1c1c;
+}
+
+.form-right label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-group-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.input-group-item label {
+    font-weight: bold;
+    width: 180px;
+}
+
+.input-group-item input,
+.input-group-item select,
+.input-group-item textarea {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+input[type="number"].short-input {
+    width: 6ch; /* khoảng vừa cho 3 số */
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.note {
+    font-size: 12px;
+    color: red;
+    margin-top: 20px; /* Thêm khoảng cách trên */
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column; /* Đặt các nút theo chiều dọc */
+    gap: 10px;
+}
+
+.btn-create,
+.btn-reset {
+    padding: 10px 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-create {
+    background-color: #8c1c1c;
+    color: white;
+}
+
+.btn-reset {
+    background-color: #ccc;
 }
 
 footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #861d22; 
+    background-color: #8c1c1c;
     color: white;
     text-align: center;
-    padding: 10px 0;
+    padding: 10px;
+    margin-top: 30px;
 }
 
-a{
-	text-decoration: none;
-    color: black;
+.note {
+    font-size: 12px;
+    color: red;
+    margin-top: 20px; /* Thêm khoảng cách trên */
 }
