@@ -72,7 +72,7 @@ public class AccountController {
     		// Tránh null, fallback nếu không nhập
             int da = (hmhdda != null) ? hmhdda : 0;
             int cd = (hmhdcd != null) ? hmhdcd : 0;
-            GiangVien gv = new GiangVien(maso, hashedPassword, email , da,cd , "123456789" , hoten,  isAdmin != null ? isAdmin : false);
+            GiangVien gv = new GiangVien(maso, hashedPassword, email , da,cd , hoten,  isAdmin != null ? isAdmin : false);
             
             giangVienService.AddGiangVien(gv);
     	}

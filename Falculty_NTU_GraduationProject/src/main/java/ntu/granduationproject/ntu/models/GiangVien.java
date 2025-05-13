@@ -12,14 +12,14 @@ public class GiangVien {
     private String email;
     private int HMHDDA ;
     private int HMHDCD ;
-    private String sdt ;
+
     
     
     
     public GiangVien () {}
 
 
-	public GiangVien(String msgv, String matkhau, String email, int hMHDDA, int hMHDCD, String sdt, String hoten,
+	public GiangVien(String msgv, String matkhau, String email, int hMHDDA, int hMHDCD, String hoten,
 			boolean isAdmin) {
 		super();
 		this.msgv = msgv;
@@ -27,7 +27,7 @@ public class GiangVien {
 		this.email = email;
 		HMHDDA = hMHDDA;
 		HMHDCD = hMHDCD;
-		this.sdt = sdt;
+	
 		this.hoten = hoten;
 		this.isAdmin = isAdmin;
 	}
@@ -54,14 +54,6 @@ public class GiangVien {
 	}
 
 
-	public String getSdt() {
-		return sdt;
-	}
-
-
-	public void setSdt(String sdt) {
-		this.sdt = sdt;
-	}
 
 
 	public String getEmail() {
