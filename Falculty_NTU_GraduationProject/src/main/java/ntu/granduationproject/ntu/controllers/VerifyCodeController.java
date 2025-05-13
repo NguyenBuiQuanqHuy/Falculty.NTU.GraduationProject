@@ -22,6 +22,9 @@ public class VerifyCodeController {
 
 	  @Autowired
 	    private SinhVienService sinhVienService;
+	  
+	  @Autowired
+	  private GiangVienService giangVienService;
 
 	  
 	    @GetMapping("/resetpassword")

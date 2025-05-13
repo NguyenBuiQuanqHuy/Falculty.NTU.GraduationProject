@@ -16,5 +16,13 @@ public class EmailService {
 	        message.setText("Mã xác nhận của bạn là: " + code);
 	        mailSender.send(message);
 	    }
+	    
+	    public void sendNewPassword(String toEmail, String password) {
+	        SimpleMailMessage message = new SimpleMailMessage();
+	        message.setTo(toEmail);
+	        message.setSubject("PASSWORD");
+	        message.setText("Mật khẩu được cấp là : " + password);
+	        mailSender.send(message);
+	    }
 
 }

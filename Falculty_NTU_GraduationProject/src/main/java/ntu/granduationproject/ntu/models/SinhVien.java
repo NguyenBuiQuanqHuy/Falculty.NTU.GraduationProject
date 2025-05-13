@@ -1,56 +1,70 @@
 package ntu.granduationproject.ntu.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "sinhvien")
 public class SinhVien {
+
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private String mssv;
-  private String matkhau;
-  private String email;
-  private String hoten;
+    private String matkhau;
+    private String email;
+    private String hoten;
 
-  private String sdt;
+    @Lob
+    @Column(name = "CVHoSo", columnDefinition = "TEXT")
+    private String cv;
 
-	public String getEmail() {
-	return email;
-}
+    public SinhVien() {}
 
-public void setEmail(String email) {
-	this.email = email;
-}
+    public SinhVien(String mssv, String matkhau, String email, String hoten) {
+        super();
+        this.mssv = mssv;
+        this.matkhau = matkhau;
+        this.email = email;
+        this.hoten = hoten;
+        
+    }
 
-	public String getMssv() {
-		return mssv;
-	}
+    // Getters và Setters
+    public String getMssv() {
+        return mssv;
+    }
 
-	public void setMssv(String mssv) {	
-		this.mssv = mssv;
-	}
+    public void setMssv(String mssv) {
+        this.mssv = mssv;
+    }
 
-	public String getMatkhau() {
-		return matkhau;
-	}
+    public String getMatkhau() {
+        return matkhau;
+    }
 
-	public void setMatkhau(String matkhau) {
-		this.matkhau = matkhau;
-	}
+    public void setMatkhau(String matkhau) {
+        this.matkhau = matkhau;
+    }
 
-	public String getHoten() { return hoten; }
+    public String getEmail() {
+        return email;
+    }
 
-	public void setHoten(String hoten) { this.hoten = hoten; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getSdt() {
-		return sdt;
-	}
+    public String getHoten() {
+        return hoten;
+    }
 
-	public void setSdt(String sdt) {
-		this.sdt = sdt;
-	}
+    public void setHoten(String hoten) {
+        this.hoten = hoten;
+    }
+
+    public String getCv() {
+        return cv;
+    }
+
+    public void setCv(String cv) {
+        this.cv = cv;
+    }
 }

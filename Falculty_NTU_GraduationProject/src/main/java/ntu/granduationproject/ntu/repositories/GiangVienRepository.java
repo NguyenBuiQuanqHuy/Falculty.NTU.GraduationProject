@@ -11,4 +11,6 @@ import ntu.granduationproject.ntu.models.GiangVien;
 public interface GiangVienRepository extends JpaRepository<GiangVien, String> {
 	Optional<GiangVien> findByMsgvAndMatkhau(String msgv, String matkhau);
 
+	Optional<GiangVien> findByMsgv(String msgv);
+
 }

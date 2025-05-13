@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cấp tài khoản</title>
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+    <link rel="stylesheet" th:href="@{/css/createAccount.css}" />
+
+    <script>
+        function toggleGiangVienFields() {
+            var role = document.querySelector('input[name="role"]:checked').value;
+            var giangVienFields = document.getElementById('giangVienFields');
+            giangVienFields.style.display = role === 'giangvien' ? 'flex' : 'none';
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var role = document.querySelector('input[name="role"]:checked');
+            var giangVienFields = document.getElementById('giangVienFields');
+            if (!role || role.value === 'sinhvien') {
+                giangVienFields.style.display = 'none';
+            } else {
+                giangVienFields.style.display = 'flex';
+            }
+        });
+    </script>
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+<div th:fragment="content">
+    <div class="main-content">
+        <h2>CẤP TÀI KHOẢN</h2>
+
+        <form th:action="@{/createaccount}" method="post" class="form-container">
+            <div class="form-group">
+                <label>Mã số tài khoản</label>
+                <input type="text" name="maso" required>
+            </div>
+
+            <div class="form-group">
+                <label>Họ và tên</label>
+                <input type="text" name="hoten" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Loại tài khoản</label>
+                <div class="role-options">
+                    <label><input type="radio" name="role" value="giangvien" onclick="toggleGiangVienFields()" required> Giảng viên</label>
+                    <label><input type="radio" name="role" value="sinhvien" onclick="toggleGiangVienFields()" required> Sinh viên</label>
+                </div>
+            </div>
+
+            <div id="giangVienFields">
+                <div class="form-group">
+                    <label>Số HMHDDA</label>
+                    <input type="text" name="hmhdda">
+                </div>
+                <div class="form-group">
+                    <label>Số HMHDCD</label>
+                    <input type="text" name="hmhdcd">
+                </div>
+            </div>
+
+            <p class="note">* mật khẩu sẽ được tạo ngẫu nhiên trong lần đầu tiên</p>
+
+            <div class="button-group">
+                <button type="submit" class="submit-btn">Tạo</button>
+                <button type="reset" class="reset-btn">Làm mới</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:replace="~{layout/footer :: footer}"></div>
+</body>
+</html>

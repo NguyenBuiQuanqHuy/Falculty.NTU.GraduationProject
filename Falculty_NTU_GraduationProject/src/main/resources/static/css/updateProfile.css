@@ -134,7 +134,7 @@ body {
 
 /*main*/
 .form-container {
-    padding: 20px;
+    padding: 10px;
     max-width: 1000px;
     border-radius: 8px;
     margin: auto;
@@ -155,7 +155,7 @@ body {
     gap: 40px;
     border: 2px solid #861d22;
     border-radius: 20px;
-    padding: 20px;
+    padding: 20px 30px;
 }
 
 .form-left,
@@ -173,6 +173,9 @@ label span {
     color: red;
 }
 
+.bonus {
+    padding-bottom: 75px;
+}
 input,
 textarea {
     width: 100%;
@@ -188,7 +191,7 @@ textarea {
 
 .button-group {
     display: flex;
-    padding-top: 25px;
+    padding-top: 10px;
     gap: 10px;
 }
 
@@ -211,10 +214,10 @@ textarea {
 }
 
 .richText {
-    width: 500px !important;
+    width: 923px !important;
 }
 .richText .richText-editor {
-    height: 270px !important;
+    height: 250px !important;
 }
 
 footer {
