@@ -12,6 +12,7 @@ public class SinhVien {
     private String email;
     private String hoten;
 
+    @Column(name = "cvhoso", columnDefinition = "LONGTEXT")
     private String cvhoso;
 
     public SinhVien() {}

@@ -11,11 +11,16 @@ public class GiangVien {
     private String email;
     private int HMHDDA ;
     private int HMHDCD ;
-	@Column(name = "CVNangLuc", columnDefinition = "LONGTEXT")
+
 	private String CVNangLuc;
 
-	public String getCVNangLuc() { return CVNangLuc; }
-	public void setCVNangLuc(String CVNangLuc) { this.CVNangLuc = CVNangLuc; }
+	public String getCVNangLuc() {
+		return CVNangLuc;
+	}
+
+	public void setCVNangLuc(String CVNangLuc) {
+		this.CVNangLuc = CVNangLuc;
+	}
 
 	private String hoten;
 	@Column(name="isadmin")
