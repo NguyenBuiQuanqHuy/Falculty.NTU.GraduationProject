@@ -12,6 +12,7 @@ public class GiangVien {
     private int HMHDDA ;
     private int HMHDCD ;
 
+    @Column(columnDefinition = "LONGTEXT")
 	private String cvnangluc;
 	
 
