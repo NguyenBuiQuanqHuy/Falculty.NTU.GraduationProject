@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
 	Optional<SinhVien> findByMssvAndMatkhau(String mssv, String matkhau);
+	Optional<SinhVien> findByMssv(String mssv);
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("DELETE FROM SinhVien s WHERE s.mssv = :id")
 	void deleteImmediatelyById(@Param("id") String id);

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/updateProfile.css}" />
+<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+<div th:fragment="content">
+  <div class="form-container">
+    <form class="profile-form">
+      <div class="form-left">
+        <label>Mã số</label>
+        <input type="text" name="maso" th:value="${session.maso}" readonly />
+        <label>Họ và tên</label>
+        <input type="text" name="username" th:value="${session.username}" readonly />
+        <label>Email</label>
+        <input type="text" name="email" th:value="${session.email}" readonly />
+        <label>Hạn mức đồ án</label>
+        <input type="text" name="hmhdda" th:value="${session.hmda}" readonly />
+        <label>Hạn mức chuyên đề</label>
+        <input type="text" name="hmhdcd" th:value="${session.hmcd}" readonly />
+        <div class="button-group">
+          <a th:href="@{/editProfile}" class="btn save">Sửa hồ sơ</a>
+        </div>
+      </div>
+      <div class="form-right">
+        <label>Hồ sơ năng lực</label>
+          <div class="cv-readonly" th:utext="${giangVien.CVNangLuc}">Nội dung hồ sơ năng lực ở đây...</div>
+      </div>
+    </form>
+  </div>
+</div>
+<div th:replace="~{layout/footer :: footer}"></div>
+</body>
+</html>

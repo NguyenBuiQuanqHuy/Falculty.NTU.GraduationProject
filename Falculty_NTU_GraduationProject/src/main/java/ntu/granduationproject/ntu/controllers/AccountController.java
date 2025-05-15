@@ -77,9 +77,6 @@ public class AccountController {
             giangVienService.AddGiangVien(gv);
     	}
 
-
-        
-        
         model.addAttribute("message", "Tạo tài khoản thành công!");
         return "views/truongkhoa/Home";
     }

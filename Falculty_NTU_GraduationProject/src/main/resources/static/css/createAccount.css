@@ -1,0 +1,96 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f9f9f9;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 80vh;
+    padding-top: 20px;
+}
+
+.form-container {
+    width: 500px;
+    background: white;
+    padding: 20px 30px;
+    border: 2px solid #861d22;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #861d22;
+    align-self: flex-start;
+    margin-left: 1%;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.form-group label {
+    width: 150px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #861d22;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #c0392b;
+    outline: none;
+}
+
+.role-options {
+}
+
+#giangVienFields {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.note {
+    color: #861d22;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-group button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.button-group .submit-btn {
+    background-color: #861d22;
+    color: white;
+}
+
+.button-group .reset-btn {
+    background-color: #ddd;
+    color: black;
+    margin-left: 12px;
+}

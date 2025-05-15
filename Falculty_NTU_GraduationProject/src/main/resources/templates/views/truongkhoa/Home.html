@@ -1,80 +1,55 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng nhập</title>
+    <meta charset="UTF-8">
+    <title>Trang chủ</title>
     <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
 </head>
 <body>
-<header class="header">
-    <div class="logo-section">
-        <img alt="" th:src="@{/img/banner2.png}">
-    </div>
-    <nav class="nav">
-        <div class ="nav1">
-            <a href="#">Trang chủ</a>
-            <a href="#">Trang thông tin</a>
-        </div>
+<div th:replace="~{layout/header :: header}"></div>
+<div th:fragment="content">
+    <div class="main">
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-icon">
+                    <img src="/icon/Duyet.png" alt="Duyệt đề tài">
+                </div>
+                <div class="menu-text">
+                    <p>Duyệt đề tài</p>
+                </div>
+            </div>
 
-        <div class="nav2">
-            <span>Xin chào <strong th:text="${session.username}"></strong></span>
-            <div class="dropdown">
-                <button class="dropbtn">Khác<span class="arrow">▶</span></button>
-                <div class="dropdown-content">
-                    <a href="#">Hồ sơ</a>
-                    <a href="#">Tập riêng tư</a>
-                    <a href="#">Cập nhật mật khẩu</a>
-                    <a href="#">Ngôn ngữ</a>
-                    <a th:href="@{/logout}" class="logout">Đăng xuất</a>
+            <div class="menu-item">
+                <div class="menu-icon">
+                    <img src="/icon/Danhsach.png" alt="Danh sách đề tài">
+                </div>
+                <div class="menu-text">
+                    <p>Danh sách đề tài</p>
+                </div>
+            </div>
+
+            <a href="/createaccount" style="text-decoration: none; color: inherit;">
+                <div class="menu-item">
+                    <div class="menu-icon">
+                        <img src="/icon/Captk.png" alt="Cấp tài khoản">
+                    </div>
+                    <div class="menu-text">
+                        <p>Cấp tài khoản</p>
+                    </div>
+                </div>
+            </a>
+
+            <div class="menu-item">
+                <div class="menu-icon">
+                    <img src="/icon/Dangki.png" alt="Đề tài được đề xuất">
+                </div>
+                <div class="menu-text">
+                    <p>Đề tài được đề xuất</p>
                 </div>
             </div>
         </div>
-    </nav>
-</header>
-<main class="main">
-    <div class="menu-grid">
-        <div class="menu-item">
-            <div class="menu-icon">
-                <img src="/icon/Duyet.png" alt="Duyệt đề tài">
-            </div>
-            <div class="menu-text">
-                <p>Duyệt đề tài</p>
-            </div>
-        </div>
-
-        <div class="menu-item">
-            <div class="menu-icon">
-                <img src="/icon/Danhsach.png" alt="Danh sách đề tài">
-            </div>
-            <div class="menu-text">
-                <p>Danh sách đề tài</p>
-            </div>
-        </div>
-
-     <a href="/createaccount" style="text-decoration: none; color: inherit;">
-    <div class="menu-item">
-        <div class="menu-icon">
-            <img src="/icon/Captk.png" alt="Cấp tài khoản">
-        </div>
-        <div class="menu-text">
-            <p>Cấp tài khoản</p>
-        </div>
     </div>
-</a>
-
-        <div class="menu-item">
-            <div class="menu-icon">
-                <img src="/icon/Dangki.png" alt="Đề tài được đề xuất">
-            </div>
-            <div class="menu-text">
-                <p>Đề tài được đề xuất</p>
-            </div>
-        </div>
-    </div>
-</main>
-<footer class="footer">
-    <p>Design in 2025 by Group 5</p>
-</footer>
+</div>
+<div th:replace="~{layout/footer :: footer}"></div>
 </body>
 </html>

@@ -1,11 +1,6 @@
 package ntu.granduationproject.ntu.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "sinhvien")
@@ -13,16 +8,15 @@ public class SinhVien {
 
   @Id
   private String mssv;
-
-
     private String matkhau;
     private String email;
     private String hoten;
 
-    // Constructor mặc định
+    @Column(name = "cvhoso", columnDefinition = "LONGTEXT")
+    private String cvhoso;
+
     public SinhVien() {}
 
-    // Constructor với tham số
     public SinhVien(String mssv, String matkhau, String email, String hoten) {
         super();
         this.mssv = mssv;
@@ -65,5 +59,11 @@ public class SinhVien {
         this.hoten = hoten;
     }
 
+    public String getCvhoso() {
+        return cvhoso;
+    }
 
+    public void setCvhoso(String cvhoso) {
+        this.cvhoso = cvhoso;
+    }
 }

@@ -41,6 +41,10 @@ public class LoginController {
             session.setAttribute("user", sv.get());
             session.setAttribute("role", "sinhvien");
             session.setAttribute("username", sv.get().getHoten());
+            if (sv.get().getEmail() != null) {
+                session.setAttribute("maso", sv.get().getMssv());
+                session.setAttribute("email",sv.get().getEmail());
+            }
             return "redirect:/sinhvien/home";
         }
 
@@ -50,6 +54,10 @@ public class LoginController {
             session.setAttribute("user", gv.get());
             session.setAttribute("role", gv.get().isIsAdmin() ? "admin" : "giangvien");
             session.setAttribute("username", gv.get().getHoten());
+            session.setAttribute("maso", gv.get().getMsgv());
+            session.setAttribute("email",gv.get().getEmail());
+            session.setAttribute("hmcd",gv.get().getHMHDCD());
+            session.setAttribute("hmda",gv.get().getHMHDDA());
 
             if (gv.get().isIsAdmin()) {
                 return "redirect:/truongkhoa/home";
@@ -74,6 +82,21 @@ public class LoginController {
     	return "views/ForgotPassword";
     }
     
-    
+    @GetMapping("/home")
+    public String Home(HttpSession session, Model model) {
+        String role = (String) session.getAttribute("role");
+        if ("sinhvien".equals(role)) {
+            return "views/sinhvien/Home";
+        }
+        else if ("giangvien".equals(role)) {
+            return "views/giangvien/Home";
+        }
+        else if ("admin".equals(role)) {
+            return "views/truongkhoa/Home";
+        }
+        else {
+            return "redirect:login";
+        }
+    }
 
 }

@@ -6,18 +6,27 @@ import jakarta.persistence.*;
 @Table(name = "giangvien")
 public class GiangVien {
     @Id
- 
     private String msgv;
     private String matkhau;
     private String email;
     private int HMHDDA ;
     private int HMHDCD ;
 
-    
-    
-    
-    public GiangVien () {}
+	private String CVNangLuc;
 
+	public String getCVNangLuc() {
+		return CVNangLuc;
+	}
+
+	public void setCVNangLuc(String CVNangLuc) {
+		this.CVNangLuc = CVNangLuc;
+	}
+
+	private String hoten;
+	@Column(name="isadmin")
+	private boolean isAdmin;
+
+	public GiangVien () {}
 
 	public GiangVien(String msgv, String matkhau, String email, int hMHDDA, int hMHDCD, String hoten,
 			boolean isAdmin) {
@@ -27,34 +36,25 @@ public class GiangVien {
 		this.email = email;
 		HMHDDA = hMHDDA;
 		HMHDCD = hMHDCD;
-	
 		this.hoten = hoten;
 		this.isAdmin = isAdmin;
 	}
-
-	
 
 	public int getHMHDDA() {
 		return HMHDDA;
 	}
 
-
 	public void setHMHDDA(int hMHDDA) {
 		HMHDDA = hMHDDA;
 	}
-
 
 	public int getHMHDCD() {
 		return HMHDCD;
 	}
 
-
 	public void setHMHDCD(int hMHDCD) {
 		HMHDCD = hMHDCD;
 	}
-
-
-
 
 	public String getEmail() {
 		return email;
@@ -63,10 +63,6 @@ public class GiangVien {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	private String hoten;
-	@Column(name="isadmin")
-	private boolean isAdmin;
 
 	public boolean isIsAdmin() {
 		return isAdmin;
@@ -95,4 +91,6 @@ public class GiangVien {
 	public String getHoten() { return hoten; }
 
 	public void setHoten(String hoten) { this.hoten = hoten; }
+
+	
 }

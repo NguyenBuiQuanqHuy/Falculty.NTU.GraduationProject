@@ -4,141 +4,108 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Tạo đề tài</title>
-
-    <!-- CSS -->
     <link rel="stylesheet" th:href="@{/css/project.css}" />
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-          
-       <!-- Thêm vào phần <head> -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-       
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <script src="https://cdn.tiny.cloud/1/2dywnvukp3hvbouvd54bf9lxkgr40hwpk46kpiy6ugiqsxcl/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
-
 <body>
-<header class="header">
-    <div class="logo-section">
-        <img alt="" th:src="@{/img/banner2.png}">
+    <div th:replace="~{layout/header :: header}"></div>
+    <div th:fragment="content">
+        <div class="main">
+            <div class="tab">
+                <span class="active">TẠO ĐỀ TÀI</span>
+                <span>ĐỀ TÀI CỦA TÔI</span>
+            </div>
+
+            <form class="form-box" method="post" th:action="@{/giangvien/taodetai}">
+                <div class="form-left">
+                    <div class="input-group-item">
+                        <label>Mã số đề tài</label>
+                        <input type="text" name="msdt" required />
+                        <span th:if="${error}" th:text="${error}" style="color: red;"></span>
+                    </div>
+
+                    <div class="input-group-item">
+                        <label>Tên đề tài</label>
+                        <input type="text" name="tendt" required />
+                    </div>
+
+                    <div class="input-group-item">
+                        <label>Mô tả ngắn</label>
+                        <input type="text" name="mota" />
+                    </div>
+
+                    <div class="input-group-item">
+                        <label>Giảng viên ra đề</label>
+                        <input type="text" name="msgv" th:value="${tenGiangVien}" readonly />
+                    </div>
+
+                    <div class="input-group-item">
+                        <label>Thể loại</label>
+                        <div class="radio-group">
+                            <label th:each="tl : ${theLoais}">
+                                <input type="radio" name="theloai" th:value="${tl.matheloai}" required />
+                                <span th:text="${tl.tentheloai}">Tên thể loại</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-item">
+                            <div>
+                                <label>Số sinh viên tối đa</label>
+                                <input type="number" name="sosvtoida" min="1" value="1" class="short-input" />
+                            </div>
+                            <div>
+                                <label>Dành cho khóa</label>
+                                <input type="number" name="khoasv" min="1" value="66" class="short-input" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group-item">
+                        <div >
+                            <label>Năm Học</label>
+                            <select class="session-group" name="namhoc" required>
+                                <option value="">-- Chọn năm học --</option>
+                                <option th:each="nh : ${namhocs}" th:value="${nh.manamhoc}" th:text="${nh.tennamhoc}"></option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Lĩnh vực</label>
+                            <select class="session-group2" name="linhvuc" required>
+                                <option value="">-- Chọn lĩnh vực --</option>
+                                <option th:each="lv : ${linhVucs}" th:value="${lv.malinhvuc}" th:text="${lv.tenlinhvuc}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button type="submit" class="btn-create">Tạo</button>
+                        <button type="reset" class="btn-reset">Làm mới</button>
+                    </div>
+
+                    <div th:if="${message != null}">
+                        <p th:text="${message}" th:style="${messageType == 'error' ? 'color: red;' : 'color: green;'}"></p>
+                    </div>
+                </div>
+
+                <div class="form-right">
+                    <label>Chi tiết đề tài</label>
+                    <textarea class="chiTiet" name="noidung" rows="6"
+                              style="width: 100%; resize: vertical;"></textarea>
+                </div>
+            </form>
+        </div>
     </div>
-    <nav class="nav">
-        <div class="nav1">
-            <a href="home">Trang chủ</a>
-            <a href="#">Trang thông tin</a>
-        </div>
-        <div class="nav2">
-            <span>Xin chào <strong th:text="${session.username}"></strong></span>
-            <div class="dropdown">
-                <button class="dropbtn">Khác<span class="arrow">▶</span></button>
-                <div class="dropdown-content">
-                    <a href="#">Hồ sơ</a>
-                    <a href="#">Tập riêng tư</a>
-                    <a href="#">Cập nhật mật khẩu</a>
-                    <a href="#">Ngôn ngữ <span class="arrow">▶</span></a>
-                    <a th:href="@{/logout}" class="logout">Đăng xuất</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-</header>
-
-<main>
-    <div class="tab">
-        <span class="active">TẠO ĐỀ TÀI</span>
-        <span>ĐỀ TÀI CỦA TÔI</span>
-    </div>
-
-    <form class="form-box" method="post" th:action="@{/giangvien/taodetai}">
-        <div class="form-left">
-            <div class="input-group-item">
-                <label>Mã số đề tài</label>
-                <input type="text" name="msdt" required />
-                <span th:if="${error}" th:text="${error}" style="color: red;"></span>
-            </div>
-
-            <div class="input-group-item">
-                <label>Tên đề tài</label>
-                <input type="text" name="tendt" required />
-            </div>
-
-            <div class="input-group-item">
-                <label>Mô tả đề tài</label>
-                <input type="text" name="mota" />
-            </div>
-
-            <div class="input-group-item">
-                <label>Giảng viên ra đề</label>
-                <input type="text" name="msgv" th:value="${tenGiangVien}" readonly />
-            </div>
-
-            <div class="input-group-item">
-                <label>Thể loại</label>
-                <div class="radio-group">
-                    <label th:each="tl : ${theLoais}">
-                        <input type="radio" name="theloai" th:value="${tl.matheloai}" required />
-                        <span th:text="${tl.tentheloai}">Tên thể loại</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <div class="input-group-item">
-                    <label>Số sinh viên tối đa</label>
-                    <input type="number" name="sosvtoida" min="1" value="1" class="short-input" />
-                </div>
-                <div class="input-group-item">
-                    <label>Dành cho khóa</label>
-                    <input type="number" name="khoasv" min="1" value="66" class="short-input" />
-                </div>
-            </div>
-
-            <div class="input-group-item">
-                <label>Năm Học</label>
-                <select name="namhoc" required>
-                    <option value="">-- Chọn năm học --</option>
-                    <option th:each="nh : ${namhocs}" th:value="${nh.manamhoc}" th:text="${nh.tennamhoc}"></option>
-                </select>
-            </div>
-
-            <div class="input-group-item">
-                <label>Lĩnh vực</label>
-                <select name="linhvuc" required>
-                    <option value="">-- Chọn lĩnh vực --</option>
-                    <option th:each="lv : ${linhVucs}" th:value="${lv.malinhvuc}" th:text="${lv.tenlinhvuc}"></option>
-                </select>
-            </div> 	
-            
-            <div class="actions">
-                <button type="submit" class="btn-create">Tạo</button>
-                <button type="reset" class="btn-reset">Làm mới</button>
-            </div>
-
-            <!-- Hiển thị thông báo lỗi hoặc thành công -->
-            <div th:if="${message != null}">
-                <p th:text="${message}" th:style="${messageType == 'error' ? 'color: red;' : 'color: green;'}"></p>
-            </div>
-        </div>
-
-        <div class="form-right">
-            <label>Chi tiết đề tài</label>
-            <textarea class="chiTiet" name="noidung" rows="6"
-                      style="width: 100%; resize: vertical;"></textarea>
-            <p class="note">*Sau khi tạo, đề tài sẽ được Khoa kiểm duyệt và chấp nhận</p>
-        </div>
-    </form>
-</main>
-
-<footer>
-    Design in 2025 by Group 5
-</footer>
-
-<!-- JS: TinyMCE -->
-<script src="https://cdn.tiny.cloud/1/2dywnvukp3hvbouvd54bf9lxkgr40hwpk46kpiy6ugiqsxcl/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-<!-- Đặt dưới cùng, trước </body> -->
+    <div th:replace="~{layout/footer :: footer}"></div>
+</body>
+</html>
 <script>
     tinymce.init({
         selector: 'textarea.chiTiet',
         language: 'vi',
-        height: 400,
+        height: 380,
         plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code fullscreen table emoticons autosave',
         toolbar: 'undo redo | styles | bold italic underline strikethrough | forecolor backcolor | fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | emoticons | fullscreen preview code',
         menubar: 'file edit view insert format tools table',
@@ -179,6 +146,3 @@
         tinymce.get('chiTiet').setContent('');  // Xóa nội dung TinyMCE (nếu cần)
     });
 </script>
-
-</body>
-</html>
