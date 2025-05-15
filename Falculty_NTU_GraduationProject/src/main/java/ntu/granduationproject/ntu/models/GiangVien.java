@@ -11,18 +11,20 @@ public class GiangVien {
     private String email;
     private int HMHDDA ;
     private int HMHDCD ;
+	@Column(name = "CVNangLuc", columnDefinition = "LONGTEXT")
+	private String CVNangLuc;
+
+	public String getCVNangLuc() { return CVNangLuc; }
+	public void setCVNangLuc(String CVNangLuc) { this.CVNangLuc = CVNangLuc; }
+
 	private String hoten;
 	@Column(name="isadmin")
 	private boolean isAdmin;
 
-	@Lob
-	@Column(name = "CVNangLuc", columnDefinition = "LONGTEXT")
-	private String cv;
+	public GiangVien () {}
 
-    public GiangVien () {}
-
-
-	public GiangVien(String msgv, String matkhau, String email, int hMHDDA, int hMHDCD, String sdt, String hoten) {
+	public GiangVien(String msgv, String matkhau, String email, int hMHDDA, int hMHDCD, String hoten,
+			boolean isAdmin) {
 		super();
 		this.msgv = msgv;
 		this.matkhau = matkhau;
@@ -30,27 +32,24 @@ public class GiangVien {
 		HMHDDA = hMHDDA;
 		HMHDCD = hMHDCD;
 		this.hoten = hoten;
+		this.isAdmin = isAdmin;
 	}
 
 	public int getHMHDDA() {
 		return HMHDDA;
 	}
 
-
 	public void setHMHDDA(int hMHDDA) {
 		HMHDDA = hMHDDA;
 	}
-
 
 	public int getHMHDCD() {
 		return HMHDCD;
 	}
 
-
 	public void setHMHDCD(int hMHDCD) {
 		HMHDCD = hMHDCD;
 	}
-
 
 	public String getEmail() {
 		return email;
@@ -88,11 +87,5 @@ public class GiangVien {
 
 	public void setHoten(String hoten) { this.hoten = hoten; }
 
-	public String getCv() {
-		return cv;
-	}
-
-	public void setCv(String cv) {
-		this.cv = cv;
-	}
+	
 }

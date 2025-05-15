@@ -12,9 +12,7 @@ public class SinhVien {
     private String email;
     private String hoten;
 
-    @Lob
-    @Column(name = "CVHoSo", columnDefinition = "LONGTEXT")
-    private String cv;
+    private String cvhoso;
 
     public SinhVien() {}
 
@@ -60,11 +58,11 @@ public class SinhVien {
         this.hoten = hoten;
     }
 
-    public String getCv() {
-        return cv;
+    public String getCvhoso() {
+        return cvhoso;
     }
 
-    public void setCv(String cv) {
-        this.cv = cv;
+    public void setCvhoso(String cvhoso) {
+        this.cvhoso = cvhoso;
     }
 }

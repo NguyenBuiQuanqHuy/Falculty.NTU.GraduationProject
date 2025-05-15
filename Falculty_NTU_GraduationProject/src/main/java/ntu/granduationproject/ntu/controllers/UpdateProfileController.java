@@ -34,7 +34,7 @@ public class UpdateProfileController {
                 Optional<SinhVien> svOpt = sinhVienRepository.findByMssv(maso);
                 if (svOpt.isPresent()) {
                     SinhVien sv = svOpt.get();
-                    session.setAttribute("cv", sv.getCv());
+                    session.setAttribute("cv",sv.getCvhoso());
                     model.addAttribute("sinhVien",sv);
                 }
             }
@@ -44,7 +44,7 @@ public class UpdateProfileController {
                 Optional<GiangVien> gvOpt = giangVienRepository.findByMsgv(maso);
                 if (gvOpt.isPresent()) {
                     GiangVien gv = gvOpt.get();
-                    session.setAttribute("cv", gv.getCv());
+                    session.setAttribute("cv", gv.getCVNangLuc());
                     model.addAttribute("giangVien",gv);
                 }
             }
@@ -86,7 +86,7 @@ public class UpdateProfileController {
             Optional<SinhVien> svOpt = sinhVienRepository.findByMssv(maso);
             if (svOpt.isPresent()) {
                 SinhVien sv = svOpt.get();
-                sv.setCv(cv);
+                sv.setCvhoso(cv);
                 sinhVienRepository.save(sv);
                 session.setAttribute("cv",cv);
             }
@@ -94,7 +94,7 @@ public class UpdateProfileController {
             Optional<GiangVien> gvOpt = giangVienRepository.findByMsgv(maso);
             if (gvOpt.isPresent()) {
                 GiangVien gv = gvOpt.get();
-                gv.setCv(cv);
+                gv.setCVNangLuc(cv);
                 giangVienRepository.save(gv);
                 session.setAttribute("cv",cv);
             }

@@ -54,9 +54,6 @@ h2 {
 }
 
 .role-options {
-    display: flex;
-    align-items: center;
-    gap: 20px;
 }
 
 #giangVienFields {
@@ -68,8 +65,9 @@ h2 {
 
 .note {
     color: #861d22;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
+    font-style: italic;
 }
 
 .button-group {

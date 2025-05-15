@@ -52,6 +52,7 @@ public class AccountController {
     public String createaccount (@RequestParam("maso") String maso,
                                  @RequestParam("hoten") String hoten,
                                  @RequestParam("email") String email,
+                                 @RequestParam(value = "isAdmin", required = false) Boolean isAdmin,
                                  @RequestParam("role") String role,
                                  @RequestParam(value = "hmhdda", required = false) Integer hmhdda,
                                  @RequestParam(value = "hmhdcd", required = false) Integer hmhdcd,
@@ -71,14 +72,11 @@ public class AccountController {
     		// Tránh null, fallback nếu không nhập
             int da = (hmhdda != null) ? hmhdda : 0;
             int cd = (hmhdcd != null) ? hmhdcd : 0;
-            GiangVien gv = new GiangVien(maso, hashedPassword, email , da,cd , "123456789" , hoten);
+            GiangVien gv = new GiangVien(maso, hashedPassword, email , da,cd , hoten,  isAdmin != null ? isAdmin : false);
             
             giangVienService.AddGiangVien(gv);
     	}
 
-
-        
-        
         model.addAttribute("message", "Tạo tài khoản thành công!");
         return "views/truongkhoa/Home";
     }
