@@ -17,7 +17,7 @@
     <form th:action="@{/updateProfile}" method="post" class="profile-form">
       <div class="form-right">
         <label>Hồ sơ năng lực</label>
-        <textarea id="cv" name="cv" class="cv" th:text="${giangVien.CVNangLuc}"></textarea>
+        <textarea id="cv" name="cv" class="cv" th:text="${giangVien.cvnangluc}"></textarea>
         <div class="button-group">
           <button type="submit" class="btn save">Lưu</button>
           <a th:href="@{/profile}" class="btn cancel">Hủy</a>

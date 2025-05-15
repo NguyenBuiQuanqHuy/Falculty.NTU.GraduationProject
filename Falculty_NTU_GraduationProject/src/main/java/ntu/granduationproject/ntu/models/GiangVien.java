@@ -12,14 +12,23 @@ public class GiangVien {
     private int HMHDDA ;
     private int HMHDCD ;
 
-	private String CVNangLuc;
+	private String cvnangluc;
+	
 
-	public String getCVNangLuc() {
-		return CVNangLuc;
+	public String getCvnangluc() {
+		return cvnangluc;
 	}
 
-	public void setCVNangLuc(String CVNangLuc) {
-		this.CVNangLuc = CVNangLuc;
+	public void setCvnangluc(String cvnangluc) {
+		this.cvnangluc = cvnangluc;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	private String hoten;
