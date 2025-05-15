@@ -23,6 +23,8 @@ public class Project {
 	@JoinColumn(name = "theloai",referencedColumnName = "matheloai")
 	private TheLoai theLoai;
 	private String mota;
+	
+	 @Column(columnDefinition = "LONGTEXT")
 	private String noidung;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
