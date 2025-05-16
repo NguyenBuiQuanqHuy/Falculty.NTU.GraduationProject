@@ -3,6 +3,8 @@ package ntu.granduationproject.ntu.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -12,7 +14,8 @@ import jakarta.persistence.Table;
 @Table(name = "detai")
 public class Project {
 	@Id
-	private String msdt;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int msdt;
 	private String tendt;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -42,10 +45,13 @@ public class Project {
 	private NamHoc namHoc;
 	private String trangthai;
 	private boolean cosvthuchien;
-	public String getMsdt() {
+	
+	
+	
+	public int getMsdt() {
 		return msdt;
 	}
-	public void setMsdt(String msdt) {
+	public void setMsdt(int msdt) {
 		this.msdt = msdt;
 	}
 	public String getTendt() {

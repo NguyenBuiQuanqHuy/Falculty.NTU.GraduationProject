@@ -138,6 +138,7 @@ body {
 
 main {
     padding: 20px;
+    padding-bottom: 70px; /* cho phép cuộn khi nội dung quá cao */
 }
 
 .tab {
@@ -159,29 +160,16 @@ main {
 
 .form-box {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     border: 1px solid #8c1c1c;
     border-radius: 5px;
     overflow: hidden;
-}
-
-.form-left,
-.form-right {
     padding: 20px;
-    display: flex;
-    flex-direction: column;
 }
 
-.form-left {
-    flex: 1 1 40%;
-}
 
-.form-right {
-    flex: 1 1 60%;
-    border-left: 1px solid #8c1c1c;
-}
 
-.form-right label {
+.form-box label {
     font-weight: bold;
     margin-bottom: 5px;
     text-align: left;
@@ -189,7 +177,7 @@ main {
 
 .input-group-item {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     padding-bottom: 20px;
 }
 
@@ -200,7 +188,6 @@ main {
 }
 
 .input-group-item input,
-.input-group-item select,
 .input-group-item textarea {
     flex: 1;
     padding: 6px;
@@ -212,7 +199,7 @@ main {
 
 input[type="number"].short-input {
     margin-left: 33px;
-    width: 6ch; /* khoảng vừa cho 3 số */
+    width: 6ch; 
 }
 
 .session-group {
@@ -227,7 +214,8 @@ input[type="number"].short-input {
 }
 textarea {
     resize: vertical;
-    min-height: 100px;
+    max-height: 300px;
+    height:300px;
 }
 
 .radio-group {
@@ -275,6 +263,7 @@ footer {
     text-align: center;
     padding: 10px;
     margin-top: 30px;
+    position: relative;
 }
 
 .note {

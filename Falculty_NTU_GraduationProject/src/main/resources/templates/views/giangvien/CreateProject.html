@@ -19,13 +19,6 @@
             </div>
 
             <form class="form-box" method="post" th:action="@{/giangvien/taodetai}">
-                <div class="form-left">
-                    <div class="input-group-item">
-                        <label>Mã số đề tài</label>
-                        <input type="text" name="msdt" required />
-                        <span th:if="${error}" th:text="${error}" style="color: red;"></span>
-                    </div>
-
                     <div class="input-group-item">
                         <label>Tên đề tài</label>
                         <input type="text" name="tendt" required />
@@ -65,13 +58,12 @@
                     </div>
 
                     <div class="input-group-item">
-                        <div >
-                            <label>Năm Học</label>
-                            <select class="session-group" name="namhoc" required>
-                                <option value="">-- Chọn năm học --</option>
-                                <option th:each="nh : ${namhocs}" th:value="${nh.manamhoc}" th:text="${nh.tennamhoc}"></option>
-                            </select>
-                        </div>
+                        <div class="input-group-item">
+						    <label for="namhoc">Năm học</label>
+							<input type="number" id="namhoc" name="namhoc" value="2025" min="2000" max="2100" readonly />
+
+						</div>
+
                         <div>
                             <label>Lĩnh vực</label>
                             <select class="session-group2" name="linhvuc" required>
@@ -80,21 +72,18 @@
                             </select>
                         </div>
                     </div>
-                    <div class="actions">
-                        <button type="submit" class="btn-create">Tạo</button>
-                        <button type="reset" class="btn-reset">Làm mới</button>
-                    </div>
+                   
 
-                    <div th:if="${message != null}">
-                        <p th:text="${message}" th:style="${messageType == 'error' ? 'color: red;' : 'color: green;'}"></p>
-                    </div>
-                </div>
 
-                <div class="form-right">
                     <label>Chi tiết đề tài</label>
                     <textarea class="chiTiet" name="noidung" rows="6"
                               style="width: 100%; resize: vertical;"></textarea>
-                </div>
+                    
+                    
+                     <div class="actions">
+                        <button type="submit" class="btn-create">Tạo</button>
+                        <button type="reset" class="btn-reset">Làm mới</button>
+                    </div>	
             </form>
         </div>
     </div>
@@ -105,7 +94,7 @@
     tinymce.init({
         selector: 'textarea.chiTiet',
         language: 'vi',
-        height: 380,
+        height: 800,
         plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code fullscreen table emoticons autosave',
         toolbar: 'undo redo | styles | bold italic underline strikethrough | forecolor backcolor | fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | emoticons | fullscreen preview code',
         menubar: 'file edit view insert format tools table',

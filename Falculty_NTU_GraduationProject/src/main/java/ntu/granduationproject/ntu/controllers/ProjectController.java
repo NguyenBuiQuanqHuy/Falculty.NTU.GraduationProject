@@ -1,5 +1,8 @@
 package ntu.granduationproject.ntu.controllers;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,25 +43,36 @@ public class ProjectController {
 
 	@GetMapping("/giangvien/taodetai")
 	public String showCreateProjectForm(ModelMap model, HttpSession session) {
-	    // Kiểm tra xem có người dùng giảng viên trong session không
 	    Object userObj = session.getAttribute("user");
 	    if (userObj != null && userObj instanceof GiangVien) {
 	        GiangVien giangVien = (GiangVien) userObj;
-	        // Gán tên giảng viên vào model
+
 	        model.addAttribute("tenGiangVien", giangVien.getHoten());
 	    }
+	    
+	    int currentYear = LocalDate.now().getYear();
 
-	    // Thêm các đối tượng cần thiết vào model
+	    Optional<NamHoc> existingNamHoc = namHocRepository.findByTennamhoc(currentYear);
+
+	    NamHoc namHoc;
+	    if (existingNamHoc.isPresent()) {
+	        namHoc = existingNamHoc.get();
+	    } else {
+	        namHoc = new NamHoc();
+	        namHoc.setTennamhoc(currentYear);
+	        namHocRepository.save(namHoc);
+	    }
+	    model.addAttribute("namHocHienTai", namHoc);
+
 	    model.addAttribute("linhVucs", linhVucRepository.findAll());
 	    model.addAttribute("theLoais", theLoaiRepository.findAll());
-	    model.addAttribute("namhocs", namHocRepository.findAll());
 	    model.addAttribute("giangviens", giangVienRepository.findAll());
-	    return "views/giangvien/createproject"; // trả về trang HTML tạo đề tài
+	    return "views/giangvien/createproject";
 	}
 
 
 	@PostMapping("/giangvien/taodetai")
-	public String taodetai(@RequestParam String msdt,
+	public String taodetai(
 	                       @RequestParam String tendt,
 	                       @RequestParam int theloai,
 	                       @RequestParam String mota,
@@ -70,37 +84,28 @@ public class ProjectController {
 	                       HttpSession session,
 	                       RedirectAttributes redirectAttributes,ModelMap model) {
 		
-		  // Kiểm tra mã số đề tài đã tồn tại chưa
-		if (projectService.findbyID(msdt).isPresent()) {
-		    redirectAttributes.addFlashAttribute("message", "Mã số đề tài đã tồn tại.");
-		    redirectAttributes.addFlashAttribute("messageType", "error");
-		    return "redirect:/giangvien/taodetai"; // ✅ Redirect luôn
-		}
 
-	    // Lấy giảng viên từ session
 	    Object userObj = session.getAttribute("user");
 	    if (userObj == null || !(userObj instanceof GiangVien)) {
 	        redirectAttributes.addFlashAttribute("error", "Bạn chưa đăng nhập.");
-	        return "redirect:/login"; // Nếu không phải giảng viên hoặc không đăng nhập, quay lại trang login
+	        return "redirect:/login"; 
 	    }
 	    GiangVien giangVien = (GiangVien) userObj;
 
-	    // Lấy các đối tượng từ cơ sở dữ liệu
 	    TheLoai loai = theLoaiRepository.findById(theloai).orElse(null);
 	    LinhVuc linhVucObj = linhVucRepository.findById(linhvuc).orElse(null);
-	    NamHoc namHoc = namHocRepository.findById(namhoc).orElse(null);
+	    NamHoc namHoc = namHocRepository.findByTennamhoc(namhoc).orElse(null);
 
-	    // Kiểm tra xem tất cả các đối tượng đã được lấy đúng chưa
+
+
 	    if (giangVien == null || loai == null || linhVucObj == null || namHoc == null) {
 	        redirectAttributes.addFlashAttribute("error", "Một trong các thông tin không hợp lệ.");
-	        return "redirect:/giangvien/taodetai"; // Quay lại trang tạo đề tài
+	        return "redirect:/giangvien/taodetai"; 
 	    }
 
-	    // Tạo đối tượng DeTai mới
 	    Project deTai = new Project();
-	    deTai.setMsdt(msdt);
 	    deTai.setTendt(tendt);
-	    deTai.setMsgv(giangVien);  // Sử dụng giảng viên từ session
+	    deTai.setMsgv(giangVien); 
 	    deTai.setTheLoai(loai);
 	    deTai.setMota(mota);
 	    deTai.setNoidung(noidung);
@@ -109,11 +114,10 @@ public class ProjectController {
 	    deTai.setKhoasv(khoasv);
 	    deTai.setNamHoc(namHoc);
 
-	    // Lưu đề tài vào cơ sở dữ liệu
 	    projectService.createProject(deTai);
 
 	    redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
-	    return "redirect:/giangvien/home"; // Quay lại trang tạo đề tài
+	    return "redirect:/giangvien/home";
 	}
 
 }

@@ -24,16 +24,9 @@ public class ProjectServiceImpl implements ProjectService{
 	public void createProject(Project project) {
 		// TODO Auto-generated method stub
 		 project.setTrangthai("chưa duyệt");
-		 project.setSosvtoida(0);
+		 project.setCosvthuchien(false);
 	     projectRepository.save(project);
 	     
 	}
-
-	@Override
-	public Optional<Project> findbyID(String msdt) {
-		// TODO Auto-generated method stub
-		return projectRepository.findById(msdt);
-	}
-	
 	
 }

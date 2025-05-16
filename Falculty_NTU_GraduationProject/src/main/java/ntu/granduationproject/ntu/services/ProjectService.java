@@ -8,5 +8,4 @@ import ntu.granduationproject.ntu.models.Project;
 @Service
 public interface ProjectService {
 	void createProject(Project project);
-	Optional<Project> findbyID(String msdt);
 }

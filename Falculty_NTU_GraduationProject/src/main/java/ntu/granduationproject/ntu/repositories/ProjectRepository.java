@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import ntu.granduationproject.ntu.models.Project;
 
-public interface ProjectRepository extends JpaRepository<Project, String>{
+public interface ProjectRepository extends JpaRepository<Project, Integer>{
 
 }

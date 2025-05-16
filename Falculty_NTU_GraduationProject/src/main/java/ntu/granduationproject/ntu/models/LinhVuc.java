@@ -3,6 +3,8 @@ package ntu.granduationproject.ntu.models;
 import org.hibernate.internal.util.StringHelper;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -10,6 +12,7 @@ import jakarta.persistence.Table;
 @Table(name = "linhvuc")
 public class LinhVuc {
 	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int malinhvuc;
 	private String tenlinhvuc;
 	public int getMalinhvuc() {
