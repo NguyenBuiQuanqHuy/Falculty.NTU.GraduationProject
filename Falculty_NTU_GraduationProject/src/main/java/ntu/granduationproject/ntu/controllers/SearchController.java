@@ -8,6 +8,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
+import ntu.granduationproject.ntu.models.GiangVien;
 import ntu.granduationproject.ntu.models.Project;
 import ntu.granduationproject.ntu.repositories.LinhVucRepository;
 import ntu.granduationproject.ntu.repositories.NamHocRepository;
@@ -33,11 +35,23 @@ public class SearchController {
 	        @RequestParam(required = false) Integer theloai,
 	        @RequestParam(required = false) Integer linhvuc,
 	        @RequestParam(required = false) String tendt,
+	        HttpSession session,
 	        ModelMap model) {
 
-	    List<Project> projects = projectService.searchProjects(namhoc, theloai, linhvuc, tendt);
-	    model.addAttribute("projects", projects);
+	    // Lấy giảng viên từ session
+	    Object userObj = session.getAttribute("user");
+	    if (!(userObj instanceof GiangVien)) {
+	        return "redirect:/login"; // hoặc hiển thị lỗi truy cập
+	    }
+	    GiangVien giangVien = (GiangVien) userObj;
 
+	    // Gọi hàm service có lọc theo giảng viên và trạng thái
+	    List<Project> projects = projectService.searchProjects(
+	        giangVien.getMsgv(), namhoc, theloai, linhvuc, tendt, "Đã duyệt"
+	    );
+
+	    // Gửi dữ liệu về view
+	    model.addAttribute("projects", projects);
 	    model.addAttribute("namhocs", namHocRepository.findAll());
 	    model.addAttribute("theloais", theLoaiRepository.findAll());
 	    model.addAttribute("linhvucs", linhVucRepository.findAll());
@@ -47,7 +61,8 @@ public class SearchController {
 	    model.addAttribute("selectedLinhVuc", linhvuc);
 	    model.addAttribute("tendt", tendt);
 
-	    return "views/giangvien/approvalSV"; // hoặc đường dẫn tương ứng với view
+	    return "views/giangvien/approvalSV";
 	}
+
 
 }

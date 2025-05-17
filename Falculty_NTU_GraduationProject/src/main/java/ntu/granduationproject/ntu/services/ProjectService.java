@@ -10,6 +10,6 @@ import ntu.granduationproject.ntu.models.Project;
 public interface ProjectService {
 	void createProject(Project project);
 	List<Project> getAllProjects();
-	public List<Project> searchProjects(Integer namhoc, Integer theloai, Integer linhvuc, String tendt);
+	public List<Project> searchProjects(String msgv, Integer namhoc, Integer theloai, Integer linhvuc, String tendt, String trangthai);
 
 }

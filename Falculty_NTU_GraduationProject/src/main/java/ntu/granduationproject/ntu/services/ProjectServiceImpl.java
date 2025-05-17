@@ -34,10 +34,12 @@ public class ProjectServiceImpl implements ProjectService{
 		// TODO Auto-generated method stub
 		return projectRepository.findAll();
 	}
+	
 	@Override
-	public List<Project> searchProjects(Integer namhoc, Integer theloai, Integer linhvuc, String tendt) {
+	public List<Project> searchProjects(String msgv, Integer namhoc, Integer theloai, Integer linhvuc, String tendt,
+			String trangthai) {
 		// TODO Auto-generated method stub
-		return projectRepository.searchProjects(namhoc, theloai, linhvuc, tendt);
+		return projectRepository.searchProjects(msgv, namhoc, theloai, linhvuc, tendt, trangthai);
 	}
 	
 }
