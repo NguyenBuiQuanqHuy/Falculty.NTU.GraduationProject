@@ -15,10 +15,10 @@ public class ApprvalSVController {
 	@Autowired
 	ProjectService projectService;
 	
-	@GetMapping("/danhsachdetai")
-	private String danhsachdetai(ModelMap model) {
-		List<Project> projects=projectService.getAllProjects();
-		model.addAttribute("projects", projects);
-		return "views/giangvien/approvalSV";
-	}
+//	@GetMapping("/danhsachdetai")
+//	private String danhsachdetai(ModelMap model) {
+//		List<Project> projects=projectService.getAllProjects();
+//		model.addAttribute("projects", projects);
+//		return "views/giangvien/approvalSV";
+//	}
 }

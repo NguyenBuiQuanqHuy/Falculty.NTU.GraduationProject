@@ -1,4 +1,4 @@
- package ntu.granduationproject.ntu.controllers;
+package ntu.granduationproject.ntu.controllers;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -44,108 +44,71 @@ public class ProjectController {
 
 	@GetMapping("/	taodetai")
 	public String showCreateProjectForm(ModelMap model, HttpSession session) {
-	    Object userObj = session.getAttribute("user");
-	    if (userObj != null && userObj instanceof GiangVien) {
-	        GiangVien giangVien = (GiangVien) userObj;
+		Object userObj = session.getAttribute("user");
+		if (userObj != null && userObj instanceof GiangVien) {
+			GiangVien giangVien = (GiangVien) userObj;
 
-	        model.addAttribute("tenGiangVien", giangVien.getHoten());
-	    }
-	    
-	    int currentYear = LocalDate.now().getYear();
+			model.addAttribute("tenGiangVien", giangVien.getHoten());
+		}
 
-	    Optional<NamHoc> existingNamHoc = namHocRepository.findByTennamhoc(currentYear);
+		int currentYear = LocalDate.now().getYear();
 
-	    NamHoc namHoc;
-	    if (existingNamHoc.isPresent()) {
-	        namHoc = existingNamHoc.get();
-	    } else {
-	        namHoc = new NamHoc();
-	        namHoc.setTennamhoc(currentYear);
-	        namHocRepository.save(namHoc);
-	    }
-	    model.addAttribute("namHocHienTai", namHoc);
+		Optional<NamHoc> existingNamHoc = namHocRepository.findByTennamhoc(currentYear);
 
-	    model.addAttribute("linhVucs", linhVucRepository.findAll());
-	    model.addAttribute("theLoais", theLoaiRepository.findAll());
-	    model.addAttribute("giangviens", giangVienRepository.findAll());
-	    return "views/giangvien/createproject";
+		NamHoc namHoc;
+		if (existingNamHoc.isPresent()) {
+			namHoc = existingNamHoc.get();
+		} else {
+			namHoc = new NamHoc();
+			namHoc.setTennamhoc(currentYear);
+			namHocRepository.save(namHoc);
+		}
+		model.addAttribute("namHocHienTai", namHoc);
+
+		model.addAttribute("linhVucs", linhVucRepository.findAll());
+		model.addAttribute("theLoais", theLoaiRepository.findAll());
+		model.addAttribute("giangviens", giangVienRepository.findAll());
+		return "views/giangvien/createproject";
 	}
-
 
 	@PostMapping("/taodetai")
-	public String taodetai(
-	                       @RequestParam String tendt,
-	                       @RequestParam int theloai,
-	                       @RequestParam String mota,
-	                       @RequestParam String noidung,
-	                       @RequestParam int linhvuc,
-	                       @RequestParam int sosvtoida,
-	                       @RequestParam int khoasv,
-	                       @RequestParam int namhoc,
-	                       HttpSession session,
-	                       RedirectAttributes redirectAttributes,ModelMap model) {
-		
+	public String taodetai(@RequestParam String tendt, @RequestParam int theloai, @RequestParam String mota,
+			@RequestParam String noidung, @RequestParam int linhvuc, @RequestParam int sosvtoida,
+			@RequestParam int khoasv, @RequestParam int namhoc, HttpSession session,
+			RedirectAttributes redirectAttributes, ModelMap model) {
 
-	    Object userObj = session.getAttribute("user");
-	    if (userObj == null || !(userObj instanceof GiangVien)) {
-	        redirectAttributes.addFlashAttribute("error", "Bạn chưa đăng nhập.");
-	        return "redirect:/login"; 
-	    }
-	    GiangVien giangVien = (GiangVien) userObj;
+		Object userObj = session.getAttribute("user");
+		if (userObj == null || !(userObj instanceof GiangVien)) {
+			redirectAttributes.addFlashAttribute("error", "Bạn chưa đăng nhập.");
+			return "redirect:/login";
+		}
+		GiangVien giangVien = (GiangVien) userObj;
 
-	    TheLoai loai = theLoaiRepository.findById(theloai).orElse(null);
-	    LinhVuc linhVucObj = linhVucRepository.findById(linhvuc).orElse(null);
-	    NamHoc namHoc = namHocRepository.findByTennamhoc(namhoc).orElse(null);
+		TheLoai loai = theLoaiRepository.findById(theloai).orElse(null);
+		LinhVuc linhVucObj = linhVucRepository.findById(linhvuc).orElse(null);
+		NamHoc namHoc = namHocRepository.findByTennamhoc(namhoc).orElse(null);
 
+		if (giangVien == null || loai == null || linhVucObj == null || namHoc == null) {
+			redirectAttributes.addFlashAttribute("error", "Một trong các thông tin không hợp lệ.");
+			return "redirect:/giangvien/taodetai";
+		}
 
+		Project deTai = new Project();
+		deTai.setTendt(tendt);
+		deTai.setMsgv(giangVien);
+		deTai.setTheLoai(loai);
+		deTai.setMota(mota);
+		deTai.setNoidung(noidung);
+		deTai.setLinhVuc(linhVucObj);
+		deTai.setSosvtoida(sosvtoida);
+		deTai.setKhoasv(khoasv);
+		deTai.setNamHoc(namHoc);
 
-	    if (giangVien == null || loai == null || linhVucObj == null || namHoc == null) {
-	        redirectAttributes.addFlashAttribute("error", "Một trong các thông tin không hợp lệ.");
-	        return "redirect:/giangvien/taodetai"; 
-	    }
+		projectService.createProject(deTai);
 
-	    Project deTai = new Project();
-	    deTai.setTendt(tendt);
-	    deTai.setMsgv(giangVien); 
-	    deTai.setTheLoai(loai);
-	    deTai.setMota(mota);
-	    deTai.setNoidung(noidung);
-	    deTai.setLinhVuc(linhVucObj);
-	    deTai.setSosvtoida(sosvtoida);
-	    deTai.setKhoasv(khoasv);
-	    deTai.setNamHoc(namHoc);
-
-	    projectService.createProject(deTai);
-
-	    redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
-	    return "redirect:/giangvien/home";
+		redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
+		return "redirect:/giangvien/home";
 	}
-	
-	
-	/*
-	 * @GetMapping("/danhsachdetai") public String danhsachdetai(
-	 * 
-	 * @RequestParam(required = false) int namhoc,
-	 * 
-	 * @RequestParam(required = false) String theloai,
-	 * 
-	 * @RequestParam(required = false) String linhvuc,
-	 * 
-	 * @RequestParam(required = false) String tendt, ModelMap model) {
-	 * 
-	 * model.addAttribute("linhVucs", linhVucRepository.findAll());
-	 * model.addAttribute("theLoais", theLoaiRepository.findAll());
-	 * model.addAttribute("giangviens", giangVienRepository.findAll());
-	 * 
-	 * List<Project> projects = projectService.searchProjects(namhoc, theloai,
-	 * linhvuc, tendt); model.addAttribute("projects", projects);
-	 * 
-	 * model.addAttribute("selectedNamHoc", namhoc);
-	 * model.addAttribute("selectedTheLoai", theloai);
-	 * model.addAttribute("selectedLinhVuc", linhvuc); model.addAttribute("tendt",
-	 * tendt);
-	 * 
-	 * return "views/giangvien/approvalSV"; }
-	 */
+	 
 
 }

@@ -46,25 +46,24 @@
 }
 
 .search-btn {
-    grid-column: 3;
-    grid-row: 1 / span 2;
-    height: 100%;
-    padding: 10px 16px;
-    background-color: #8B0000;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-
-.search-btn {
+	height: 100%;
     padding: 6px 12px;
     background-color: #8B0000;
     color: white;
     border: none;
     cursor: pointer;
     border-radius: 4px;
+    width: 100px;
+}
+
+.reset-btn{
+	height: 100%;
+    padding: 10px 16px;
+    background-color: 	#cccccc;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 table {
