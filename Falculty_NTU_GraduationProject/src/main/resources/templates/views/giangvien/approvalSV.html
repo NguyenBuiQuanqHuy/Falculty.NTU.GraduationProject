@@ -2,7 +2,7 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Danh sách đề tài</title>
+    <title>Đề tài của tôi</title>
     <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
     <link rel="stylesheet" th:href="@{/css/listDT.css}" />
 </head>
@@ -10,7 +10,7 @@
     <div th:replace="~{layout/header :: header}"></div>
     <div th:fragment="content">
         <div class="main">
-            <h2>DANH SÁCH ĐỀ TÀI</h2>
+            <h2>DANH SÁCH ĐỀ TÀI CỦA TÔI</h2>
             <form th:action="@{/danhsachdetai}" method="get" class="filters">
     <select name="namhoc">
         <option value="">-- Năm học --</option>
