@@ -1,5 +1,6 @@
 package ntu.granduationproject.ntu.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class ProjectServiceImpl implements ProjectService{
 		 project.setCosvthuchien(false);
 	     projectRepository.save(project);
 	     
+	}
+	@Override
+	public List<Project> getAllProjects() {
+		// TODO Auto-generated method stub
+		return projectRepository.findAll();
 	}
 	
 }

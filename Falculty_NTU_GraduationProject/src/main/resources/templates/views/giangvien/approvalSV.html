@@ -11,13 +11,39 @@
     <div th:fragment="content">
         <div class="main">
             <h2>DANH SÁCH ĐỀ TÀI</h2>
-            <div class="filters">
-                <select><option>Năm học</option></select>
-                <select><option>Loại</option></select>
-                <select><option>Lĩnh vực</option></select>
-                <input type="text" placeholder="Nhập tên đề tài">
-                <button class="search-btn">Tìm kiếm</button>
-            </div>
+            <form th:action="@{/danhsachdetai}" method="get" class="filters">
+    <select name="namhoc">
+        <option value="">-- Năm học --</option>
+        <option th:each="nh : ${namhocs}" 
+                th:value="${nh.manamhoc}" 
+                th:text="${nh.tennamhoc}"
+                th:selected="${nh.manamhoc == selectedNamHoc}">
+        </option>
+    </select>
+
+    <select name="theloai">
+        <option value="">-- Loại --</option>
+        <option th:each="tl : ${theloais}" 
+                th:value="${tl.matheloai}" 
+                th:text="${tl.tentheloai}"
+                th:selected="${tl.matheloai == selectedTheLoai}">
+        </option>
+    </select>
+
+    <select name="linhvuc">
+        <option value="">-- Lĩnh vực --</option>
+        <option th:each="lv : ${linhvucs}" 
+                th:value="${lv.malinhvuc}" 
+                th:text="${lv.tenlinhvuc}"
+                th:selected="${lv.malinhvuc == selectedLinhVuc}">
+        </option>
+    </select>
+
+    <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
+
+    <button type="submit" class="search-btn">Tìm kiếm</button>
+</form>
+
             
             <!-- Thêm đoạn này để hiển thị hạn mức -->
     <div class="quota-summary">
@@ -38,91 +64,28 @@
                         <th>Duyệt sinh viên</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>DT001</td>
-                        <td>ABC</td>
-                        <td>Đồ án</td>
-                        <td>Mạng máy tính</td>
-                        <td><a href="#">Link</a></td>
-                        <td><span class="reg-count red">0</span> / <span class="reg-count green">2</span></td>
-                        <td><button class="approve-btn">Duyệt</button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>DT002</td>
-                        <td>DEF</td>
-                        <td>Chuyên đề</td>
-                        <td>Trí tuệ nhân tạo</td>
-                        <td><a href="#">Link</a></td>
-                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
-                        <td><button class="approve-btn">Duyệt</button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>DT002</td>
-                        <td>DEF</td>
-                        <td>Chuyên đề</td>
-                        <td>Trí tuệ nhân tạo</td>
-                        <td><a href="#">Link</a></td>
-                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
-                        <td><button class="approve-btn">Duyệt</button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>DT002</td>
-                        <td>DEF</td>
-                        <td>Chuyên đề</td>
-                        <td>Trí tuệ nhân tạo</td>
-                        <td><a href="#">Link</a></td>
-                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
-                        <td><button class="approve-btn">Duyệt</button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>DT002</td>
-                        <td>DEF</td>
-                        <td>Chuyên đề</td>
-                        <td>Trí tuệ nhân tạo</td>
-                        <td><a href="#">Link</a></td>
-                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
-                        <td><button class="approve-btn">Duyệt</button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>DT002</td>
-                        <td>DEF</td>
-                        <td>Chuyên đề</td>
-                        <td>Trí tuệ nhân tạo</td>
-                        <td><a href="#">Link</a></td>
-                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
-                        <td><button class="approve-btn">Duyệt</button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>DT002</td>
-                        <td>DEF</td>
-                        <td>Chuyên đề</td>
-                        <td>Trí tuệ nhân tạo</td>
-                        <td><a href="#">Link</a></td>
-                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
-                        <td><button class="approve-btn">Duyệt</button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>DT002</td>
-                        <td>DEF</td>
-                        <td>Chuyên đề</td>
-                        <td>Trí tuệ nhân tạo</td>
-                        <td><a href="#">Link</a></td>
-                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
-                        <td><button class="approve-btn">Duyệt</button></td>
-                    </tr>
-                    <tr><td colspan="8">&nbsp;</td></tr>
-                    <tr><td colspan="8">&nbsp;</td></tr>
-                    <tr><td colspan="8">&nbsp;</td></tr>
-                </tbody>
+               <tbody>
+			    <tr th:each="project, stat : ${projects}">
+			        <td th:text="${stat.index + 1}">1</td>
+			        <td th:text="${project.tendt}">Tên đề tài</td>
+			        <td th:text="${project.theLoai.tentheloai}">Loại</td>
+			        <td th:text="${project.linhVuc.tenlinhvuc}">Lĩnh vực</td>
+			        <td th:text="${project.sosvtoida}">Tối đa SV</td>
+			        <td>
+			            <a th:href="@{'/projects/' + ${project.msdt}}">Chi tiết</a>
+			        </td>
+			        <td>
+			            <span class="reg-count red">0</span> / 
+			            <span class="reg-count green" th:text="${project.sosvtoida}">2</span>
+			        </td>
+			        <td>
+			            <button class="approve-btn" th:onclick="'location.href=\'/projects/approve/' + ${project.msdt} + '\''">
+			                Duyệt
+			            </button>
+			        </td>
+			    </tr>	
+			</tbody>
+
             </table>
 
             <div class="pagination">

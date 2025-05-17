@@ -1,6 +1,7 @@
-package ntu.granduationproject.ntu.controllers;
+ package ntu.granduationproject.ntu.controllers;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class ProjectController {
 	@Autowired
 	NamHocRepository namHocRepository;
 
-	@GetMapping("/giangvien/taodetai")
+	@GetMapping("/	taodetai")
 	public String showCreateProjectForm(ModelMap model, HttpSession session) {
 	    Object userObj = session.getAttribute("user");
 	    if (userObj != null && userObj instanceof GiangVien) {
@@ -71,7 +72,7 @@ public class ProjectController {
 	}
 
 
-	@PostMapping("/giangvien/taodetai")
+	@PostMapping("/taodetai")
 	public String taodetai(
 	                       @RequestParam String tendt,
 	                       @RequestParam int theloai,
@@ -119,5 +120,32 @@ public class ProjectController {
 	    redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
 	    return "redirect:/giangvien/home";
 	}
+	
+	
+	/*
+	 * @GetMapping("/danhsachdetai") public String danhsachdetai(
+	 * 
+	 * @RequestParam(required = false) int namhoc,
+	 * 
+	 * @RequestParam(required = false) String theloai,
+	 * 
+	 * @RequestParam(required = false) String linhvuc,
+	 * 
+	 * @RequestParam(required = false) String tendt, ModelMap model) {
+	 * 
+	 * model.addAttribute("linhVucs", linhVucRepository.findAll());
+	 * model.addAttribute("theLoais", theLoaiRepository.findAll());
+	 * model.addAttribute("giangviens", giangVienRepository.findAll());
+	 * 
+	 * List<Project> projects = projectService.searchProjects(namhoc, theloai,
+	 * linhvuc, tendt); model.addAttribute("projects", projects);
+	 * 
+	 * model.addAttribute("selectedNamHoc", namhoc);
+	 * model.addAttribute("selectedTheLoai", theloai);
+	 * model.addAttribute("selectedLinhVuc", linhvuc); model.addAttribute("tendt",
+	 * tendt);
+	 * 
+	 * return "views/giangvien/approvalSV"; }
+	 */
 
 }
