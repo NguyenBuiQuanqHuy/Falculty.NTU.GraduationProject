@@ -13,7 +13,6 @@ import ntu.granduationproject.ntu.models.GiangVien;
 import ntu.granduationproject.ntu.models.Project;
 import ntu.granduationproject.ntu.repositories.LinhVucRepository;
 import ntu.granduationproject.ntu.repositories.NamHocRepository;
-import ntu.granduationproject.ntu.repositories.ProjectRepository;
 import ntu.granduationproject.ntu.repositories.TheLoaiRepository;
 import ntu.granduationproject.ntu.services.ProjectService;
 
@@ -41,11 +40,10 @@ public class SearchController {
 	    // Lấy giảng viên từ session
 	    Object userObj = session.getAttribute("user");
 	    if (!(userObj instanceof GiangVien)) {
-	        return "redirect:/login"; // hoặc hiển thị lỗi truy cập
+	        return "redirect:/login";
 	    }
 	    GiangVien giangVien = (GiangVien) userObj;
 
-	    // Gọi hàm service có lọc theo giảng viên và trạng thái
 	    List<Project> projects = projectService.searchProjects(
 	        giangVien.getMsgv(), namhoc, theloai, linhvuc, tendt, "Đã duyệt"
 	    );
