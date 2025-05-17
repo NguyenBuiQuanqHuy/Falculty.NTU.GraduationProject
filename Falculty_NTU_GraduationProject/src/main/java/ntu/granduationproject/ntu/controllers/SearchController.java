@@ -59,7 +59,7 @@ public class SearchController {
 	    model.addAttribute("selectedLinhVuc", linhvuc);
 	    model.addAttribute("tendt", tendt);
 
-	    return "views/giangvien/approvalSV";
+	    return "views/giangvien/myproject";
 	}
 
 
