@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import ntu.granduationproject.ntu.models.Project;
 
 public interface ProjectRepository extends JpaRepository<Project, Integer>{
-	
+	// tìm kiếm và hiển thị theo giảng viên đăng nhập avf trạng thái
 	@Query("SELECT p FROM Project p WHERE " +
 		       "(:namhoc IS NULL OR p.namHoc.tennamhoc = :namhoc) AND " +
 		       "(:theloai IS NULL OR p.theLoai.id = :theloai) AND " +
@@ -24,5 +24,18 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>{
 		        @Param("linhvuc") Integer linhvuc,
 		        @Param("tendt") String tendt,
 		        @Param("trangthai") String trangthai);
-
+		
+	
+	// Tìm kiếm hiển thị tất ca
+	@Query("SELECT p FROM Project p " +
+		       "WHERE (:namhoc IS NULL OR p.namHoc.tennamhoc = :namhoc) " +
+		       "AND (:theloai IS NULL OR p.theLoai.id = :theloai) " +
+		       "AND (:linhvuc IS NULL OR p.linhVuc.id = :linhvuc) " +
+		       "AND (:tendt IS NULL OR LOWER(p.tendt) LIKE LOWER(CONCAT('%', :tendt, '%'))) " +
+		       "AND (:tengiangvien IS NULL OR LOWER(p.msgv.hoten) LIKE LOWER(CONCAT('%', :tengiangvien, '%')))")
+		List<Project> searchProjects(@Param("namhoc") Integer namhoc,
+		                             @Param("theloai") Integer theloai,
+		                             @Param("linhvuc") Integer linhvuc,
+		                             @Param("tendt") String tendt,
+		                             @Param("tengiangvien") String tengiangvien);
 }
