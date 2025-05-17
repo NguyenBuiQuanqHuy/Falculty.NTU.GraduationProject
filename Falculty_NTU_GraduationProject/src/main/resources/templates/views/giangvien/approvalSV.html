@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách đề tài</title>
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+    <link rel="stylesheet" th:href="@{/css/listDT.css}" />
+</head>
+<body>
+    <div th:replace="~{layout/header :: header}"></div>
+    <div th:fragment="content">
+        <div class="main">
+            <h2>DANH SÁCH ĐỀ TÀI</h2>
+            <div class="filters">
+                <select><option>Năm học</option></select>
+                <select><option>Loại</option></select>
+                <select><option>Lĩnh vực</option></select>
+                <input type="text" placeholder="Nhập tên đề tài">
+                <button class="search-btn">Tìm kiếm</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên đề tài</th>
+                        <th>Loại</th>
+                        <th>Lĩnh vực</th>
+                        <th>Tối đa SV</th>
+                        <th>Chi tiết</th>
+                        <th>Đã đăng ký</th>
+                        <th>Duyệt sinh viên</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>DT001</td>
+                        <td>ABC</td>
+                        <td>Đồ án</td>
+                        <td>Mạng máy tính</td>
+                        <td><a href="#">Link</a></td>
+                        <td><span class="reg-count red">0</span> / <span class="reg-count green">2</span></td>
+                        <td><button class="approve-btn">Duyệt</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>DT002</td>
+                        <td>DEF</td>
+                        <td>Chuyên đề</td>
+                        <td>Trí tuệ nhân tạo</td>
+                        <td><a href="#">Link</a></td>
+                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
+                        <td><button class="approve-btn">Duyệt</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>DT002</td>
+                        <td>DEF</td>
+                        <td>Chuyên đề</td>
+                        <td>Trí tuệ nhân tạo</td>
+                        <td><a href="#">Link</a></td>
+                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
+                        <td><button class="approve-btn">Duyệt</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>DT002</td>
+                        <td>DEF</td>
+                        <td>Chuyên đề</td>
+                        <td>Trí tuệ nhân tạo</td>
+                        <td><a href="#">Link</a></td>
+                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
+                        <td><button class="approve-btn">Duyệt</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>DT002</td>
+                        <td>DEF</td>
+                        <td>Chuyên đề</td>
+                        <td>Trí tuệ nhân tạo</td>
+                        <td><a href="#">Link</a></td>
+                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
+                        <td><button class="approve-btn">Duyệt</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>DT002</td>
+                        <td>DEF</td>
+                        <td>Chuyên đề</td>
+                        <td>Trí tuệ nhân tạo</td>
+                        <td><a href="#">Link</a></td>
+                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
+                        <td><button class="approve-btn">Duyệt</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>DT002</td>
+                        <td>DEF</td>
+                        <td>Chuyên đề</td>
+                        <td>Trí tuệ nhân tạo</td>
+                        <td><a href="#">Link</a></td>
+                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
+                        <td><button class="approve-btn">Duyệt</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>DT002</td>
+                        <td>DEF</td>
+                        <td>Chuyên đề</td>
+                        <td>Trí tuệ nhân tạo</td>
+                        <td><a href="#">Link</a></td>
+                        <td><span class="reg-count red">8</span> / <span class="reg-count red">12</span> / <span class="reg-count green">5</span></td>
+                        <td><button class="approve-btn">Duyệt</button></td>
+                    </tr>
+                    <tr><td colspan="8">&nbsp;</td></tr>
+                    <tr><td colspan="8">&nbsp;</td></tr>
+                    <tr><td colspan="8">&nbsp;</td></tr>
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <span><strong>1</strong> &gt; 2 &gt; 3 .... &gt; 50</span>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{layout/footer :: footer}"></div>
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const rowsPerPage = 5;
+        const table = document.querySelector("table tbody");
+        const rows = table.querySelectorAll("tr");
+        const pagination = document.querySelector(".pagination");
+
+        let currentPage = 1;
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+        function showPage(page) {
+            currentPage = page;
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+
+            rows.forEach((row, index) => {
+                row.style.display = (index >= start && index < end) ? "" : "none";
+            });
+
+            updatePagination();
+        }
+
+        function updatePagination() {
+            pagination.innerHTML = "";
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                btn.className = (i === currentPage) ? "active" : "";
+                btn.style.margin = "0 5px";
+                btn.style.padding = "5px 10px";
+                btn.style.cursor = "pointer";
+
+                btn.addEventListener("click", () => showPage(i));
+                pagination.appendChild(btn);
+            }
+        }
+
+        showPage(currentPage);
+    });
+</script>
+
+</html>
