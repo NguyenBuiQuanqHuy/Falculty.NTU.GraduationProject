@@ -128,3 +128,13 @@ table th {
 .quota-summary p {
     margin: 5px 0;
 }
+
+.view-link {
+    color: blue;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.view-link:hover {
+    color: darkblue;
+}

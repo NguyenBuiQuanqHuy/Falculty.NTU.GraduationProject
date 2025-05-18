@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import ntu.granduationproject.ntu.models.Project;
-
+@Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer>{
 	@Query("SELECT p FROM Project p WHERE " +
 		       "(:namhoc IS NULL OR p.namHoc.tennamhoc = :namhoc) AND " +

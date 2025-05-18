@@ -47,10 +47,10 @@
 
             
             <!-- Thêm đoạn này để hiển thị hạn mức -->
-    <div class="quota-summary">
-        <p>Hạn mức Đồ án: <strong>0 / 4</strong></p>
-        <p>Hạn mức Chuyên đề: <strong>0 / 12</strong></p>
-    </div>
+    	<div class="quota-summary">
+      		<p>Hạn mức Đồ án: <strong>0 / [[${hanMucDA}]]</strong></p>
+			<p>Hạn mức Chuyên đề: <strong>0 / [[${hanMucCD}]]</strong></p>
+    	</div>
 
             <table>
                 <thead>
@@ -61,7 +61,7 @@
                         <th>Lĩnh vực</th>
                         <th>Năm học</th>
                         <th>Tối đa SV</th>
-                        <th>Chi tiết</th>
+                        <th>Nội dung</th>
                         <th>Đã đăng ký</th>
                         <th>Duyệt sinh viên</th>
                     </tr>
@@ -75,7 +75,7 @@
 			        <td th:text="${project.namHoc.tennamhoc}">Năm học</td>
 			        <td th:text="${project.sosvtoida}">Tối đa SV</td>
 			        <td>
-			            <a th:href="@{'/projects/' + ${project.msdt}}">Chi tiết</a>
+			            <a th:href="@{'/projects/' + ${project.msdt}}" class="view-link">Xem</a>
 			        </td>
 			        <td>
 			            <span class="reg-count red">0</span> / 
