@@ -59,6 +59,7 @@
                         <th>Tên đề tài</th>
                         <th>Loại</th>
                         <th>Lĩnh vực</th>
+                        <th>Năm học</th>
                         <th>Tối đa SV</th>
                         <th>Chi tiết</th>
                         <th>Đã đăng ký</th>
@@ -71,6 +72,7 @@
 			        <td th:text="${project.tendt}">Tên đề tài</td>
 			        <td th:text="${project.theLoai.tentheloai}">Loại</td>
 			        <td th:text="${project.linhVuc.tenlinhvuc}">Lĩnh vực</td>
+			        <td th:text="${project.namHoc.tennamhoc}">Năm học</td>
 			        <td th:text="${project.sosvtoida}">Tối đa SV</td>
 			        <td>
 			            <a th:href="@{'/projects/' + ${project.msdt}}">Chi tiết</a>
