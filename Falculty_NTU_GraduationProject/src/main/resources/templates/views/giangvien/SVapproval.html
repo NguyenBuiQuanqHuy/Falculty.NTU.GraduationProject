@@ -10,7 +10,7 @@
     <div th:replace="~{layout/header :: header}"></div>
     <div th:fragment="content">
         <div class="main">
-            <h2>DANH SÁCH ĐỀ TÀI CỦA TÔI</h2>
+           <h2 th:text="${tenDetai}"></h2>
             <div class="quota-summary">
       		<p>Hạn mức Đồ án: <strong>0 / [[${hanMucDA}]]</strong></p>
 			<p>Hạn mức Chuyên đề: <strong>0 / [[${hanMucCD}]]</strong></p>

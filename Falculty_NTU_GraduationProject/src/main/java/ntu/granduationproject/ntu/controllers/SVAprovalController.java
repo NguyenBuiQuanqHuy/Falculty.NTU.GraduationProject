@@ -81,9 +81,11 @@ public class SVAprovalController {
 	    }
 	    GiangVien giangVien = (GiangVien) userObj;
 	    List<DangKyDetai> danhSachDK = svApprovalService.findByMsdt_Msdt(msdt);
+	    Project project = projectService.findByMsdt(msdt);
 	    model.addAttribute("danhSachDK", danhSachDK);
 	    model.addAttribute("hanMucDA", giangVien.getHMHDDA());
 	    model.addAttribute("hanMucCD", giangVien.getHMHDCD());
+	    model.addAttribute("tenDetai", project.getTendt());
 	    return "views/giangvien/SVapproval"; // Tên file HTML
 	}
 	

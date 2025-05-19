@@ -41,5 +41,11 @@ public class ProjectServiceImpl implements ProjectService{
 		// TODO Auto-generated method stub
 		return projectRepository.searchProjects(msgv, namhoc, theloai, linhvuc, tendt, trangthai);
 	}
+	@Override
+	public Project findByMsdt(int msdt) {
+		// TODO Auto-generated method stub
+		Optional<Project> optionalProject = projectRepository.findById(msdt);
+        return optionalProject.orElse(null);
+	}
 	
 }

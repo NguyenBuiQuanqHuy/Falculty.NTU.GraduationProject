@@ -11,5 +11,6 @@ public interface ProjectService {
 	void createProject(Project project);
 	List<Project> getAllProjects();
 	public List<Project> searchProjects(String msgv, Integer namhoc, Integer theloai, Integer linhvuc, String tendt, String trangthai);
-
+	
+	 public Project findByMsdt(int msdt);
 }
