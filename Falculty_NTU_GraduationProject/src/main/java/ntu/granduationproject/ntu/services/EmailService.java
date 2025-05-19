@@ -24,5 +24,13 @@ public class EmailService {
 	        message.setText("Mật khẩu được cấp là : " + password);
 	        mailSender.send(message);
 	    }
+	    
+	    public void sendInfoEmail(String toEmail, String messageBody) {
+	        SimpleMailMessage message = new SimpleMailMessage();
+	        message.setTo(toEmail);
+	        message.setSubject("Thông báo về đề tài");
+	        message.setText(messageBody);
+	        mailSender.send(message);
+	    }
 
 }

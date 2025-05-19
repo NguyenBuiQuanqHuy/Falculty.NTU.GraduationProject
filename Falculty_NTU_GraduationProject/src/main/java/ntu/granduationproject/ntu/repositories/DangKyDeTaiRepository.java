@@ -15,5 +15,5 @@ public interface DangKyDeTaiRepository extends JpaRepository<DangKyDetai, Intege
 	int countByMsdt_MsdtAndTrangthai(int msdt, String trangthai);
 	@Query("SELECT COUNT(d) FROM DangKyDetai d WHERE d.msdt.msgv.msgv = :msgv AND d.msdt.theLoai.matheloai = :matheloai AND d.trangthai = 'Đã duyệt'")
 	int countByGiangVienAndTheLoai(@Param("msgv") String msgv, @Param("matheloai") int matheloai);
-	
+	List<DangKyDetai> findByMsdt_MsdtAndTrangthai(int msdt, String trangthai);
 }
