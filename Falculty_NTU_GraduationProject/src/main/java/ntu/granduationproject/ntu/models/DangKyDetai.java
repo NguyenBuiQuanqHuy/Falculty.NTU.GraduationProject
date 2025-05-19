@@ -17,11 +17,11 @@ public class DangKyDetai {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "msdt",referencedColumnName = "msdt")
 	private Project msdt;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mssv",referencedColumnName = "mssv")
 	private SinhVien mssv;
 	
