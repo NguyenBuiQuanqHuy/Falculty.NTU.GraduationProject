@@ -32,9 +32,13 @@
 			<td th:text="${dangKy.mssv.hoten}"></td>
             <td><a th:href="@{'/hoso/' + ${dangKy.mssv.mssv}}" class="view-link">Xem hồ sơ</a></td>
             <td>
-            <form th:action="@{/projects/approve/{msdt}/duyet/{mssv}(msdt=${dangKy.msdt.msdt}, mssv=${dangKy.mssv.mssv})}" method="post">
-                <button type="submit" class="approve-btn">Duyệt</button>
-            </form>
+            <form th:if="${dangKy.trangthai != 'Đã duyệt'}"
+		      th:action="@{/projects/approve/{msdt}/duyet/{mssv}(msdt=${dangKy.msdt.msdt}, mssv=${dangKy.mssv.mssv})}"
+		      method="post">
+		    <button type="submit" class="approve-btn">Duyệt</button>
+		</form>
+			<button th:if="${dangKy.trangthai == 'Đã duyệt'}"
+		        class="approve-btn accepted" disabled>Chấp nhận</button>
         </td>
         </tr>
     </tbody>

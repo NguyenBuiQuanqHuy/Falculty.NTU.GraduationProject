@@ -138,3 +138,26 @@ table th {
 .view-link:hover {
     color: darkblue;
 }
+
+.approve-btn {
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+.approve-btn.accepted {
+    background-color: #28a745; /* xanh lá */
+    cursor: not-allowed;
+}
+
+.reg-count.green {
+    color: green;
+}
+.reg-count.red {
+    color: red;
+}
+
+

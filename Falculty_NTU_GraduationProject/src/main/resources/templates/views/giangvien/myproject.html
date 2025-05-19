@@ -45,8 +45,6 @@
     <button type="button" class="reset-btn" onclick="window.location.href='/danhsachdetai'">Làm mới</button>
 </form>
 
-            
-            <!-- Thêm đoạn này để hiển thị hạn mức -->
     	<div class="quota-summary">
       		<p>Hạn mức Đồ án: <strong>0 / [[${hanMucDA}]]</strong></p>
 			<p>Hạn mức Chuyên đề: <strong>0 / [[${hanMucCD}]]</strong></p>
@@ -60,9 +58,8 @@
                         <th>Loại</th>
                         <th>Lĩnh vực</th>
                         <th>Năm học</th>
-                        <th>Tối đa SV</th>
                         <th>Nội dung</th>
-                        <th>Đã đăng ký</th>
+                        <th>Đã đăng ký / Tối đa SV</th>
                         <th>Duyệt sinh viên</th>
                     </tr>
                 </thead>
@@ -73,14 +70,17 @@
 			        <td th:text="${project.theLoai.tentheloai}">Loại</td>
 			        <td th:text="${project.linhVuc.tenlinhvuc}">Lĩnh vực</td>
 			        <td th:text="${project.namHoc.tennamhoc}">Năm học</td>
-			        <td th:text="${project.sosvtoida}">Tối đa SV</td>
+			      
 			        <td>
 			            <a th:href="@{'/projects/' + ${project.msdt}}" class="view-link">Xem</a>
 			        </td>
-			        <td>
-			            <span class="reg-count red">0</span> / 
-			            <span class="reg-count green" th:text="${project.sosvtoida}">2</span>
-			        </td>
+			      <td>
+				  <span th:text="${soSvDaDuyetMap[project.msdt] ?: 0}"
+				      th:classappend="${(soSvDaDuyetMap[project.msdt] ?: 0) < (project.sosvtoida ?: 0)} ? ' reg-count red' : ' reg-count green'">
+				</span>
+				/
+				<span class="reg-count green" th:text="${project.sosvtoida ?: 0}"></span>
+
 			        <td>
 			            <button class="approve-btn" th:onclick="'location.href=\'/projects/approve/' + ${project.msdt} + '\''">
 			                Duyệt
@@ -93,6 +93,7 @@
 
             <div class="pagination">
                 <span><strong>1</strong> &gt; 2 &gt; 3 .... &gt; 50</span>
+                
             </div>
         </div>
     </div>
