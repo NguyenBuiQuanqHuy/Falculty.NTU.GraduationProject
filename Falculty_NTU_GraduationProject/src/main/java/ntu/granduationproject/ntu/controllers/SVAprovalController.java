@@ -52,6 +52,7 @@ public class SVAprovalController {
 	        return "redirect:/login";
 	    }
 	    GiangVien giangVien = (GiangVien) userObj;
+	    String msgv = giangVien.getMsgv();
 
 	    List<Project> projects = projectService.searchProjects(
 	        giangVien.getMsgv(), namhoc, theloai, linhvuc, tendt, "Đã duyệt"
@@ -62,6 +63,12 @@ public class SVAprovalController {
 	        int count = svApprovalService.countByMsdt_MsdtAndTrangthai(p.getMsdt(), "Đã duyệt");
 	        soSvDaDuyetMap.put(p.getMsdt(), count);
 	    }
+	    
+	    int soSvDaDuyetDA = svApprovalService.countByGiangVienAndLoai(msgv, 1); // loại Đồ án = 1
+	    int soSvDaDuyetCD = svApprovalService.countByGiangVienAndLoai(msgv, 2); // loại Chuyên đề = 2
+
+	    model.addAttribute("soSvDaDuyetDA", soSvDaDuyetDA);
+	    model.addAttribute("soSvDaDuyetCD", soSvDaDuyetCD);
 
 	    model.addAttribute("projects", projects);
 	    model.addAttribute("soSvDaDuyetMap", soSvDaDuyetMap);
