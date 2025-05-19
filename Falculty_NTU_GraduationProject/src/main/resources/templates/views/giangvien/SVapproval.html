@@ -12,8 +12,9 @@
         <div class="main">
            <h2 th:text="${tenDetai}"></h2>
             <div class="quota-summary">
-      		<p>Hạn mức Đồ án: <strong>0 / [[${hanMucDA}]]</strong></p>
-			<p>Hạn mức Chuyên đề: <strong>0 / [[${hanMucCD}]]</strong></p>
+      		<p>Hạn mức Đồ án: <strong>[[${soSvDaDuyetDA}]] / [[${hanMucDA}]]</strong></p>
+			<p>Hạn mức Chuyên đề: <strong>[[${soSvDaDuyetCD}]] / [[${hanMucCD}]]</strong></p>
+
     	</div>
              <table>
     <thead>
@@ -37,7 +38,7 @@
 		      method="post">
 		    <button type="submit" class="approve-btn">Duyệt</button>
 		</form>
-			<button th:if="${dangKy.trangthai == 'Đã duyệt'}"
+		<button th:if="${dangKy.trangthai == 'Đã duyệt'}"
 		        class="approve-btn accepted" disabled>Chấp nhận</button>
         </td>
         </tr>

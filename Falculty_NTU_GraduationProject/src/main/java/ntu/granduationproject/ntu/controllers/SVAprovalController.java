@@ -99,10 +99,17 @@ public class SVAprovalController {
 	    }
 
 	    GiangVien giangVien = (GiangVien) userObj;
+	    String msgv = giangVien.getMsgv();
 	    List<DangKyDetai> danhSachDK = svApprovalService.findByMsdt_Msdt(msdt);
 	    Project project = projectService.findByMsdt(msdt);
 	    
 	    int soSvDaDuyet = svApprovalService.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
+	    
+	    int soSvDaDuyetDA = svApprovalService.countByGiangVienAndLoai(msgv, 1); // loại Đồ án = 1
+	    int soSvDaDuyetCD = svApprovalService.countByGiangVienAndLoai(msgv, 2); // loại Chuyên đề = 2
+
+	    model.addAttribute("soSvDaDuyetDA", soSvDaDuyetDA);
+	    model.addAttribute("soSvDaDuyetCD", soSvDaDuyetCD);
 
 	    model.addAttribute("project", project);
 	    model.addAttribute("soSvDaDuyet", soSvDaDuyet);
