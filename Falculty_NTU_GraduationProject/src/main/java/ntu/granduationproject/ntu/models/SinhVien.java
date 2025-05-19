@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "sinhvien")
 public class SinhVien {
 
-  @Id
-  private String mssv;
+	@Id
+  	private String mssv;
     private String matkhau;
     private String email;
     private String hoten;

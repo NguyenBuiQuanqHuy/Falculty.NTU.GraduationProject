@@ -15,16 +15,32 @@
       		<p>Hạn mức Đồ án: <strong>0 / [[${hanMucDA}]]</strong></p>
 			<p>Hạn mức Chuyên đề: <strong>0 / [[${hanMucCD}]]</strong></p>
     	</div>
-              <table>
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>MSSV</th>
-                        <th>Tên sinh viên</th>
-                        <th>Hồ sơ</th>
-                        <th>Duyệt sinh viên</th>
-                    </tr>
-                </thead>
+             <table>
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>MSSV</th>
+            <th>Tên sinh viên</th>
+            <th>Hồ sơ</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="dangKy, stat : ${danhSachDK}">
+            <td th:text="${stat.index + 1}"></td>
+            <td th:text="${dangKy.mssv.mssv}"></td>
+			<td th:text="${dangKy.mssv.hoten}"></td>
+            <td><a th:href="@{'/hoso/' + ${dangKy.mssv.mssv}}" class="view-link">Xem hồ sơ</a></td>
+            <td>
+            <form th:action="@{/projects/approve/{msdt}/duyet/{mssv}(msdt=${dangKy.msdt.msdt}, mssv=${dangKy.mssv.mssv})}" method="post">
+                <button type="submit" class="approve-btn">Duyệt</button>
+            </form>
+        </td>
+        </tr>
+    </tbody>
+</table>
+
+
                 
                 
         </div>

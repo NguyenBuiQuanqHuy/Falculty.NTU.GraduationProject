@@ -18,6 +18,7 @@ import ntu.granduationproject.ntu.repositories.LinhVucRepository;
 import ntu.granduationproject.ntu.repositories.NamHocRepository;
 import ntu.granduationproject.ntu.repositories.TheLoaiRepository;
 import ntu.granduationproject.ntu.services.ProjectService;
+import ntu.granduationproject.ntu.services.SVApprovalService;
 
 @Controller
 public class SVAprovalController {
@@ -30,8 +31,8 @@ public class SVAprovalController {
 	@Autowired
 	NamHocRepository namHocRepository;
 	@Autowired
-	DangKyDeTaiRepository dangKyDeTaiRepository;
-	
+	SVApprovalService svApprovalService;
+
 	
 	@GetMapping("/danhsachdetai")
 	public String listProjects(
@@ -79,12 +80,12 @@ public class SVAprovalController {
 	        return "redirect:/login";
 	    }
 	    GiangVien giangVien = (GiangVien) userObj;
-	    List<DangKyDetai> danhSachDK = dangKyDeTaiRepository.findByMsdt_Msdt(msdt);
+	    List<DangKyDetai> danhSachDK = svApprovalService.findByMsdt_Msdt(msdt);
 	    model.addAttribute("danhSachDK", danhSachDK);
 	    model.addAttribute("hanMucDA", giangVien.getHMHDDA());
 	    model.addAttribute("hanMucCD", giangVien.getHMHDCD());
 	    return "views/giangvien/SVapproval"; // Tên file HTML
 	}
-
+	
 
 }
