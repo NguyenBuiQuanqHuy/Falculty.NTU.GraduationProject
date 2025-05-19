@@ -116,16 +116,35 @@ public class SVAprovalController {
 	public String duyetSinhVien(
 	    @PathVariable("msdt") int msdt,
 	    @PathVariable("mssv") String mssv,
-	    HttpSession session
+	    HttpSession session,
+	    ModelMap model
 	) {
-		/*
-		 * Object userObj = session.getAttribute("user"); if (!(userObj instanceof
-		 * GiangVien)) { return "redirect:/login"; }
-		 */
-			
+	    Object userObj = session.getAttribute("user");
+	    if (!(userObj instanceof GiangVien)) {
+	        return "redirect:/login";
+	    }
+
+	    GiangVien gv = (GiangVien) userObj;
+	    Project project = projectService.findByMsdt(msdt);
+	    
+	    // Kiểm tra xem đã đủ số SV cho đề tài này chưa
+	    int svDaDuyetTrongDeTai = svApprovalService.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
+	    if (svDaDuyetTrongDeTai >= project.getSosvtoida()) {
+	        model.addAttribute("error", "Đề tài này đã đủ số lượng sinh viên thực hiện.");
+	        return "redirect:/projects/approve/" + msdt;
+	    }
+
+	    // Kiểm tra hạn mức toàn bộ của giảng viên theo loại đề tài
+	    int svDaDuyetCungLoai = svApprovalService.countByGiangVienAndLoai(gv.getMsgv(), project.getTheLoai().getMatheloai());
+	    int hanMuc = project.getTheLoai().getMatheloai() == 1 ? gv.getHMHDDA() : gv.getHMHDCD();
+
+	    if (svDaDuyetCungLoai >= hanMuc) {
+	        model.addAttribute("error", "Bạn đã vượt quá hạn mức sinh viên cho loại đề tài này.");
+	        return "redirect:/projects/approve/" + msdt;
+	    }
+
+	    // Duyệt nếu hợp lệ
 	    svApprovalService.approveStudent(msdt, mssv);
 	    return "redirect:/projects/approve/" + msdt;
 	}
-	
-
 }

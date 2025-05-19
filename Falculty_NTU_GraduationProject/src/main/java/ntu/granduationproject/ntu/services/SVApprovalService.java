@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ntu.granduationproject.ntu.models.DangKyDetai;
 import ntu.granduationproject.ntu.models.Project;
 import ntu.granduationproject.ntu.repositories.DangKyDeTaiRepository;
+import ntu.granduationproject.ntu.repositories.ProjectRepository;
 
 @Service
 public class SVApprovalService {
@@ -17,6 +18,8 @@ public class SVApprovalService {
 	DangKyDeTaiRepository dangKyDeTaiRepository;
 	@Autowired
 	ProjectService projectService;
+	@Autowired
+	ProjectRepository projectRepository;
 	
 	public List<DangKyDetai> findByMsdt_Msdt(int msdt){
 		return dangKyDeTaiRepository.findByMsdt_Msdt(msdt);
@@ -31,30 +34,51 @@ public class SVApprovalService {
 	 * 
 	 * }
 	 */
-	 public boolean approveStudent(int msdt, String mssv) {
-		    // Đếm số sinh viên đã được duyệt
-		    long soSvDaDuyet = dangKyDeTaiRepository.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
+	public boolean approveStudent(int msdt, String mssv) {
+	    // Lấy đề tài
+	    Project project = projectService.findByMsdt(msdt);
+	    if (project == null) return false;
 
-		    // Lấy đề tài
-		    Project project = projectService.findByMsdt(msdt);
+	    // 1. Kiểm tra số SV đã được duyệt trong đề tài
+	    long soSvDaDuyetTrongDeTai = dangKyDeTaiRepository.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
+	    if (soSvDaDuyetTrongDeTai >= project.getSosvtoida()) {
+	        return false; // Đề tài đã đủ SV
+	    }
 
-		    // Nếu đủ số lượng, từ chối duyệt
-		    if (soSvDaDuyet >= project.getSosvtoida()) {
-		        return false; // Quá giới hạn, không cho duyệt
-		    }
+	    // 2. Kiểm tra tổng số SV đã được duyệt theo loại đề tài của giảng viên
+	    String msgv = project.getMsgv().getMsgv();
+	    int theloai = project.getTheLoai().getMatheloai();
 
-		    // Tìm đăng ký của sinh viên này
-		    DangKyDetai dk = dangKyDeTaiRepository.findByMsdt_MsdtAndMssv_Mssv(msdt, mssv);
-		    if (dk != null && !"Đã duyệt".equals(dk.getTrangthai())) {
-		        dk.setTrangthai("Đã duyệt");
-		        dangKyDeTaiRepository.save(dk);
-		        return true;
-		    }
+	    int tongSoDaDuyetTheoLoai = dangKyDeTaiRepository.countByGiangVienAndTheLoai(msgv, theloai);
 
-		    return false; // Không tìm thấy hoặc đã duyệt trước đó
-		}
+	    int hanMuc = (theloai == 1) ? project.getMsgv().getHMHDDA() : project.getMsgv().getHMHDCD();
+
+
+	    // 3. Duyệt SV nếu hợp lệ
+	    DangKyDetai dk = dangKyDeTaiRepository.findByMsdt_MsdtAndMssv_Mssv(msdt, mssv);
+	    if (dk != null && !"Đã duyệt".equals(dk.getTrangthai()) && tongSoDaDuyetTheoLoai >= hanMuc) {
+	        dk.setTrangthai("Đã duyệt");
+	        dangKyDeTaiRepository.save(dk);
+
+	        if (!project.isCosvthuchien()) {
+	            project.setCosvthuchien(true);
+	            projectRepository.save(project);
+	        }
+
+	        return true;
+	    }
+
+	    return false;
+	}
+
 	 
 	 	public int countByMsdt_MsdtAndTrangthai(int msdt, String trangthai) {
 	        return dangKyDeTaiRepository.countByMsdt_MsdtAndTrangthai(msdt, trangthai);
 	    }
+	 	
+	 	public int countByGiangVienAndLoai(String msgv, int matheloai) {
+	 	    return dangKyDeTaiRepository.countByGiangVienAndTheLoai(msgv, matheloai);
+	 	}
+
+	 
 }
