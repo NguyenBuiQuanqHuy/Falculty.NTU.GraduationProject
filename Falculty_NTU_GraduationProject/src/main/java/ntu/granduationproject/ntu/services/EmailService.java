@@ -25,12 +25,13 @@ public class EmailService {
 	        mailSender.send(message);
 	    }
 	    
-	    public void sendInfoEmail(String toEmail, String messageBody) {
+	    public void sendNotificationEmail(String toEmail, String subject, String body) {
 	        SimpleMailMessage message = new SimpleMailMessage();
 	        message.setTo(toEmail);
-	        message.setSubject("Thông báo về đề tài");
-	        message.setText(messageBody);
+	        message.setSubject(subject);
+	        message.setText(body);
 	        mailSender.send(message);
 	    }
+
 
 }

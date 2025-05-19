@@ -67,14 +67,15 @@ public class SVApprovalService {
 	            projectRepository.save(project);
 	        }
 	        
-
-	        if (soSvDaDuyetTrongDeTai >= project.getSosvtoida()) {
-	            List<DangKyDetai> chuaDuyetList = dangKyDeTaiRepository.findByMsdt_MsdtAndTrangthai(msdt, "Chờ duyệt");
+	        // Kiểm tra lại sau khi duyệt: nếu đề tài đã đủ SV => gửi mail cho SV chưa được duyệt
+	        int soSvSauKhiDuyet = dangKyDeTaiRepository.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
+	        if (soSvSauKhiDuyet >= project.getSosvtoida()) {
+	            List<DangKyDetai> chuaDuyetList = dangKyDeTaiRepository.findByMsdt_MsdtAndTrangthai(msdt, "chưa duyệt");
 	            for (DangKyDetai cho : chuaDuyetList) {
 	                String toEmail = cho.getMssv().getEmail();
 	                String subject = "Thông báo kết quả đăng ký đề tài";
 	                String body = "Xin chào, đề tài bạn đăng ký hiện đã đủ số lượng sinh viên được duyệt. Bạn vui lòng chọn đề tài khác.";
-	                emailService.sendVerificationEmail(toEmail, body);
+	                emailService.sendNotificationEmail(toEmail, subject, body);
 	            }
 	        }
 
