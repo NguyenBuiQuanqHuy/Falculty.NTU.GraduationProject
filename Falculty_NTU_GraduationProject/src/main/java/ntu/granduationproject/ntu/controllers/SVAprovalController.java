@@ -140,14 +140,12 @@ public class SVAprovalController {
 	    GiangVien gv = (GiangVien) userObj;
 	    Project project = projectService.findByMsdt(msdt);
 	    
-	    // Kiểm tra xem đã đủ số SV cho đề tài này chưa
 	    int svDaDuyetTrongDeTai = svApprovalService.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
 	    if (svDaDuyetTrongDeTai >= project.getSosvtoida()) {
 	        model.addAttribute("error", "Đề tài này đã đủ số lượng sinh viên thực hiện.");
 	        return "redirect:/projects/approve/" + msdt;
 	    }
 
-	    // Kiểm tra hạn mức toàn bộ của giảng viên theo loại đề tài
 	    int svDaDuyetCungLoai = svApprovalService.countByGiangVienAndLoai(gv.getMsgv(), project.getTheLoai().getMatheloai());
 	    int hanMuc = project.getTheLoai().getMatheloai() == 1 ? gv.getHMHDDA() : gv.getHMHDCD();
 

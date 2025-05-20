@@ -42,20 +42,9 @@ public class SVApprovalService {
 	    int tongSoDaDuyetTheoLoai = dangKyDeTaiRepository.countByGiangVienAndTheLoai(msgv, theloai);
 
 	    int hanMuc = (theloai == 1) ? project.getMsgv().getHMHDDA() : project.getMsgv().getHMHDCD();
-
-	    if (tongSoDaDuyetTheoLoai >= hanMuc) {
-	        List<DangKyDetai> chuaDuyetList = dangKyDeTaiRepository.findByMsdt_Msgv_MsgvAndTrangthai(msgv, "chưa duyệt");
-	        for (DangKyDetai cho : chuaDuyetList) {
-	            String toEmail = cho.getMssv().getEmail();
-	            String subject = "Thông báo kết quả đăng ký đề tài";
-	            String body = "Xin chào, giảng viên bạn chọn đã đạt đến hạn mức hướng dẫn. Bạn vui lòng chọn giảng viên khác hoặc đề tài khác.";
-	            emailService.sendNotificationEmail(toEmail, subject, body);
-	        }
-	        return false;
-	    }
 	    
 	    DangKyDetai dk = dangKyDeTaiRepository.findByMsdt_MsdtAndMssv_Mssv(msdt, mssv);
-	    if (dk != null && !"Đã duyệt".equals(dk.getTrangthai()) || tongSoDaDuyetTheoLoai >= hanMuc) {
+	    if (dk != null && !"Đã duyệt".equals(dk.getTrangthai())) {
 	        dk.setTrangthai("Đã duyệt");
 	        dangKyDeTaiRepository.save(dk);
 
@@ -71,6 +60,18 @@ public class SVApprovalService {
 	                String toEmail = cho.getMssv().getEmail();
 	                String subject = "Thông báo kết quả đăng ký đề tài";
 	                String body = "Xin chào, đề tài bạn đăng ký hiện đã đủ số lượng sinh viên được duyệt. Bạn vui lòng chọn đề tài khác.";
+	                emailService.sendNotificationEmail(toEmail, subject, body);
+	            }
+	        }
+	        
+	        tongSoDaDuyetTheoLoai = dangKyDeTaiRepository.countByGiangVienAndTheLoai(msgv, theloai);
+	        if (tongSoDaDuyetTheoLoai >= hanMuc) {
+	            // Gửi mail thông báo cho các sinh viên chưa duyệt của giảng viên này theo loại đề tài
+	            List<DangKyDetai> chuaDuyetGVList = dangKyDeTaiRepository.findByMsdt_Msgv_MsgvAndTrangthaiAndMsdt_TheLoai_Matheloai(msgv, "chưa duyệt", theloai);
+	            for (DangKyDetai cho : chuaDuyetGVList) {
+	                String toEmail = cho.getMssv().getEmail();
+	                String subject = "Thông báo kết quả đăng ký đề tài";
+	                String body = "Xin chào, giảng viên của đề tài bạn đăng ký đã đạt hạn mức sinh viên cho loại đề tài này. Bạn vui lòng đăng ký giảng viên khác.";
 	                emailService.sendNotificationEmail(toEmail, subject, body);
 	            }
 	        }
