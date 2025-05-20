@@ -43,7 +43,17 @@ public class SVApprovalService {
 
 	    int hanMuc = (theloai == 1) ? project.getMsgv().getHMHDDA() : project.getMsgv().getHMHDCD();
 
-
+	    if (tongSoDaDuyetTheoLoai >= hanMuc) {
+	        List<DangKyDetai> chuaDuyetList = dangKyDeTaiRepository.findByMsdt_Msgv_MsgvAndTrangthai(msgv, "chưa duyệt");
+	        for (DangKyDetai cho : chuaDuyetList) {
+	            String toEmail = cho.getMssv().getEmail();
+	            String subject = "Thông báo kết quả đăng ký đề tài";
+	            String body = "Xin chào, giảng viên bạn chọn đã đạt đến hạn mức hướng dẫn. Bạn vui lòng chọn giảng viên khác hoặc đề tài khác.";
+	            emailService.sendNotificationEmail(toEmail, subject, body);
+	        }
+	        return false;
+	    }
+	    
 	    DangKyDetai dk = dangKyDeTaiRepository.findByMsdt_MsdtAndMssv_Mssv(msdt, mssv);
 	    if (dk != null && !"Đã duyệt".equals(dk.getTrangthai()) || tongSoDaDuyetTheoLoai >= hanMuc) {
 	        dk.setTrangthai("Đã duyệt");
