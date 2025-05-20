@@ -27,27 +27,15 @@ public class SVApprovalService {
 		return dangKyDeTaiRepository.findByMsdt_Msdt(msdt);
 	}
 	 
-	/*
-	 * public void approveStudent(int msdt, String mssv) { DangKyDetai dk =
-	 * dangKyDeTaiRepository.findByMsdt_MsdtAndMssv_Mssv(msdt, mssv); if (dk != null
-	 * && !"Đã duyệt".equals(dk.getTrangthai())) { dk.setTrangthai("Đã duyệt");
-	 * dangKyDeTaiRepository.save(dk); }
-	 * 
-	 * 
-	 * }
-	 */
 	public boolean approveStudent(int msdt, String mssv) {
-	    // Lấy đề tài
 	    Project project = projectService.findByMsdt(msdt);
 	    if (project == null) return false;
 
-	    // 1. Kiểm tra số SV đã được duyệt trong đề tài
 	    long soSvDaDuyetTrongDeTai = dangKyDeTaiRepository.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
 	    if (soSvDaDuyetTrongDeTai >= project.getSosvtoida()) {
-	        return false; // Đề tài đã đủ SV
+	        return false; 
 	    }
 
-	    // 2. Kiểm tra tổng số SV đã được duyệt theo loại đề tài của giảng viên
 	    String msgv = project.getMsgv().getMsgv();
 	    int theloai = project.getTheLoai().getMatheloai();
 
@@ -56,7 +44,6 @@ public class SVApprovalService {
 	    int hanMuc = (theloai == 1) ? project.getMsgv().getHMHDDA() : project.getMsgv().getHMHDCD();
 
 
-	    // 3. Duyệt SV nếu hợp lệ
 	    DangKyDetai dk = dangKyDeTaiRepository.findByMsdt_MsdtAndMssv_Mssv(msdt, mssv);
 	    if (dk != null && !"Đã duyệt".equals(dk.getTrangthai()) || tongSoDaDuyetTheoLoai >= hanMuc) {
 	        dk.setTrangthai("Đã duyệt");
@@ -67,7 +54,6 @@ public class SVApprovalService {
 	            projectRepository.save(project);
 	        }
 	        
-	        // Kiểm tra lại sau khi duyệt: nếu đề tài đã đủ SV => gửi mail cho SV chưa được duyệt
 	        int soSvSauKhiDuyet = dangKyDeTaiRepository.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
 	        if (soSvSauKhiDuyet >= project.getSosvtoida()) {
 	            List<DangKyDetai> chuaDuyetList = dangKyDeTaiRepository.findByMsdt_MsdtAndTrangthai(msdt, "chưa duyệt");

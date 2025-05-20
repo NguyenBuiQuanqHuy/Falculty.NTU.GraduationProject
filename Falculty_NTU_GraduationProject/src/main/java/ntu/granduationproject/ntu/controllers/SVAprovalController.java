@@ -64,8 +64,8 @@ public class SVAprovalController {
 	        soSvDaDuyetMap.put(p.getMsdt(), count);
 	    }
 	    
-	    int soSvDaDuyetDA = svApprovalService.countByGiangVienAndLoai(msgv, 1); // loại Đồ án = 1
-	    int soSvDaDuyetCD = svApprovalService.countByGiangVienAndLoai(msgv, 2); // loại Chuyên đề = 2
+	    int soSvDaDuyetDA = svApprovalService.countByGiangVienAndLoai(msgv, 1); 
+	    int soSvDaDuyetCD = svApprovalService.countByGiangVienAndLoai(msgv, 2); 
 
 	    model.addAttribute("soSvDaDuyetDA", soSvDaDuyetDA);
 	    model.addAttribute("soSvDaDuyetCD", soSvDaDuyetCD);
@@ -105,9 +105,8 @@ public class SVAprovalController {
 	    
 	    int soSvDaDuyet = svApprovalService.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
 	    
-	    int soSvDaDuyetDA = svApprovalService.countByGiangVienAndLoai(msgv, 1); // loại Đồ án = 1
-	    int soSvDaDuyetCD = svApprovalService.countByGiangVienAndLoai(msgv, 2); // loại Chuyên đề = 2
-
+	    int soSvDaDuyetDA = svApprovalService.countByGiangVienAndLoai(msgv, 1); 
+	    int soSvDaDuyetCD = svApprovalService.countByGiangVienAndLoai(msgv, 2); 
 	    model.addAttribute("soSvDaDuyetDA", soSvDaDuyetDA);
 	    model.addAttribute("soSvDaDuyetCD", soSvDaDuyetCD);
 
@@ -157,7 +156,6 @@ public class SVAprovalController {
 	        return "redirect:/projects/approve/" + msdt;
 	    }
 
-	    // Duyệt nếu hợp lệ
 	    svApprovalService.approveStudent(msdt, mssv);
 	    return "redirect:/projects/approve/" + msdt;
 	}
