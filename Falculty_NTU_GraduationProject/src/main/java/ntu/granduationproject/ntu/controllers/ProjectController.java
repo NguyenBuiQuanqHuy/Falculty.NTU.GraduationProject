@@ -6,8 +6,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -42,72 +44,85 @@ public class ProjectController {
 	@Autowired
 	NamHocRepository namHocRepository;
 
-	@GetMapping("/taodetai")
+	@GetMapping("/giangvien/taodetai")
 	public String showCreateProjectForm(ModelMap model, HttpSession session) {
-		Object userObj = session.getAttribute("user");
-		if (userObj != null && userObj instanceof GiangVien) {
-			GiangVien giangVien = (GiangVien) userObj;
+	    Object userObj = session.getAttribute("user");
+	    if (userObj != null && userObj instanceof GiangVien) {
+	        GiangVien giangVien = (GiangVien) userObj;
 
-			model.addAttribute("tenGiangVien", giangVien.getHoten());
-		}
+	        model.addAttribute("tenGiangVien", giangVien.getHoten());
+	    }
+	    
+	    int currentYear = LocalDate.now().getYear();
 
-		int currentYear = LocalDate.now().getYear();
+	    Optional<NamHoc> existingNamHoc = namHocRepository.findByTennamhoc(currentYear);
 
-		Optional<NamHoc> existingNamHoc = namHocRepository.findByTennamhoc(currentYear);
+	    NamHoc namHoc;
+	    if (existingNamHoc.isPresent()) {
+	        namHoc = existingNamHoc.get();
+	    } else {
+	        namHoc = new NamHoc();
+	        namHoc.setTennamhoc(currentYear);
+	        namHocRepository.save(namHoc);
+	    }
+	    model.addAttribute("namHocHienTai", namHoc);
 
-		NamHoc namHoc;
-		if (existingNamHoc.isPresent()) {
-			namHoc = existingNamHoc.get();
-		} else {
-			namHoc = new NamHoc();
-			namHoc.setTennamhoc(currentYear);
-			namHocRepository.save(namHoc);
-		}
-		model.addAttribute("namHocHienTai", namHoc);
-
-		model.addAttribute("linhVucs", linhVucRepository.findAll());
-		model.addAttribute("theLoais", theLoaiRepository.findAll());
-		model.addAttribute("giangviens", giangVienRepository.findAll());
-		return "views/giangvien/createproject";
+	    model.addAttribute("linhVucs", linhVucRepository.findAll());
+	    model.addAttribute("theLoais", theLoaiRepository.findAll());
+	    model.addAttribute("giangviens", giangVienRepository.findAll());
+	    return "views/giangvien/createproject";
 	}
 
-	@PostMapping("/taodetai")
-	public String taodetai(@RequestParam String tendt, @RequestParam int theloai, @RequestParam String mota,
-			@RequestParam String noidung, @RequestParam int linhvuc, @RequestParam int sosvtoida,
-			@RequestParam int khoasv, @RequestParam int namhoc, HttpSession session,
-			RedirectAttributes redirectAttributes, ModelMap model) {
 
-		Object userObj = session.getAttribute("user");
-		if (userObj == null || !(userObj instanceof GiangVien)) {
-			redirectAttributes.addFlashAttribute("error", "Bạn chưa đăng nhập.");
-			return "redirect:/login";
-		}
-		GiangVien giangVien = (GiangVien) userObj;
+	@PostMapping("/giangvien/taodetai")
+	public String taodetai(
+	                       @RequestParam String tendt,
+	                       @RequestParam int theloai,
+	                       @RequestParam String mota,
+	                       @RequestParam String noidung,
+	                       @RequestParam int linhvuc,
+	                       @RequestParam int sosvtoida,
+	                       @RequestParam int khoasv,
+	                       @RequestParam int namhoc,
+	                       HttpSession session,
+	                       RedirectAttributes redirectAttributes,ModelMap model) {
+		
 
-		TheLoai loai = theLoaiRepository.findById(theloai).orElse(null);
-		LinhVuc linhVucObj = linhVucRepository.findById(linhvuc).orElse(null);
-		NamHoc namHoc = namHocRepository.findByTennamhoc(namhoc).orElse(null);
+	    Object userObj = session.getAttribute("user");
+	    if (userObj == null || !(userObj instanceof GiangVien)) {
+	        redirectAttributes.addFlashAttribute("error", "Bạn chưa đăng nhập.");
+	        return "redirect:/login"; 
+	    }
+	    GiangVien giangVien = (GiangVien) userObj;
 
-		if (giangVien == null || loai == null || linhVucObj == null || namHoc == null) {
-			redirectAttributes.addFlashAttribute("error", "Một trong các thông tin không hợp lệ.");
-			return "redirect:/taodetai";
-		}
+	    TheLoai loai = theLoaiRepository.findById(theloai).orElse(null);
+	    LinhVuc linhVucObj = linhVucRepository.findById(linhvuc).orElse(null);
+	    NamHoc namHoc = namHocRepository.findByTennamhoc(namhoc).orElse(null);
 
-		Project deTai = new Project();
-		deTai.setTendt(tendt);
-		deTai.setMsgv(giangVien);
-		deTai.setTheLoai(loai);
-		deTai.setMota(mota);
-		deTai.setNoidung(noidung);
-		deTai.setLinhVuc(linhVucObj);
-		deTai.setSosvtoida(sosvtoida);
-		deTai.setKhoasv(khoasv);
-		deTai.setNamHoc(namHoc);
 
-		projectService.createProject(deTai);
 
-		redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
-		return "redirect:/giangvien/home";
+	    if (giangVien == null || loai == null || linhVucObj == null || namHoc == null) {
+	        redirectAttributes.addFlashAttribute("error", "Một trong các thông tin không hợp lệ.");
+	        return "redirect:/giangvien/taodetai"; 
+	    }
+
+	    Project deTai = new Project();
+	    deTai.setTendt(tendt);
+	    deTai.setMsgv(giangVien); 
+	    deTai.setTheLoai(loai);
+	    deTai.setMota(mota);
+	    deTai.setNoidung(noidung);
+	    deTai.setLinhVuc(linhVucObj);
+	    deTai.setSosvtoida(sosvtoida);
+	    deTai.setKhoasv(khoasv);
+	    deTai.setNamHoc(namHoc);
+
+	    projectService.createProject(deTai);
+
+	    redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
+	    return "redirect:/giangvien/home";
 	}
 	
+	
+
 }
