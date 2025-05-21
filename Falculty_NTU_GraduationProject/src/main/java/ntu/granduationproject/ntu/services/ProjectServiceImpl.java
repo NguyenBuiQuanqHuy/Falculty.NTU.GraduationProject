@@ -97,6 +97,12 @@ public class ProjectServiceImpl implements ProjectService {
 		public List<Project> getProjects() {
 			// TODO Auto-generated method stub
 			return projectRepository.findAll();
-		}	
+		}
+
+	public List<Project> getDetaiFromDatabase() {
+		return projectRepository.findAll();
+	}
+
+
 }
 

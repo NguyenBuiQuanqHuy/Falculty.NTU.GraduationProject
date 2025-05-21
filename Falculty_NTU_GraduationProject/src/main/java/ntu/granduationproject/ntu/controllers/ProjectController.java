@@ -2,6 +2,7 @@ package ntu.granduationproject.ntu.controllers;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -44,7 +45,7 @@ public class ProjectController {
 	@Autowired
 	NamHocRepository namHocRepository;
 
-	@GetMapping("/taodetai")
+	@GetMapping("/giangvien/taodetai")
 	public String showCreateProjectForm(ModelMap model, HttpSession session) {
 	    Object userObj = session.getAttribute("user");
 	    if (userObj != null && userObj instanceof GiangVien) {
@@ -70,11 +71,11 @@ public class ProjectController {
 	    model.addAttribute("linhVucs", linhVucRepository.findAll());
 	    model.addAttribute("theLoais", theLoaiRepository.findAll());
 	    model.addAttribute("giangviens", giangVienRepository.findAll());
-	    return "views/giangvien/createproject";
+	    return "views/giangvien/CreateProject";
 	}
 
 
-	@PostMapping("/taodetai")
+	@PostMapping("/giangvien/taodetai")
 	public String taodetai(
 	                       @RequestParam String tendt,
 	                       @RequestParam int theloai,
@@ -103,7 +104,7 @@ public class ProjectController {
 
 	    if (giangVien == null || loai == null || linhVucObj == null || namHoc == null) {
 	        redirectAttributes.addFlashAttribute("error", "Một trong các thông tin không hợp lệ.");
-	        return "redirect:/taodetai"; 
+	        return "redirect:/giangvien/taodetai"; 
 	    }
 
 	    Project deTai = new Project();
@@ -122,7 +123,21 @@ public class ProjectController {
 	    redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
 	    return "redirect:/giangvien/home";
 	}
-	
-	
 
+	@GetMapping("/listTopic")
+	public String ListTopic(Model model) {
+		List<Project> dsDetai = projectService.getDetaiFromDatabase()
+				.stream()
+				.filter(Objects::nonNull) // bỏ các phần tử null
+				.toList();
+		model.addAttribute("dsdetai", dsDetai);
+		return "views/sinhvien/listTopic";
+	}
+
+	@GetMapping("/listTopic/{id}")
+	public String TopicInfo(@PathVariable("id") int msdt, Model model) {
+		Optional<Project> project = projectService.findById(msdt);
+		model.addAttribute("detai", project);
+		return "views/sinhvien/TopicInfo";
+	}
 }

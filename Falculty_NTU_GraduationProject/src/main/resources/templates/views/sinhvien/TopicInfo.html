@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/topicInfo.css}" />
+<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+<div th:fragment="content">
+  <div class="tab">
+    <a th:href="@{/listTopic}" class="btn-return">◀ Trở về danh sách</a>
+  </div>
+  <div class="form-container">
+    <form class="profile-form">
+      <div class="form-left">
+        <h2 th:text="${detai.tendt}">Tên đề tài</h2>
+        <p><strong>Thể loại:</strong> <span th:text="${detai.theLoai.tentheloai}"></span></p>
+        <p><strong>Giảng viên ra đề:</strong> <span th:text="${detai.msgv.hoten}"></span></p>
+        <p><strong>Lĩnh vực:</strong> <span th:text="${detai.linhVuc.tenlinhvuc}"></span></p>
+      </div>
+      <div class="form-right">
+        <h2>Chi tiết đề tài</h2>
+        <div class="topic-info" th:utext="${detai.noidung}">Nội dung ở đây...</div>
+      </div>
+    </form>
+  </div>
+</div>
+<div th:replace="~{layout/footer :: footer}"></div>
+</body>
+</html>

@@ -23,6 +23,10 @@ public interface ProjectService {
     void save(Project project);
     
     void deleteById(int msdt);
+
+
+    List<Project> getDetaiFromDatabase();
+
 }
     
     

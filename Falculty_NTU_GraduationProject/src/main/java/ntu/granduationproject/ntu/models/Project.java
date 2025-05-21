@@ -13,17 +13,16 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "detai")
 public class Project {
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
 	private int msdt;
 	private String tendt;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "msgv",referencedColumnName = "msgv")
 	private GiangVien msgv;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "theloai",referencedColumnName = "matheloai")
 	private TheLoai theLoai;
 	private String mota;
@@ -31,17 +30,17 @@ public class Project {
 	 @Column(columnDefinition = "LONGTEXT")
 	private String noidung;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "linhvuc",referencedColumnName = "malinhvuc")
 	private LinhVuc linhVuc;
 	private int sosvtoida;
-	
+
 	
 	
 	private int khoasv;
 	
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "namhoc",referencedColumnName = "manamhoc")
 	private NamHoc namHoc;
 	private String trangthai;
@@ -125,5 +124,5 @@ public class Project {
 		this.cosvthuchien = cosvthuchien;
 	}
 	
-   
+	
 }

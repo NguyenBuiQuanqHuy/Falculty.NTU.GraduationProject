@@ -134,110 +134,64 @@ body {
 
 /*main*/
 .form-container {
-    padding: 10px;
-    max-width: 1000px;
-    border-radius: 8px;
-    margin: auto;
-}
-
-.form-title {
-    background-color: #8b1d1d;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    font-size: 15px;
-    margin-bottom: 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid #861d22;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
 }
 
 .profile-form {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    border: 2px solid #861d22;
-    border-radius: 20px;
-    padding: 20px 30px;
+    flex-direction: row;
+    width: 100%;
+    gap: 40px;
 }
 
-.form-left {
+.form-left,
+.form-right {
     flex: 1;
 }
 
-.form-right {
-    flex: 2;
-}
-
-label {
-    display: inline-block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    width: 350px !important;
-}
-
-label span {
-    color: red;
-}
-
-.bonus {
-    padding-bottom: 75px;
-}
-input{
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-input, label {
-    width: 95%;
-}
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-}
-.button-group {
-    display: flex;
-    justify-content: center;
-    padding-top: 10px;
-    gap: 10px;
-}
-
-.btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.btn.save {
-    background-color: #8b1d1d;
-    color: white;
-}
-
-.btn.cancel {
-    background-color: #ddd;
+.form-left h2 {
+    margin-bottom: 20px;
     color: #333;
 }
-a {
-    text-decoration: none;
+
+.form-left p {
+    font-size: 16px;
+    margin: 12px 0;
+    color: #555;
 }
-.cv-readonly {
-    max-height: 300px;
-    max-width: 550px;
-    overflow-x: auto;
-    overflow-y: auto;
-    background-color: #f9f9f9 !important;
+
+.form-right h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.topic-info {
+    background-color: #f9f9f9;
     border: 1px solid #ddd;
     padding: 20px;
     border-radius: 10px;
-    white-space: pre-wrap;
+    overflow-y: auto;
+    overflow-x: auto;
+    max-height: 600px;
+    max-width: 550px;
     line-height: 1.6;
     color: #333;
     font-size: 15px;
+}
 
+.tab a {
+    text-decoration: none;
+    color: #8B1C1C;
+    padding-left: 20px;
 }
 
 footer {
