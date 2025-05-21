@@ -91,7 +91,7 @@ public class SVAprovalController {
 	}
 	
 	
-	@GetMapping("/projects/approve/{msdt}")
+	@GetMapping("/detai/duyetsv/{msdt}")
 	public String viewStudentsForApproval(@PathVariable("msdt") int msdt, ModelMap model, HttpSession session) {
 	    Object userObj = session.getAttribute("user");
 	    if (!(userObj instanceof GiangVien)) {
@@ -125,7 +125,7 @@ public class SVAprovalController {
 	
 	
 	
-	@PostMapping("/projects/approve/{msdt}/duyet/{mssv}")
+	@PostMapping("/detai/duyetsv/{msdt}/duyet/{mssv}")
 	public String duyetSinhVien(
 	    @PathVariable("msdt") int msdt,
 	    @PathVariable("mssv") String mssv,
@@ -143,7 +143,7 @@ public class SVAprovalController {
 	    int svDaDuyetTrongDeTai = svApprovalService.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
 	    if (svDaDuyetTrongDeTai >= project.getSosvtoida()) {
 	        model.addAttribute("error", "Đề tài này đã đủ số lượng sinh viên thực hiện.");
-	        return "redirect:/projects/approve/" + msdt;
+	        return "redirect:/detai/duyetsv/" + msdt;
 	    }
 
 	    int svDaDuyetCungLoai = svApprovalService.countByGiangVienAndLoai(gv.getMsgv(), project.getTheLoai().getMatheloai());
@@ -151,10 +151,10 @@ public class SVAprovalController {
 
 	    if (svDaDuyetCungLoai >= hanMuc) {
 	        model.addAttribute("error", "Bạn đã vượt quá hạn mức sinh viên cho loại đề tài này.");
-	        return "redirect:/projects/approve/" + msdt;
+	        return "redirect:/detai/duyetsv/" + msdt;
 	    }
 
 	    svApprovalService.approveStudent(msdt, mssv);
-	    return "redirect:/projects/approve/" + msdt;
+	    return "redirect:/detai/duyetsv/" + msdt;
 	}
 }
