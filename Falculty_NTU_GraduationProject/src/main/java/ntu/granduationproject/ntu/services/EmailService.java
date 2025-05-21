@@ -25,6 +25,15 @@ public class EmailService {
 	        mailSender.send(message);
 	    }
 	    
+
+	    public void sendNotificationEmail(String toEmail, String subject, String body) {
+	        SimpleMailMessage message = new SimpleMailMessage();
+	        message.setTo(toEmail);
+	        message.setSubject(subject);
+	        message.setText(body);
+	        mailSender.send(message);
+	    }
+
 	    
 	    public void sendProjectApprovalEmail(String toEmail, String tenDeTai) {
 	        SimpleMailMessage message = new SimpleMailMessage();

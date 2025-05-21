@@ -54,6 +54,24 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<Project> searchProjects(String maNamHoc, String maLinhVuc, String maTheLoai, String tenGiangVien) {
 	    return projectRepository.searchByCriteria(maNamHoc, maLinhVuc, maTheLoai, tenGiangVien);
 	}
+	@Override
+	public List<Project> getAllProjects() {
+		// TODO Auto-generated method stub
+		return projectRepository.findAll();
+	}
+	
+	@Override
+	public List<Project> searchProjects(String msgv, Integer namhoc, Integer theloai, Integer linhvuc, String tendt,
+			String trangthai) {
+		// TODO Auto-generated method stub
+		return projectRepository.searchProjects(msgv, namhoc, theloai, linhvuc, tendt, trangthai);
+	}
+	@Override
+	public Project findByMsdt(int msdt) {
+		// TODO Auto-generated method stub
+		Optional<Project> optionalProject = projectRepository.findById(msdt);
+        return optionalProject.orElse(null);
+	}
 	
 
 	@Override
