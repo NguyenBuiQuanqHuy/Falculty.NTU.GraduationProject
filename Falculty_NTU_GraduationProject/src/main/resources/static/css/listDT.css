@@ -9,6 +9,18 @@
     font-weight: bold;
     margin-bottom: 20px;
 }
+.deny-btn {
+    background-color: #008000; /* đỏ */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.deny-btn:hover {
+    background-color: #b02a37;
+}
 
 .filters {
     display: grid;
