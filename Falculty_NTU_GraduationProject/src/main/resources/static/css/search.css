@@ -1,0 +1,68 @@
+   table, th, td {
+            border: 1px solid #8B0000;
+            border-collapse: collapse;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .btn-success {
+            background-color: #a30000;
+            color: white;
+            border: none;
+        }
+        .btn-danger {
+            background-color: #aaa;
+            color: white;
+            border: none;
+        }
+        .search-container {
+            display: flex;
+            justify-content: center;
+        }
+        .search-form {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column; /* Đổi sang xếp theo cột */
+    align-items: flex-start; /* Căn trái */
+}
+
+.search-form .form-row {
+    display: flex;
+    flex-direction: column; /* Xếp theo cột */
+    gap: 10px;
+}
+
+.search-form select,
+.search-form input {
+    margin-right: 0; /* bỏ margin bên phải */
+    padding: 6px;
+    width: 200px;
+    border: 1px solid #8B0000;
+    border-radius: 5px;
+}
+
+/* Giữ nút Tìm kiếm nằm bên phải dưới */
+.search-form button {
+    background-color: #8B0000;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    min-width: 100px;
+    align-self: flex-end; /* đẩy nút sang bên phải */
+}

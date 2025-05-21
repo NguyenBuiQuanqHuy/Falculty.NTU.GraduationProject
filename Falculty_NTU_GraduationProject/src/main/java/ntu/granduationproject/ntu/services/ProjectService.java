@@ -3,14 +3,28 @@ package ntu.granduationproject.ntu.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-
 import ntu.granduationproject.ntu.models.Project;
-@Service
+
 public interface ProjectService {
+
 	void createProject(Project project);
 	List<Project> getAllProjects();
 	public List<Project> searchProjects(String msgv, Integer namhoc, Integer theloai, Integer linhvuc, String tendt, String trangthai);
 	
 	 public Project findByMsdt(int msdt);
 }
+=======
+    void createProject(Project project);
+    List<Project> getAllProjects();
+    List<Project> getProjectsByTrangThai(String trangThai);
+    Optional<Project> findById(int msdt);
+    List<Project> searchProjects(String maNamHoc, String maLinhVuc, String maTheLoai, String tenGiangVien);
+    
+    
+    Project getProjectById(int msdt);
+    void save(Project project);
+    
+    void deleteById(int msdt);
+    
+}	
+
