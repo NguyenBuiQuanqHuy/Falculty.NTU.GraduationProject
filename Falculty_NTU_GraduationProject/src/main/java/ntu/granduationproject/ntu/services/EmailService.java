@@ -24,5 +24,14 @@ public class EmailService {
 	        message.setText("Mật khẩu được cấp là : " + password);
 	        mailSender.send(message);
 	    }
+	    
+	    
+	    public void sendProjectApprovalEmail(String toEmail, String tenDeTai) {
+	        SimpleMailMessage message = new SimpleMailMessage();
+	        message.setTo(toEmail);
+	        message.setSubject("Đề tài đã được duyệt");
+	        message.setText("Đề tài \"" + tenDeTai + "\" của bạn đã được duyệt.");
+	        mailSender.send(message);
+	    }
 
 }
