@@ -5,16 +5,13 @@
     <title>Duyệt đề tài</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" th:href="@{/css/updateProfile.css}" />
-    <link rel="stylesheet" th:href="@{/css/search.css}" />
-    <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+    <link rel="stylesheet" th:href="@{/css/listDT.css}" />
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
-
 </head>
 <body>
 
@@ -22,74 +19,65 @@
 <div th:replace="~{layout/header :: header}"></div>
 
 <!-- MAIN CONTENT -->
-<div class="form-container">
+<div class="main">
     <h2 style="color: #8B0000; text-align: center;">DUYỆT ĐỀ TÀI</h2>
 
     <!-- Tìm kiếm -->
-    <div class="search-container">
-        <form class="search-form" th:action="@{/duyetdetai}" method="get">
-            <div class="form-left">
-                <select name="namhoc">
-                    <option value="">Năm học</option>
-                    <option th:each="n : ${dsNamHoc}" th:value="${n.manamhoc}" th:text="${n.tennamhoc}">Nam học</option>
-                </select>
+    <form th:action="@{/duyetdetai}" method="get" class="filters">
+        <select name="namhoc">
+            <option value="">-- Năm học --</option>
+            <option th:each="n : ${dsNamHoc}" th:value="${n.manamhoc}" th:text="${n.tennamhoc}"></option>
+        </select>
 
-                <select name="linhvuc">
-                    <option value="">Lĩnh vực</option>
-                    <option th:each="lv : ${dsLinhVuc}" th:value="${lv.malinhvuc}" th:text="${lv.tenlinhvuc}">Lĩnh vực</option>
-                </select>
-            </div>
+        <select name="linhvuc">
+            <option value="">-- Lĩnh vực --</option>
+            <option th:each="lv : ${dsLinhVuc}" th:value="${lv.malinhvuc}" th:text="${lv.tenlinhvuc}"></option>
+        </select>
 
-            <div class="form-center">
-                <select name="loai">
-                    <option value="">Loại</option>
-                    <option th:each="t : ${dsTheLoai}" th:value="${t.matheloai}" th:text="${t.tentheloai}">Loại</option>
-                </select>
+        <select name="loai">
+            <option value="">-- Loại --</option>
+            <option th:each="t : ${dsTheLoai}" th:value="${t.matheloai}" th:text="${t.tentheloai}"></option>
+        </select>
 
-                <input type="text" name="truongkhoa" placeholder="Nhập tên giảng viên" th:value="${truongkhoa != null ? truongkhoa : ''}" />
-            </div>
+        <input type="text" name="truongkhoa" placeholder="Nhập tên giảng viên"
+               th:value="${truongkhoa != null ? truongkhoa : ''}" />
 
-            <div class="form-right">
-                <button type="submit">Tìm kiếm</button>
-            </div>
-        </form>
-    </div>
+        <button type="submit" class="search-btn">Tìm kiếm</button>
+        <button type="button" class="reset-btn" onclick="window.location.href='/duyetdetai'">Làm mới</button>
+    </form>
 
     <!-- BẢNG DỮ LIỆU -->
     <table>
         <thead>
             <tr>
                 <th>STT</th>
-                <th>MSĐT</th>
                 <th>Tên đề tài</th>
                 <th>Loại</th>
                 <th>Lĩnh vực</th>
                 <th>Giảng viên ra đề</th>
-                <th>Chi tiết đề tài</th>
+                <th>Chi tiết</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="p, stat : ${projects}">
                 <td th:text="${stat.count}">1</td>
-                <td th:text="${p.msdt}">MSĐT</td>
                 <td th:text="${p.tendt}">Tên</td>
                 <td th:text="${p.theLoai?.tentheloai ?: 'Chưa có'}">Loại</td>
                 <td th:text="${p.linhVuc?.tenlinhvuc ?: 'Chưa có'}">Lĩnh vực</td>
                 <td th:text="${p.msgv?.hoten ?: 'Chưa có'}">GV</td>
                 <td>
-                    <a th:href="@{/giangvien/chitiet/{id}(id=${p.msdt})}"
-                       class="btn btn-info">Link</a>
+                    <a th:href="@{/giangvien/chitiet/{id}(id=${p.msdt})}" class="view-link">Xem</a>
                 </td>
                 <td>
                     <div th:if="${p.trangthai == 'chưa duyệt'}">
-                        <form th:action="@{/duyetdetai}" method="post" style="display: inline-block;">
+                        <form th:action="@{/duyetdetai}" method="post" style="display:inline-block;">
                             <input type="hidden" name="msdt" th:value="${p.msdt}" />
-                            <button type="submit" class="btn btn-success">Duyệt</button>
+                            <button type="submit" class="approve-btn">Duyệt</button>
                         </form>
-                        <form th:action="@{/tuchoidetai}" method="post" style="display: inline-block;">
+                        <form th:action="@{/tuchoidetai}" method="post" style="display:inline-block;">
                             <input type="hidden" name="msdt" th:value="${p.msdt}" />
-                            <button type="submit" class="btn btn-danger">Từ chối</button>
+                           <button type="submit" class="deny-btn">Từ chối</button>
                         </form>
                     </div>
                     <div th:if="${p.trangthai == 'Đã duyệt'}" class="text-success fw-bold">
@@ -97,7 +85,6 @@
                     </div>
                 </td>
             </tr>
-
             <tr th:if="${#lists.isEmpty(projects)}">
                 <td colspan="8">Không có đề tài chờ duyệt.</td>
             </tr>
