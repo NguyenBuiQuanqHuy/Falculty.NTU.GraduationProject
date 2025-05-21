@@ -9,13 +9,11 @@ public interface ProjectService {
 
 	void createProject(Project project);
 	List<Project> getAllProjects();
+	List<Project> getProjects();
 	public List<Project> searchProjects(String msgv, Integer namhoc, Integer theloai, Integer linhvuc, String tendt, String trangthai);
 	
-	 public Project findByMsdt(int msdt);
-}
-=======
-    void createProject(Project project);
-    List<Project> getAllProjects();
+	public Project findByMsdt(int msdt);
+
     List<Project> getProjectsByTrangThai(String trangThai);
     Optional<Project> findById(int msdt);
     List<Project> searchProjects(String maNamHoc, String maLinhVuc, String maTheLoai, String tenGiangVien);
@@ -25,6 +23,7 @@ public interface ProjectService {
     void save(Project project);
     
     void deleteById(int msdt);
+}
     
-}	
+    
 

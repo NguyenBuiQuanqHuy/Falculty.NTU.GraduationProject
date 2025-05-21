@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ntu.granduationproject.ntu.models.DangKyDetai;
 import ntu.granduationproject.ntu.models.Project;
 import ntu.granduationproject.ntu.models.SinhVien;
-import ntu.granduationproject.ntu.repositories.DangKyDetaiRepository;
+import ntu.granduationproject.ntu.repositories.DangKyDeTaiRepository;
 import ntu.granduationproject.ntu.repositories.ProjectRepository;
 
 @Service
@@ -20,7 +20,7 @@ public class ProjectServiceImpl implements ProjectService {
 	ProjectRepository projectRepository;
 	
 	@Autowired
-	private DangKyDetaiRepository dangKyDetaiRepository;
+	DangKyDeTaiRepository dangKyDetaiRepository;
 
 	@Autowired
 	private EmailService emailService;
@@ -54,11 +54,7 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<Project> searchProjects(String maNamHoc, String maLinhVuc, String maTheLoai, String tenGiangVien) {
 	    return projectRepository.searchByCriteria(maNamHoc, maLinhVuc, maTheLoai, tenGiangVien);
 	}
-	@Override
-	public List<Project> getAllProjects() {
-		// TODO Auto-generated method stub
-		return projectRepository.findAll();
-	}
+
 	
 	@Override
 	public List<Project> searchProjects(String msgv, Integer namhoc, Integer theloai, Integer linhvuc, String tendt,
@@ -95,9 +91,11 @@ public class ProjectServiceImpl implements ProjectService {
 		public void deleteById(int msdt) {
 		    projectRepository.deleteById(msdt);
 		}
-	
-		
-		
-		
+
+		@Override
+		public List<Project> getProjects() {
+			// TODO Auto-generated method stub
+			return projectRepository.findAll();
+		}	
 }
 
