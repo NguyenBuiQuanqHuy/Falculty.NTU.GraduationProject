@@ -109,6 +109,5 @@ public class ProjectController {
 		redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
 		return "redirect:/giangvien/home";
 	}
-	 
-
+	
 }
