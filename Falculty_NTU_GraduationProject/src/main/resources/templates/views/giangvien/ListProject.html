@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Danh sách đề tài</title>
+    <link rel="stylesheet" th:href="@{/css/updateProfile.css}" />
+    <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+    <style>
+        table, th, td {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div th:replace="~{layout/header :: header}"></div>
+
+<!-- NỘI DUNG CHÍNH -->
+<div>
+    <div class="form-container">
+        <h2>Danh sách đề tài</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã số</th>
+                    <th>Tên đề tài</th>
+                    <th>Giảng viên</th>
+                    <th>Thể loại</th>
+                    <th>Lĩnh vực</th>
+                    <th>Số SV tối đa</th>
+                    <th>Khóa</th>
+                    <th>Niên khóa</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${projects}">
+                    <td th:text="${p.msdt}">msdt</td>
+                    <td th:text="${p.tendt}">Tên</td>
+                    <td th:text="${p.msgv.hoten}">GV</td>
+                    <td th:text="${p.theLoai.tentheloai}">Thể loại</td>
+                    <td th:text="${p.linhVuc.tenlinhvuc}">Lĩnh vực</td>
+                    <td th:text="${p.sosvtoida}">Số SV</td>
+                    <td th:text="${p.khoasv}">Khóa</td>
+                    <td th:text="${p.namHoc.tennamhoc}">Năm</td>
+                    <td th:text="${p.trangthai}">Trạng thái</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div th:replace="~{layout/footer :: footer}"></div>
+
+</body>
+</html>

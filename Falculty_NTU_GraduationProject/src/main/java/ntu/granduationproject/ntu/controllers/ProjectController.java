@@ -71,7 +71,7 @@ public class ProjectController {
 	    model.addAttribute("linhVucs", linhVucRepository.findAll());
 	    model.addAttribute("theLoais", theLoaiRepository.findAll());
 	    model.addAttribute("giangviens", giangVienRepository.findAll());
-	    return "views/giangvien/createproject";
+	    return "views/giangvien/CreateProject";
 	}
 
 
@@ -136,7 +136,7 @@ public class ProjectController {
 
 	@GetMapping("/listTopic/{id}")
 	public String TopicInfo(@PathVariable("id") int msdt, Model model) {
-		Project project = projectService.findById(msdt);
+		Optional<Project> project = projectService.findById(msdt);
 		model.addAttribute("detai", project);
 		return "views/sinhvien/TopicInfo";
 	}
