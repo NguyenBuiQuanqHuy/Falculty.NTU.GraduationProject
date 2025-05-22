@@ -21,8 +21,8 @@ body {
 }
 
 .logo-section img {
-    width: 450px;       
-    height: 80px;       
+    width: 450px;
+    height: 80px;
     display: block;
 }
 
@@ -37,7 +37,7 @@ body {
 
 .nav {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     background-color: white;
@@ -192,13 +192,13 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #861d22; 
+    background-color: #861d22;
     color: white;
     text-align: center;
     padding: 10px 0;
 }
 
 a{
-	text-decoration: none;
+    text-decoration: none;
     color: black;
 }

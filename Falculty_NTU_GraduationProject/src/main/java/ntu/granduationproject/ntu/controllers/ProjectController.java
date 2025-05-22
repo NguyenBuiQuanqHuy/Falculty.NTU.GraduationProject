@@ -1,12 +1,16 @@
 package ntu.granduationproject.ntu.controllers;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -120,4 +124,20 @@ public class ProjectController {
 	    return "redirect:/giangvien/home";
 	}
 
+	@GetMapping("/listTopic")
+	public String ListTopic(Model model) {
+		List<Project> dsDetai = projectService.getDetaiFromDatabase()
+				.stream()
+				.filter(Objects::nonNull) // bỏ các phần tử null
+				.toList();
+		model.addAttribute("dsdetai", dsDetai);
+		return "views/sinhvien/listTopic";
+	}
+
+	@GetMapping("/listTopic/{id}")
+	public String TopicInfo(@PathVariable("id") int msdt, Model model) {
+		Project project = projectService.findById(msdt);
+		model.addAttribute("detai", project);
+		return "views/sinhvien/TopicInfo";
+	}
 }

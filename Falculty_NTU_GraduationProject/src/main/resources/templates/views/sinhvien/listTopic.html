@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tạo đề tài</title>
+  <link rel="stylesheet" th:href="@{/css/listTopic.css}" />
+  <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+<div th:fragment="content">
+  <div class="main">
+    <div class="tab">
+      <span class="active">DANH SÁCH ĐỀ TÀI</span>
+      <span>ĐÃ ĐĂNG KÝ</span>
+    </div>
+    <table>
+      <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tên đề tài</th>
+        <th>Loại</th>
+        <th>Giảng viên ra đề</th>
+        <th>Chi tiết</th>
+        <th>Đã đăng ký</th>
+        <th>Được duyệt</th>
+        <th>Đăng ký</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="detai, stat : ${dsdetai}" th:if="${detai != null}">
+        <td th:text="${stat.count}"></td>
+        <td th:text="${detai.tendt}"></td>
+        <td th:text="${detai.theLoai.tentheloai}"></td>
+        <td th:text="${detai.msgv.hoten}"></td>
+        <td>
+          <a class="chitiet" th:href="@{/listTopic/{id}(id=${detai.msdt})}">Chi tiết</a>
+        </td>
+        <td>0</td>
+        <td>0</td>
+        <td><button class="btn-register">Đăng ký</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div th:replace="~{layout/footer :: footer}"></div>
+</body>
+</html>

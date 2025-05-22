@@ -225,7 +225,7 @@ a {
     text-decoration: none;
 }
 .cv-readonly {
-    max-height: 300px;
+    max-height: 405px;
     max-width: 550px;
     overflow-x: auto;
     overflow-y: auto;

@@ -1,5 +1,7 @@
 package ntu.granduationproject.ntu.services;
 
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +30,14 @@ public class ProjectServiceImpl implements ProjectService{
 	     projectRepository.save(project);
 	     
 	}
-	
+
+	public List<Project> getDetaiFromDatabase() {
+		return projectRepository.findAll();
+	}
+
+	@Override
+	public Project findById(int msdt) {
+		return projectRepository.findById(msdt)
+				.orElseThrow(() -> new NoSuchElementException("Không tìm thấy đề tài với mã số: " + msdt));
+	}
 }
