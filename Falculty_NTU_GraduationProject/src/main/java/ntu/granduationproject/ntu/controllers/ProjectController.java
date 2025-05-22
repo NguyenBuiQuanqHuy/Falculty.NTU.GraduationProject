@@ -45,7 +45,7 @@ public class ProjectController {
 	@Autowired
 	NamHocRepository namHocRepository;
 
-	@GetMapping("/giangvien/taodetai")
+	@GetMapping("/taodetai")
 	public String showCreateProjectForm(ModelMap model, HttpSession session) {
 	    Object userObj = session.getAttribute("user");
 	    if (userObj != null && userObj instanceof GiangVien) {
@@ -75,7 +75,7 @@ public class ProjectController {
 	}
 
 
-	@PostMapping("/giangvien/taodetai")
+	@PostMapping("/taodetai")
 	public String taodetai(
 	                       @RequestParam String tendt,
 	                       @RequestParam int theloai,
@@ -104,7 +104,7 @@ public class ProjectController {
 
 	    if (giangVien == null || loai == null || linhVucObj == null || namHoc == null) {
 	        redirectAttributes.addFlashAttribute("error", "Một trong các thông tin không hợp lệ.");
-	        return "redirect:/giangvien/taodetai"; 
+	        return "redirect:/taodetai"; 
 	    }
 
 	    Project deTai = new Project();
