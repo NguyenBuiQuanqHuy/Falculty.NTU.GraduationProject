@@ -18,11 +18,11 @@ public class Project {
 	private int msdt;
 	private String tendt;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "msgv",referencedColumnName = "msgv")
 	private GiangVien msgv;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "theloai",referencedColumnName = "matheloai")
 	private TheLoai theLoai;
 	private String mota;
@@ -30,7 +30,7 @@ public class Project {
 	 @Column(columnDefinition = "LONGTEXT")
 	private String noidung;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "linhvuc",referencedColumnName = "malinhvuc")
 	private LinhVuc linhVuc;
 	private int sosvtoida;
@@ -40,7 +40,7 @@ public class Project {
 	private int khoasv;
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "namhoc",referencedColumnName = "manamhoc")
 	private NamHoc namHoc;
 	private String trangthai;
