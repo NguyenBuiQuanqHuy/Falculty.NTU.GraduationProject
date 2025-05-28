@@ -2,6 +2,8 @@ package ntu.granduationproject.ntu.repositories;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,18 +37,58 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
  	                               @Param("loai") String loai,
  	                               @Param("truongkhoa") String truongkhoa);
 	@Query("SELECT p FROM Project p WHERE " +
-		       "(:namhoc IS NULL OR p.namHoc.tennamhoc = :namhoc) AND " +
-		       "(:theloai IS NULL OR p.theLoai.id = :theloai) AND " +
-		       "(:linhvuc IS NULL OR p.linhVuc.id = :linhvuc) AND " +
-		       "(:tendt IS NULL OR LOWER(p.tendt) LIKE LOWER(CONCAT('%', :tendt, '%'))) AND " +
-		       "p.msgv.id = :giangVienId AND " +
-		       "p.trangthai = :trangthai " +
-		       "ORDER BY p.id DESC")
-		List<Project> searchProjects(
-		        @Param("giangVienId") String msgv,
-		        @Param("namhoc") Integer namhoc,
-		        @Param("theloai") Integer theloai,
-		        @Param("linhvuc") Integer linhvuc,
-		        @Param("tendt") String tendt,
-		        @Param("trangthai") String trangthai);
+			"(:namhoc IS NULL OR p.namHoc.manamhoc = :namhoc) AND " +
+			"(:theloai IS NULL OR p.theLoai.matheloai = :theloai) AND " +
+			"(:linhvuc IS NULL OR p.linhVuc.malinhvuc = :linhvuc) AND " +
+			"(:tendt IS NULL OR LOWER(p.tendt) LIKE LOWER(CONCAT('%', :tendt, '%'))) AND " +
+			"(:msgv IS NULL OR p.msgv.msgv = :msgv) AND " +  // <-- Sửa chỗ này
+			"(:trangthai IS NULL OR LOWER(p.trangthai) = LOWER(:trangthai)) " +
+			"ORDER BY p.msdt DESC")
+	List<Project> searchProjects(
+			@Param("msgv") String msgv,
+			@Param("namhoc") Integer namhoc,
+			@Param("theloai") Integer theloai,
+			@Param("linhvuc") Integer linhvuc,
+			@Param("tendt") String tendt,
+			@Param("trangthai") String trangthai);
+	List<Project> findByMsgv_Msgv(String msgv);
+
+	@Query("SELECT p FROM Project p " +
+			"JOIN p.msgv gv " +
+			"JOIN p.theLoai tl " +
+			"JOIN p.linhVuc lv " +
+			"JOIN p.namHoc nh " +
+			"WHERE (:namhoc IS NULL OR nh.manamhoc = :namhoc) " +
+			"AND (:linhvuc IS NULL OR lv.malinhvuc = :linhvuc) " +
+			"AND (:loai IS NULL OR tl.matheloai = :loai) " +
+			"AND (:truongkhoa IS NULL OR LOWER(gv.hoten) LIKE LOWER(CONCAT('%', :truongkhoa, '%'))) " +
+			"ORDER BY CASE WHEN p.trangthai = 'Chưa duyệt' THEN 0 ELSE 1 END, p.msdt DESC")
+	Page<Project> searchByCriteriaPaged(
+			@Param("namhoc") String namhoc,
+			@Param("linhvuc") String linhvuc,
+			@Param("loai") String loai,
+			@Param("truongkhoa") String truongkhoa,
+			Pageable pageable);
+
+	@Query("SELECT p FROM Project p " +
+			"JOIN FETCH p.msgv gv " +
+			"JOIN FETCH p.theLoai tl " +
+			"JOIN FETCH p.linhVuc lv " +
+			"JOIN FETCH p.namHoc nh " +
+			"ORDER BY CASE WHEN p.trangthai = 'Chưa duyệt' THEN 0 ELSE 1 END, p.msdt DESC")
+	Page<Project> findAllOrderByTrangthai(Pageable pageable);
+
+	@Query("SELECT p FROM Project p " +
+			"WHERE (:tendt IS NULL OR LOWER(p.tendt) LIKE LOWER(CONCAT('%', :tendt, '%'))) " +
+			"AND (:namhoc IS NULL OR p.namHoc.manamhoc = :namhoc) " +
+			"AND (:theloai IS NULL OR p.theLoai.matheloai = :theloai) " +
+			"AND (:linhvuc IS NULL OR p.linhVuc.malinhvuc = :linhvuc) " +
+			"AND (:trangthai IS NULL OR p.trangthai = :trangthai)")
+	Page<Project> searchWithFiltersPaged(@Param("tendt") String tendt,
+										 @Param("namhoc") Integer namhoc,
+										 @Param("theloai") Integer theloai,
+										 @Param("linhvuc") Integer linhvuc,
+										 @Param("trangthai") String trangthai,
+										 Pageable pageable);
+
 }

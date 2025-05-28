@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +34,7 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	@Override
 	public void createProject(Project project) {
-		project.setTrangthai("chưa duyệt");
+		project.setTrangthai("Chưa duyệt");
 		project.setCosvthuchien(false);
 	    projectRepository.save(project);
 	}
@@ -56,11 +59,10 @@ public class ProjectServiceImpl implements ProjectService {
 	    return projectRepository.searchByCriteria(maNamHoc, maLinhVuc, maTheLoai, tenGiangVien);
 	}
 
-	
+
 	@Override
 	public List<Project> searchProjects(String msgv, Integer namhoc, Integer theloai, Integer linhvuc, String tendt,
 			String trangthai) {
-		// TODO Auto-generated method stub
 		return projectRepository.searchProjects(msgv, namhoc, theloai, linhvuc, tendt, trangthai);
 	}
 	@Override
@@ -103,6 +105,30 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectRepository.findAll();
 	}
 
+	@Override
+	public List<Project> findProjectsByGiangVien(String msgv) {
+		return projectRepository.findByMsgv_Msgv(msgv);
+	}
 
+	@Override
+	public Page<Project> getPagedProjects(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return projectRepository.findAll(pageable);
+	}
+
+	@Override
+	public Page<Project> searchProjectsPaged(String maNamHoc, String maLinhVuc, String maTheLoai, String truongkhoa, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return projectRepository.searchByCriteriaPaged(maNamHoc, maLinhVuc, maTheLoai, truongkhoa, pageable);
+	}
+	@Override
+	public Page<Project> getPagedProjects(Pageable pageable) {
+		return projectRepository.findAllOrderByTrangthai(pageable);
+	}
+
+	@Override
+	public Page<Project> searchProjectsPaged(String tendt, Integer namhoc, Integer theloai, Integer linhvuc, String trangthai, Pageable pageable) {
+		return projectRepository.searchWithFiltersPaged(tendt, namhoc, theloai, linhvuc, trangthai, pageable);
+	}
 }
 

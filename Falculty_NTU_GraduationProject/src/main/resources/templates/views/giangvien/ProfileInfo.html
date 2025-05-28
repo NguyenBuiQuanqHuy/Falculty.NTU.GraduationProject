@@ -14,19 +14,21 @@
   <div class="form-container">
     <form class="profile-form">
       <div class="form-left">
-        <h2 th:text="${detai.tendt}">Tên đề tài</h2>
-        <p><strong>Thể loại:</strong> <span th:text="${detai.theLoai.tentheloai}"></span></p>
-        <p><strong>Giảng viên ra đề:</strong> <span th:text="${detai.msgv.hoten}"></span></p>
-        <p><strong>Lĩnh vực:</strong> <span th:text="${detai.linhVuc.tenlinhvuc}"></span></p>
+        <h3>Thông tin giảng viên</h3>
+        <p><strong>Mã số: </strong> <span th:text="${giangvien.msgv}"></span></p>
+        <p><strong>Họ và tên: </strong> <span th:text="${giangvien.hoten}"></span></p>
+        <p><strong>Email: </strong> <span th:text="${giangvien.email}"></span></p>
+        <p><strong>Hạn mức đồ án: </strong> <span th:text="${giangvien.HMHDDA}"></span>
+        <p><strong>Hạn mức chuyên đề: </strong> <span th:text="${giangvien.HMHDCD}"></span>
       </div>
       <div class="form-right">
         <div class="group-title-profile">
-          <h2>Chi tiết đề tài</h2>
-          <h4><a th:href="@{'/pdf/export/detai' + ${detai.msdt}}" target="_blank" class="btn-export">
+          <h3>Hồ sơ năng lực</h3>
+          <h4><a th:href="@{'/pdf/export/' + ${giangvien.getCvnangluc()}}" target="_blank" class="btn-export">
             <i class="fas fa-file-pdf"></i> Xem PDF
           </a></h4>
         </div>
-        <div class="topic-info" th:utext="${detai.noidung}">Nội dung ở đây...</div>
+        <div class="topic-info" th:utext="${giangvien.getCvnangluc()}">Nội dung ở đây...</div>
       </div>
     </form>
   </div>

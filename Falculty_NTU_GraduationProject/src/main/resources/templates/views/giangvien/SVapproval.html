@@ -9,12 +9,15 @@
 <body>
     <div th:replace="~{layout/header :: header}"></div>
     <div th:fragment="content">
+        <div class="tab" style="padding-top: 20px;">
+            <a class="btn-return" style="color: #8B0000; cursor: pointer; text-decoration: none; padding-left: 15px; font-weight: bold;" onclick="history.back();">◀ Trở về danh sách</a>
+        </div>
         <div class="main">
            <h2 th:text="${tenDetai}"></h2>
             <div class="quota-summary">
+            <p>Sinh viên đã duyệt: <strong>[[${soSvDaDuyet}]]</strong></p>
       		<p>Hạn mức Đồ án: <strong>[[${soSvDaDuyetDA}]] / [[${hanMucDA}]]</strong></p>
 			<p>Hạn mức Chuyên đề: <strong>[[${soSvDaDuyetCD}]] / [[${hanMucCD}]]</strong></p>
-
     	</div>
              <table>
     <thead>
@@ -30,24 +33,20 @@
         <tr th:each="dangKy, stat : ${danhSachDK}">
             <td th:text="${stat.index + 1}"></td>
             <td th:text="${dangKy.mssv.mssv}"></td>
-			<td th:text="${dangKy.mssv.hoten}"></td>
-            <td><a th:href="@{'/hoso/' + ${dangKy.mssv.mssv}}" class="view-link">Xem hồ sơ</a></td>
+            <td><span th:text="${dangKy.mssv.hoten}"></span></td>
+            <td><a th:href="@{/profile/sinhvien/{id}(id=${dangKy.mssv.mssv})}" class="view-link">Xem</a></td>
             <td>
-            <form th:if="${dangKy.trangthai != 'Đã duyệt'}"
-		      th:action="@{/detai/duyetsv/{msdt}/duyet/{mssv}(msdt=${dangKy.msdt.msdt}, mssv=${dangKy.mssv.mssv})}"
-		      method="post">
-		    <button type="submit" class="approve-btn">Duyệt</button>
-		</form>
+                <form th:if="${dangKy.trangthai != 'Đã duyệt'}"
+                  th:action="@{/detai/duyetsv/{msdt}/duyet/{mssv}(msdt=${dangKy.msdt.msdt}, mssv=${dangKy.mssv.mssv})}"
+                  method="post" onsubmit="return confirm('Bạn có chắc chắn muốn duyệt sinh viên này không?');">
+                <button type="submit" class="approve-btn">Duyệt</button>
+                </form>
 		<button th:if="${dangKy.trangthai == 'Đã duyệt'}"
 		        class="approve-btn accepted" disabled>Đã duyệt</button>
         </td>
         </tr>
     </tbody>
-</table>
-
-
-                
-                
+     </table>
         </div>
     </div>
     <div th:replace="~{layout/footer :: footer}"></div>

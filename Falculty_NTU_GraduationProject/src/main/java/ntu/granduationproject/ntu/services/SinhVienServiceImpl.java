@@ -50,19 +50,24 @@ public class SinhVienServiceImpl implements SinhVienService {
     public void AddSinhVien(SinhVien sinhvien) {
     	sinhVienRepository.save(sinhvien);
     }
-    
-    
+
+    @Override
+    public SinhVien findByMssv(String mssv) {
+        Optional<SinhVien> svOpt = sinhVienRepository.findById(mssv);
+        return svOpt.orElse(null);
+    }
+
     @Override
     public Optional<SinhVien> forgotPasswordSinhVien(String mssv, String email) {
         return sinhVienRepository.findById(mssv);
     }
-    
-    
-    
-    
-    
-    
- 
-    
+
+
+
+
+
+
+
+
 
 }

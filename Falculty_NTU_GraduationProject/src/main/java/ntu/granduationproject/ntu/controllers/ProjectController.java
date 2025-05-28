@@ -1,30 +1,25 @@
 package ntu.granduationproject.ntu.controllers;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import ntu.granduationproject.ntu.models.*;
+import ntu.granduationproject.ntu.repositories.*;
+import ntu.granduationproject.ntu.services.DangKyDetaiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
-import ntu.granduationproject.ntu.models.GiangVien;
-import ntu.granduationproject.ntu.models.LinhVuc;
-import ntu.granduationproject.ntu.models.NamHoc;
-import ntu.granduationproject.ntu.models.Project;
-import ntu.granduationproject.ntu.models.TheLoai;
-import ntu.granduationproject.ntu.repositories.GiangVienRepository;
-import ntu.granduationproject.ntu.repositories.LinhVucRepository;
-import ntu.granduationproject.ntu.repositories.NamHocRepository;
-import ntu.granduationproject.ntu.repositories.TheLoaiRepository;
 import ntu.granduationproject.ntu.services.ProjectService;
 
 @Controller
@@ -44,6 +39,9 @@ public class ProjectController {
 
 	@Autowired
 	NamHocRepository namHocRepository;
+
+	@Autowired
+	DangKyDeTaiRepository dangKyDeTaiRepository;
 
 	@GetMapping("/taodetai")
 	public String showCreateProjectForm(ModelMap model, HttpSession session) {
@@ -121,23 +119,80 @@ public class ProjectController {
 	    projectService.createProject(deTai);
 
 	    redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
-	    return "redirect:/giangvien/home";
+		return "redirect:/giangvien/listTopic?tab=MyTopics";
 	}
 
-	@GetMapping("/listTopic")
-	public String ListTopic(Model model) {
-		List<Project> dsDetai = projectService.getDetaiFromDatabase()
-				.stream()
-				.filter(Objects::nonNull) // bỏ các phần tử null
-				.toList();
-		model.addAttribute("dsdetai", dsDetai);
-		return "views/sinhvien/listTopic";
-	}
+	@GetMapping("/giangvien/listTopic")
+	public String listTopic(
+			@RequestParam(value = "tendt", required = false) String tendt,
+			@RequestParam(value = "namhoc", required = false) Integer namhoc,
+			@RequestParam(value = "theloai", required = false) Integer theloai,
+			@RequestParam(value = "linhvuc", required = false) Integer linhvuc,
+			@RequestParam(name = "page", defaultValue = "0") Integer page,
+			Model model, HttpSession session, RedirectAttributes redirectAttrs) {
 
-	@GetMapping("/listTopic/{id}")
-	public String TopicInfo(@PathVariable("id") int msdt, Model model) {
-		Optional<Project> project = projectService.findById(msdt);
-		model.addAttribute("detai", project);
-		return "views/sinhvien/TopicInfo";
+		// Kiểm tra đăng nhập
+		String msgv = (String) session.getAttribute("maso");
+		if (msgv == null) {
+			redirectAttrs.addFlashAttribute("error", "Bạn chưa đăng nhập");
+			return "redirect:/login";
+		}
+
+		int pageSize = 5;
+		Pageable pageable = PageRequest.of(page, pageSize);
+
+		// Gọi service trả về Page<Project>
+		Page<Project> pagedProjects = projectService.searchProjectsPaged(
+				tendt,
+				namhoc,
+				theloai,
+				linhvuc,
+				"Đã duyệt",
+				pageable
+		);
+
+		// Danh sách đề tài đang hiển thị theo trang
+		List<Project> dsFiltered = pagedProjects.getContent();
+
+		// Đếm số sinh viên đã đăng ký và đã duyệt theo đề tài
+		Map<Integer, Integer> mapCountRegistered = new HashMap<>();
+		Map<Integer, Integer> mapCountApproved = new HashMap<>();
+		for (Project project : dsFiltered) {
+			int count = dangKyDeTaiRepository.countByMsdt_Msdt(project.getMsdt());
+			int approved = dangKyDeTaiRepository.countApprovedByMsdt(project.getMsdt());
+			mapCountRegistered.put(project.getMsdt(), count);
+			mapCountApproved.put(project.getMsdt(), approved);
+		}
+
+		// Lấy danh sách đề tài của giảng viên hiện tại
+		List<Project> myProjects = projectService.findProjectsByGiangVien(msgv);
+		myProjects.sort(Comparator.comparing(dt -> !"Chưa duyệt".equalsIgnoreCase(dt.getTrangthai())));
+		model.addAttribute("myprojects", myProjects);
+
+		// Truyền dữ liệu cho view
+		model.addAttribute("dsdetai", dsFiltered);
+		model.addAttribute("countRegistered", mapCountRegistered);
+		model.addAttribute("countApproved", mapCountApproved);
+		model.addAttribute("myprojects", myProjects);
+
+		// Danh sách lọc
+		model.addAttribute("namhocs", namHocRepository.findAll());
+		model.addAttribute("theloais", theLoaiRepository.findAll());
+		model.addAttribute("linhvucs", linhVucRepository.findAll());
+
+		// Truyền lại giá trị đã chọn
+		model.addAttribute("tendt", tendt);
+		model.addAttribute("selectedNamHoc", namhoc);
+		model.addAttribute("selectedTheLoai", theloai);
+		model.addAttribute("selectedLinhVuc", linhvuc);
+
+		// Phân trang
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", pagedProjects.getTotalPages());
+		System.out.println("Total pages: " + pagedProjects.getTotalPages());
+		System.out.println("Total elements: " + pagedProjects.getTotalElements());
+
+
+		return "views/giangvien/ListProject";
 	}
 }

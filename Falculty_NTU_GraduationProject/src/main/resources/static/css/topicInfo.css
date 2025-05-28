@@ -134,7 +134,8 @@ body {
 
 /*main*/
 .form-container {
-    max-width: 1200px;
+    max-width: 1000px;
+    max-height: 420px;
     margin: 40px auto;
     padding: 30px;
     background: #ffffff;
@@ -181,19 +182,37 @@ body {
     border-radius: 10px;
     overflow-y: auto;
     overflow-x: auto;
-    max-height: 600px;
+    max-height: 300px !important;
     max-width: 550px;
     line-height: 1.6;
     color: #333;
     font-size: 15px;
+    display: block;
 }
+
 
 .tab a {
     text-decoration: none;
     color: #8B1C1C;
     padding-left: 20px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
+.tab a:hover {
+    color: darkblue;
+}
+
+.group-title-profile {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.group-title-profile a {
+    text-decoration: none;
+    color: #861D22;
+}
 footer {
     position: fixed;
     left: 0;

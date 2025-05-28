@@ -1,70 +1,216 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Danh sách đề tài</title>
-    <link rel="stylesheet" th:href="@{/css/updateProfile.css}" />
-    <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
+    <meta charset="UTF-8">
+    <title>Tạo đề tài</title>
+    <link rel="stylesheet" th:href="@{/css/listTopic.css}" />
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+    <link rel="stylesheet" th:href="@{/css/FilterSearch.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
-    <style>
-        table, th, td {
-            border: 1px solid #ccc;
-            border-collapse: collapse;
-            padding: 8px;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        table {
-            width: 100%;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
-
-<!-- HEADER -->
 <div th:replace="~{layout/header :: header}"></div>
+<div th:fragment="content">
+    <div class="main">
+        <div class="tab">
+            <span class="tab-item active" onclick="showTab('listTopic', event)">DANH SÁCH ĐỀ TÀI</span>
+            <span class="tab-item" onclick="showTab('MyTopics', event)">ĐỀ TÀI CỦA TÔI</span>
+        </div>
+        <div id="listTopic" class="tab-content active">
+            <form th:action="@{/giangvien/listTopic}" method="get" class="filters">
+                <select name="namhoc">
+                    <option value="">-- Năm học --</option>
+                    <option th:each="nh : ${namhocs}"
+                            th:value="${nh.manamhoc}"
+                            th:text="'Năm học ' + ${nh.tennamhoc}"
+                            th:selected="${nh.manamhoc == selectedNamHoc}">
+                    </option>
+                </select>
 
-<!-- NỘI DUNG CHÍNH -->
-<div>
-    <div class="form-container">
-        <h2>Danh sách đề tài</h2>
-        <table>
-            <thead>
+                <select name="theloai">
+                    <option value="">-- Loại --</option>
+                    <option th:each="tl : ${theloais}"
+                            th:value="${tl.matheloai}"
+                            th:text="${tl.tentheloai}"
+                            th:selected="${tl.matheloai == selectedTheLoai}">
+                    </option>
+                </select>
+
+                <select name="linhvuc">
+                    <option value="">-- Lĩnh vực --</option>
+                    <option th:each="lv : ${linhvucs}"
+                            th:value="${lv.malinhvuc}"
+                            th:text="${lv.tenlinhvuc}"
+                            th:selected="${lv.malinhvuc == selectedLinhVuc}">
+                    </option>
+                </select>
+
+                <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
+
+                <button type="submit" class="search-btn">Tìm kiếm</button>
+                <button type="button" class="reset-btn" onclick="window.location.href='/giangvien/listTopic'">Làm mới</button>
+            </form>
+
+            <table>
+                <thead>
                 <tr>
-                    <th>Mã số</th>
+                    <th>STT</th>
                     <th>Tên đề tài</th>
-                    <th>Giảng viên</th>
-                    <th>Thể loại</th>
                     <th>Lĩnh vực</th>
-                    <th>Số SV tối đa</th>
-                    <th>Khóa</th>
-                    <th>Niên khóa</th>
-                    <th>Trạng thái</th>
+                    <th>Loại</th>
+                    <th>Giảng viên ra đề</th>
+                    <th>Chi tiết</th>
+                    <th>Đã đăng ký / Đã duyệt</th>
                 </tr>
-            </thead>
-            <tbody>
-                <tr th:each="p : ${projects}">
-                    <td th:text="${p.msdt}">msdt</td>
-                    <td th:text="${p.tendt}">Tên</td>
-                    <td th:text="${p.msgv.hoten}">GV</td>
-                    <td th:text="${p.theLoai.tentheloai}">Thể loại</td>
-                    <td th:text="${p.linhVuc.tenlinhvuc}">Lĩnh vực</td>
-                    <td th:text="${p.sosvtoida}">Số SV</td>
-                    <td th:text="${p.khoasv}">Khóa</td>
-                    <td th:text="${p.namHoc.tennamhoc}">Năm</td>
-                    <td th:text="${p.trangthai}">Trạng thái</td>
-                </tr>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <tr th:each="detai, stat : ${dsdetai}" th:if="${detai != null}">
+                    <td th:text="${stat.index + 1}"></td>
+                    <td th:text="${detai.tendt}"></td>
+                    <td th:text="${detai.linhVuc.tenlinhvuc}"></td>
+                    <td th:text="${detai.theLoai.tentheloai}"></td>
+                    <td th:text="${detai.msgv.hoten}"></td>
+                    <td>
+                        <a class="chitiet" th:href="@{/listTopic/{id}(id=${detai.msdt})}">Xem</a>
+                    </td>
+                    <td>
+                        <span th:text="${countRegistered[detai.msdt]}" class="count-regist"></span> /
+                        <span th:text="${countApproved[detai.msdt]}" class="count-approve"></span>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination" style="text-align:center; margin-top: 20px;">
+                <div th:if="${totalPages > 1}">
+                    <!-- Link trang trước -->
+                    <a th:if="${currentPage > 0}"
+                       th:href="@{/giangvien/listTopic(page=${currentPage - 1},
+                                            namhoc=${selectedNamHoc},
+                                            linhvuc=${selectedLinhVuc},
+                                            theloai=${selectedTheLoai},
+                                            tendt=${tendt})}">
+                        &laquo; Trước
+                    </a>
+
+                    <!-- Các trang số -->
+                    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/giangvien/listTopic(page=${i},
+                                               namhoc=${selectedNamHoc},
+                                               linhvuc=${selectedLinhVuc},
+                                               theloai=${selectedTheLoai},
+                                               tendt=${tendt})}"
+               th:text="${i + 1}"
+               th:classappend="${i == currentPage} ? ' active' : ''">
+            </a>
+        </span>
+
+                    <!-- Link trang sau -->
+                    <a th:if="${currentPage < totalPages - 1}"
+                       th:href="@{/giangvien/listTopic(page=${currentPage + 1},
+                                            namhoc=${selectedNamHoc},
+                                            linhvuc=${selectedLinhVuc},
+                                            theloai=${selectedTheLoai},
+                                            tendt=${tendt})}">
+                        Sau &raquo;
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="MyTopics" class="tab-content">
+            <div th:if="${myprojects == null or #lists.isEmpty(myprojects)}">
+                <h3>Bạn chưa tạo đề tài nào.</h3>
+            </div>
+            <div th:if="${myprojects != null and !#lists.isEmpty(myprojects)}">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên đề tài</th>
+                        <th>Loại</th>
+                        <th>Lĩnh vực</th>
+                        <th>Năm học</th>
+                        <th>Nội dung</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="project, stat : ${myprojects}">
+                        <td th:text="${stat.index + 1}"></td>
+                        <td th:text="${project.tendt}"></td>
+                        <td th:text="${project.theLoai.tentheloai}"></td>
+                        <td th:text="${project.linhVuc.tenlinhvuc}"></td>
+                        <td th:text="${project.namHoc.tennamhoc}"></td>
+                        <td><a th:href="@{/listTopic/{id}(id=${project.msdt})}" class="chitiet">Xem</a></td>
+                        <td>
+                <span th:if="${project.trangthai.equalsIgnoreCase('Chưa duyệt')}"
+                      style="color: #800000; font-weight: bold;">
+                  Chờ duyệt
+                </span>
+                            <span th:if="${project.trangthai.equalsIgnoreCase('Đã duyệt')}"
+                                  style="color: #39ff14; font-weight: bold;">Đã duyệt
+                </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-
-<!-- FOOTER -->
 <div th:replace="~{layout/footer :: footer}"></div>
+<script>
+    function showTab(tabId, event) {
+        // Ẩn tất cả tab content
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
 
+        // Gỡ 'active' khỏi tất cả tab
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        // Hiện tab đã chọn
+        document.getElementById(tabId).classList.add('active');
+
+        // Đánh dấu tab đã chọn là active nếu có event
+        if (event && event.target) {
+            event.target.classList.add('active');
+        } else {
+            // Nếu không có event (gọi từ DOMContentLoaded), active tab-item theo tabId
+            const tabItem = document.querySelector(`.tab-item[onclick="showTab('${tabId}', event)"]`);
+            if (tabItem) tabItem.classList.add('active');
+        }
+    }
+
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const tab = getQueryParam('tab');
+        if (tab === 'MyTopics') {
+            showTab('MyTopics');
+        } else {
+            showTab('listTopic');
+        }
+    });
+</script>
 </body>
 </html>
+<style>
+    .pagination a {
+        margin: 0 4px;
+        padding: 6px 10px;
+        background: #eee;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+    .pagination a.active {
+        background: #8B0000;
+        color: white;
+        font-weight: bold;
+    }
+</style>

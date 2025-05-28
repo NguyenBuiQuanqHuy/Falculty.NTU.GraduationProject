@@ -20,11 +20,11 @@
 		@ManyToOne
 		@JoinColumn(name = "msdt",referencedColumnName = "msdt")
 		private Project msdt;
-		
-		@OneToOne
-		@JoinColumn(name = "mssv",referencedColumnName = "mssv",unique = true)
+
+		@ManyToOne(fetch = FetchType.EAGER)
+		@JoinColumn(name = "mssv", referencedColumnName = "mssv")
 		private SinhVien mssv;
-		
+
 		private String trangthai;
 	
 		public int getId() {

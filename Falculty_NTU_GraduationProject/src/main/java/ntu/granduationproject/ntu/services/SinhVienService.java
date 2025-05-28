@@ -10,6 +10,7 @@ public interface SinhVienService {
 	
 	Optional<SinhVien> forgotPasswordSinhVien(String maso, String email);
 	void AddSinhVien(SinhVien sinhvien);
-	
 
+
+	SinhVien findByMssv(String mssv);
 }

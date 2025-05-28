@@ -56,4 +56,10 @@ public class GiangVienServiceImpl implements GiangVienService {
     public void AddGiangVien (GiangVien giangvien) {
     	giangVienRepository.save(giangvien); 
     }
+
+    @Override
+    public GiangVien findByMsgv(String msgv) {
+        Optional<GiangVien> gvOpt = giangVienRepository.findById(msgv);
+        return gvOpt.orElse(null);
+    }
 }
