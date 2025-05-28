@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -14,76 +14,77 @@
     <div th:fragment="content">
         <div class="main">
             <div class="tab">
-                <span class="active">TẠO ĐỀ TÀI</span>
-                <span>ĐỀ TÀI CỦA TÔI</span>
+                <h2>TẠO ĐỀ TÀI</h2>
             </div>
 
-            <form class="form-box" method="post" th:action="@{/taodetai}">
-                    <div class="input-group-item">
-                        <label>Tên đề tài</label>
-                        <input type="text" name="tendt" required />
-                    </div>
-
-                    <div class="input-group-item">
-                        <label>Mô tả ngắn</label>
-                        <input type="text" name="mota" />
-                    </div>
-
-                    <div class="input-group-item">
-                        <label>Giảng viên ra đề</label>
-                        <input type="text" name="msgv" th:value="${tenGiangVien}" readonly />
-                    </div>
-
-                    <div class="input-group-item">
-                        <label>Thể loại</label>
-                        <div class="radio-group">
-                            <label th:each="tl : ${theLoais}">
-                                <input type="radio" name="theloai" th:value="${tl.matheloai}" required />
-                                <span th:text="${tl.tentheloai}">Tên thể loại</span>
-                            </label>
+            <form class="form-box" method="post" th:action="@{/taodetai}" onsubmit="return confirm('Bạn có chắc chắn muốn tạo đề tài này không?');">
+                <div class="form-columns">
+                    <!-- Cột trái -->
+                    <div class="left-column">
+                        <div class="input-group-item">
+                            <label>Tên đề tài</label>
+                            <input type="text" name="tendt" required />
                         </div>
-                    </div>
 
-                    <div class="input-group">
+                        <div class="input-group-item">
+                            <label>Giảng viên ra đề</label>
+                            <input type="text" name="msgv" th:value="${tenGiangVien}" disabled />
+                        </div>
+
+                        <div class="input-group-item">
+                            <div>
+                                <label for="namhoc">Năm học</label>
+                                <input type="number" id="namhoc" name="namhoc" value="2025" min="2000" max="2100" readonly style="margin-left: 86px; width: 60px; text-align: center"/>
+                            </div>
+                            <div>
+                                <label style="margin-left: 10px;">Lĩnh vực</label>
+                                <select class="session-group2" name="linhvuc" required>
+                                    <option value="">-- Chọn lĩnh vực --</option>
+                                    <option th:each="lv : ${linhVucs}" th:value="${lv.malinhvuc}" th:text="${lv.tenlinhvuc}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group-item">
+                            <label>Thể loại</label>
+                            <div class="radio-group">
+                                <label th:each="tl : ${theLoais}">
+                                    <input type="radio" name="theloai" th:value="${tl.matheloai}" required />
+                                    <span th:text="${tl.tentheloai}">Tên thể loại</span>
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="input-group-item">
                             <div>
                                 <label>Số sinh viên tối đa</label>
-                                <input type="number" name="sosvtoida" min="1" value="1" class="short-input" />
+                                <input type="number" name="sosvtoida" min="1" value="1" class="short-input" style="margin-left: 10px;" />
                             </div>
                             <div>
-                                <label>Dành cho khóa</label>
-                                <input type="number" name="khoasv" min="1" value="66" class="short-input" />
+                                <label style="margin-left: 74px;">Dành cho khóa</label>
+                                <input type="number" name="khoasv" min="1" value="66" class="short-input"/>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="input-group-item">
                         <div class="input-group-item">
-						    <label for="namhoc">Năm học</label>
-							<input type="number" id="namhoc" name="namhoc" value="2025" min="2000" max="2100" readonly />
-
-						</div>
-
-                        <div>
-                            <label>Lĩnh vực</label>
-                            <select class="session-group2" name="linhvuc" required>
-                                <option value="">-- Chọn lĩnh vực --</option>
-                                <option th:each="lv : ${linhVucs}" th:value="${lv.malinhvuc}" th:text="${lv.tenlinhvuc}"></option>
-                            </select>
+                            <label>Mô tả ngắn</label>
+                            <textarea class="mota" type="text" name="mota" /></textarea>
                         </div>
+
+                        <div class="actions">
+                            <button type="submit" class="btn-create">Tạo</button>
+                            <button type="reset" class="btn-reset">Làm mới</button>
+                        </div>
+
                     </div>
-                   
 
-
-                    <label>Chi tiết đề tài</label>
-                    <textarea class="chiTiet" name="noidung" rows="6"
-                              style="width: 100%; resize: vertical;"></textarea>
-                    
-                    
-                     <div class="actions">
-                        <button type="submit" class="btn-create">Tạo</button>
-                        <button type="reset" class="btn-reset">Làm mới</button>
-                    </div>	
+                    <!-- Cột phải -->
+                    <div class="right-column">
+                        <label>Chi tiết đề tài</label>
+                        <textarea id="chiTiet" class="chiTiet" name="noidung" rows="6"
+                                  style="width: 100%; resize: vertical;"></textarea>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -94,7 +95,8 @@
     tinymce.init({
         selector: 'textarea.chiTiet',
         language: 'vi',
-        height: 800,
+        height: 382,
+        width: 850,
         plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code fullscreen table emoticons autosave',
         toolbar: 'undo redo | styles | bold italic underline strikethrough | forecolor backcolor | fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | emoticons | fullscreen preview code',
         menubar: 'file edit view insert format tools table',

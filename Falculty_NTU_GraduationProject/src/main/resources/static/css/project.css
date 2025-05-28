@@ -141,6 +141,9 @@ main {
     padding-bottom: 70px; /* cho phép cuộn khi nội dung quá cao */
 }
 
+.tab h2 {
+    color: #8B1C1C;
+}
 .tab {
     display: flex;
     gap: 20px;
@@ -159,37 +162,60 @@ main {
 }
 
 .form-box {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #8c1c1c;
-    border-radius: 5px;
-    overflow: hidden;
+    max-width: 1450px;
+    margin: auto;
+    border: 3px solid #8B1C1C;
+    border-radius: 15px;
     padding: 20px;
 }
 
-
-
-.form-box label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    text-align: left;
+.form-columns {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
+.left-column, .right-column {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.right-column label {
+    text-align: left;
+    font-weight: bold;
+}
+.right-column textarea {
+    flex-grow: 1;
+    height: 540px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+/* Nhóm form item bên trái */
 .input-group-item {
     display: flex;
-    justify-content: left;
-    padding-bottom: 20px;
+    align-items: center;
+    margin-bottom: 15px;
+    margin-top: 18px;
 }
 
 .input-group-item label {
     font-weight: bold;
-    width: 180px;
+    width: 160px;
+    margin-right: 20px;
     text-align: left;
 }
 
 .input-group-item input,
-.input-group-item textarea {
-    flex: 1;
+.input-group-item select {
+    width: 330px;
     padding: 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -197,39 +223,56 @@ main {
     font-size: 14px;
 }
 
-input[type="number"].short-input {
-    margin-left: 33px;
-    width: 6ch; 
+/* Trường số (short input) */
+input[type="number"].short-input{
+    width: 55px;
+    text-align: center;
 }
 
-.session-group {
-    margin-left: 106px;
-    width: 180px;
-    height: 32px;
+.short-input2 {
+    margin-left: 10px;
 }
 
-.session-group2 {
-    margin-left: 20px;
-    width: auto;
-}
-textarea {
-    resize: vertical;
-    max-height: 300px;
-    height:300px;
-}
-
+/* Radio group (thể loại) */
 .radio-group {
     display: flex;
-    gap: 150px;
-    margin-top: 5px;
+    gap: 10px;
+    align-items: center;
 }
 
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap; /* Giữ nội dung không bị xuống dòng */
+    font-weight: bold;  /* Gợi ý bỏ đậm nếu không cần */
+}
+
+/* Dropdown lĩnh vực */
+.session-group2 {
+    width: 100%;
+    max-width: 158px; /* Giới hạn tối đa */
+    padding: 6px 10px;
+}
+
+
+/* Textarea mô tả */
+.mota {
+    width: 320px;
+    height: 120px;
+    border: 1px solid #ccc;
+    max-height: 100px;
+    padding: 10px;
+}
+
+/* Ghi chú nhỏ */
 .note {
     font-size: 12px;
     color: red;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
+/* Nút */
 .actions {
     margin-top: 10px;
     display: flex;
@@ -245,17 +288,18 @@ textarea {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 10px;
 }
 
 .btn-create {
     background-color: #8c1c1c;
     color: white;
+    margin-left: 200px;
 }
 
 .btn-reset {
     background-color: #ccc;
 }
+
 
 footer {
     background-color: #8c1c1c;
@@ -271,3 +315,4 @@ footer {
     color: red;
     margin-top: 20px; /* Thêm khoảng cách trên */
 }
+

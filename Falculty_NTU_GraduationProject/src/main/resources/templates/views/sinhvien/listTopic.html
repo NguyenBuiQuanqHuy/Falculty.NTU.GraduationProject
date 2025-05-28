@@ -5,45 +5,165 @@
   <title>Tạo đề tài</title>
   <link rel="stylesheet" th:href="@{/css/listTopic.css}" />
   <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+  <link rel="stylesheet" th:href="@{/css/FilterSearch.css}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
 <div th:replace="~{layout/header :: header}"></div>
 <div th:fragment="content">
   <div class="main">
     <div class="tab">
-      <span class="active">DANH SÁCH ĐỀ TÀI</span>
-      <span>ĐÃ ĐĂNG KÝ</span>
+      <span class="tab-item active" onclick="showTab('listTopic')">DANH SÁCH ĐỀ TÀI</span>
+      <span class="tab-item" onclick="showTab('TopicRegistered')">ĐÃ ĐĂNG KÝ</span>
     </div>
-    <table>
-      <thead>
-      <tr>
-        <th>STT</th>
-        <th>Tên đề tài</th>
-        <th>Loại</th>
-        <th>Giảng viên ra đề</th>
-        <th>Chi tiết</th>
-        <th>Đã đăng ký</th>
-        <th>Được duyệt</th>
-        <th>Đăng ký</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="detai, stat : ${dsdetai}" th:if="${detai != null}">
-        <td th:text="${stat.count}"></td>
-        <td th:text="${detai.tendt}"></td>
-        <td th:text="${detai.theLoai.tentheloai}"></td>
-        <td th:text="${detai.msgv.hoten}"></td>
-        <td>
-          <a class="chitiet" th:href="@{/listTopic/{id}(id=${detai.msdt})}">Chi tiết</a>
-        </td>
-        <td>0</td>
-        <td>0</td>
-        <td><button class="btn-register">Đăng ký</button></td>
-      </tr>
-      </tbody>
-    </table>
+    <div id="listTopic" class="tab-content active">
+      <form th:action="@{/listTopic}" method="get" class="filters">
+        <select name="namhoc">
+          <option value="">-- Năm học --</option>
+          <option th:each="nh : ${namhocs}"
+                  th:value="${nh.manamhoc}"
+                  th:text="'Năm học ' + ${nh.tennamhoc}"
+                  th:selected="${nh.manamhoc == selectedNamHoc}">
+          </option>
+        </select>
+
+        <select name="theloai">
+          <option value="">-- Loại --</option>
+          <option th:each="tl : ${theloais}"
+                  th:value="${tl.matheloai}"
+                  th:text="${tl.tentheloai}"
+                  th:selected="${tl.matheloai == selectedTheLoai}">
+          </option>
+        </select>
+
+        <select name="linhvuc">
+          <option value="">-- Lĩnh vực --</option>
+          <option th:each="lv : ${linhvucs}"
+                  th:value="${lv.malinhvuc}"
+                  th:text="${lv.tenlinhvuc}"
+                  th:selected="${lv.malinhvuc == selectedLinhVuc}">
+          </option>
+        </select>
+
+        <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
+
+        <button type="submit" class="search-btn">Tìm kiếm</button>
+        <button type="button" class="reset-btn" onclick="window.location.href='/listTopic'">Làm mới</button>
+      </form>
+
+      <table>
+        <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên đề tài</th>
+          <th>Lĩnh vực</th>
+          <th>Loại</th>
+          <th>Giảng viên ra đề</th>
+          <th>Chi tiết đề tài</th>
+          <th>Đã đăng ký / Đã duyệt</th>
+          <th>Đăng ký</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detai, stat : ${dsdetai}" th:if="${detai != null}">
+          <td th:text="${stat.index + 1}"></td>
+          <td th:text="${detai.tendt}"></td>
+          <td th:text="${detai.linhVuc.tenlinhvuc}"></td>
+          <td th:text="${detai.theLoai.tentheloai}"></td>
+          <td>
+            <a th:href="@{/profile/giangvien/{id}(id=${detai.msgv.msgv})}">
+              <span th:text="${detai.msgv.hoten}"></span>
+              <i class="fas fa-user" style="margin-left: 6px; color: #8B0000;"></i>
+            </a>
+          </td>
+          <td>
+            <a class="chitiet" th:href="@{/listTopic/{id}(id=${detai.msdt})}">Xem</a>
+          </td>
+          <td>
+            <span th:text="${countRegistered[detai.msdt]}" class="count-regist"></span> /
+            <span th:text="${countApproved[detai.msdt]}" class="count-approve"></span>
+          </td>
+          <td>
+            <form th:action="@{/registerTopic/{msdt}(msdt=${detai.msdt})}" method="post"
+                  onsubmit="return confirm('Bạn có chắc chắn muốn đăng ký đề tài này không?');">
+              <button type="submit" class="btn-register" th:disabled="${dangKy != null}">Đăng ký</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="TopicRegistered" class="tab-content">
+      <div th:if="${dangKy != null}">
+        <table>
+          <thead>
+          <tr>
+            <th>Mã số đề tài</th>
+            <th>Tên đề tài</th>
+            <th>Loại</th>
+            <th>Giảng viên ra đề</th>
+            <th>Chi tiết đề tài</th>
+            <th>Trạng thái</th>
+            <th>Huỷ đăng ký</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td th:text="${dangKy.msdt.getMsdt()}"></td>
+            <td th:text="${dangKy.msdt.tendt}"></td>
+            <td th:text="${dangKy.msdt.theLoai.tentheloai}"></td>
+            <td th:text="${dangKy.msdt.msgv.hoten}"></td>
+            <td>
+              <a class="chitiet" th:href="@{/listTopic/{id}(id=${dangKy.msdt.getMsdt()})}">Xem</a>
+            </td>
+            <td>
+                <span th:if="${dangKy.trangthai.equalsIgnoreCase('chưa duyệt')}"
+                      style="color: #800000; font-weight: bold;">
+                  Chờ duyệt
+                </span>
+                            <span th:if="${dangKy.trangthai.equalsIgnoreCase('đã duyệt')}"
+                                  style="color: #39ff14; font-weight: bold;">Đang thực hiện
+                </span>
+            </td>
+            <td>
+              <form th:action="@{/cancelRegister/{msdt}(msdt=${dangKy.msdt.msdt})}" method="post"
+                    onsubmit="return confirm('Bạn có chắc chắn muốn hủy đăng ký đề tài này không?');">
+                <button type="submit"
+                        class="btn-cancel"
+                        th:disabled="${dangKy.trangthai.equalsIgnoreCase('đã duyệt')}">Hủy
+                </button>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div th:if="${dangKy == null}">
+        <h3>Bạn chưa đăng ký đề tài nào.</h3>
+      </div>
+    </div>
   </div>
 </div>
 <div th:replace="~{layout/footer :: footer}"></div>
+<script>
+  function showTab(tabId) {
+    // Ẩn tất cả tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.remove('active');
+    });
+
+    // Gỡ 'active' khỏi tất cả tab
+    document.querySelectorAll('.tab-item').forEach(tab => {
+      tab.classList.remove('active');
+    });
+
+    // Hiện tab đã chọn
+    document.getElementById(tabId).classList.add('active');
+
+    // Đánh dấu tab đã chọn là active
+    event.target.classList.add('active');
+  }
+</script>
 </body>
 </html>

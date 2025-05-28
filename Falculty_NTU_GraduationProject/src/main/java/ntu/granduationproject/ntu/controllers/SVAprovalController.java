@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ntu.granduationproject.ntu.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,8 +37,11 @@ public class SVAprovalController {
 	@Autowired
 	SVApprovalService svApprovalService;
 
+	@Autowired
+	EmailService emailService;
+
 	
-	@GetMapping("/danhsachdetai")
+	@GetMapping("/danhsachdetaicuatoi")
 	public String listProjects(
 	        @RequestParam(required = false) Integer namhoc,
 	        @RequestParam(required = false) Integer theloai,
@@ -149,12 +153,17 @@ public class SVAprovalController {
 	    int svDaDuyetCungLoai = svApprovalService.countByGiangVienAndLoai(gv.getMsgv(), project.getTheLoai().getMatheloai());
 	    int hanMuc = project.getTheLoai().getMatheloai() == 1 ? gv.getHMHDDA() : gv.getHMHDCD();
 
+		boolean success = svApprovalService.approveStudent(msdt, mssv);
+
+		if (!success) {
+			model.addAttribute("error", "Duyệt sinh viên không thành công. Có thể đề tài đã đủ số lượng hoặc sinh viên đã được duyệt.");
+			return "redirect:/detai/duyetsv/" + msdt;
+		}
 	    if (svDaDuyetCungLoai >= hanMuc) {
 	        model.addAttribute("error", "Bạn đã vượt quá hạn mức sinh viên cho loại đề tài này.");
 	        return "redirect:/detai/duyetsv/" + msdt;
 	    }
 
-	    svApprovalService.approveStudent(msdt, mssv);
 	    return "redirect:/detai/duyetsv/" + msdt;
 	}
 }

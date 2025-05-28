@@ -142,9 +142,10 @@ table th {
 }
 
 .view-link {
-    color: blue;
-    font-weight: 500;
+    color: #8B0000;
+    font-weight: bold;
     cursor: pointer;
+    text-decoration: underline;
 }
 
 .view-link:hover {

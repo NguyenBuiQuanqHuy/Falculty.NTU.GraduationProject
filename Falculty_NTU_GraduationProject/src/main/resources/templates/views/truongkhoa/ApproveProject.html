@@ -56,7 +56,7 @@
                 <th>Lĩnh vực</th>
                 <th>Giảng viên ra đề</th>
                 <th>Chi tiết</th>
-                <th>Thao tác</th>
+                <th>Trạng thái</th>
             </tr>
         </thead>
         <tbody>
@@ -67,10 +67,10 @@
                 <td th:text="${p.linhVuc?.tenlinhvuc ?: 'Chưa có'}">Lĩnh vực</td>
                 <td th:text="${p.msgv?.hoten ?: 'Chưa có'}">GV</td>
                 <td>
-                    <a th:href="@{/giangvien/chitiet/{id}(id=${p.msdt})}" class="view-link">Xem</a>
+                    <a th:href="@{/listTopic/{id}(id=${p.msdt})}" class="view-link">Xem</a>
                 </td>
                 <td>
-                    <div th:if="${p.trangthai == 'chưa duyệt'}">
+                    <div th:if="${p.trangthai == 'Chưa duyệt' or p.trangthai == 'chưa duyệt'}">
                         <form th:action="@{/duyetdetai}" method="post" style="display:inline-block;">
                             <input type="hidden" name="msdt" th:value="${p.msdt}" />
                             <button type="submit" class="approve-btn">Duyệt</button>
@@ -80,8 +80,8 @@
                            <button type="submit" class="deny-btn">Từ chối</button>
                         </form>
                     </div>
-                    <div th:if="${p.trangthai == 'Đã duyệt'}" class="text-success fw-bold">
-                        Đã duyệt
+                    <div th:if="${p.trangthai == 'Đã duyệt' or p.trangthai == 'đã duyệt'}">
+                        <span style="font-weight: bold; color: #00ad0e">Đã duyệt</span>
                     </div>
                 </td>
             </tr>
@@ -90,10 +90,53 @@
             </tr>
         </tbody>
     </table>
+    <div class="pagination" style="text-align:center; margin-top: 20px;">
+        <div th:if="${totalPages > 1}">
+            <a th:if="${currentPage > 0}" th:href="@{/duyetdetai(page=${currentPage - 1},
+                                                              namhoc=${param.namhoc},
+                                                              linhvuc=${param.linhvuc},
+                                                              loai=${param.loai},
+                                                              truongkhoa=${param.truongkhoa})}">
+                &laquo; Trước
+            </a>
+
+            <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/duyetdetai(page=${i},
+                                      namhoc=${param.namhoc},
+                                      linhvuc=${param.linhvuc},
+                                      loai=${param.loai},
+                                      truongkhoa=${param.truongkhoa})}"
+               th:text="${i + 1}"
+               th:class="${i == currentPage} ? 'active' : ''">
+            </a>
+        </span>
+
+            <a th:if="${currentPage < totalPages - 1}" th:href="@{/duyetdetai(page=${currentPage + 1},
+                                                                           namhoc=${param.namhoc},
+                                                                           linhvuc=${param.linhvuc},
+                                                                           loai=${param.loai},
+                                                                           truongkhoa=${param.truongkhoa})}">
+                Sau &raquo;
+            </a>
+        </div>
+    </div>
 </div>
 
 <!-- FOOTER -->
 <div th:replace="~{layout/footer :: footer}"></div>
-
 </body>
 </html>
+<style>
+    .pagination a {
+        margin: 0 4px;
+        padding: 6px 10px;
+        background: #eee;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+    .pagination a.active {
+        background: #8B0000;
+        color: white;
+        font-weight: bold;
+    }
+</style>

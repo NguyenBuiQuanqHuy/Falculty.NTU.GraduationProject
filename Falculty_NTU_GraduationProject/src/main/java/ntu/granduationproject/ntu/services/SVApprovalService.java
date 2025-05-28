@@ -47,6 +47,14 @@ public class SVApprovalService {
 	    if (dk != null && !"Đã duyệt".equals(dk.getTrangthai())) {
 	        dk.setTrangthai("Đã duyệt");
 	        dangKyDeTaiRepository.save(dk);
+			String acceptedEmail = dk.getMssv().getEmail();
+			String acceptedSubject = "Kết quả đăng ký đề tài";
+			String acceptedBody = "Chúc mừng! Đề tài \"" + project.getTendt() + "\" bạn đăng ký đã được duyệt.";
+
+			if (acceptedEmail != null && !acceptedEmail.isEmpty()) {
+				emailService.sendNotificationEmail(acceptedEmail, acceptedSubject, acceptedBody);
+				System.out.println("Đã gửi mail xác nhận duyệt tới sinh viên: " + acceptedEmail);
+			}
 
 	        if (!project.isCosvthuchien()) {
 	            project.setCosvthuchien(true);
@@ -60,7 +68,12 @@ public class SVApprovalService {
 	                String toEmail = cho.getMssv().getEmail();
 	                String subject = "Thông báo kết quả đăng ký đề tài";
 	                String body = "Xin chào, đề tài bạn đăng ký hiện đã đủ số lượng sinh viên được duyệt. Bạn vui lòng chọn đề tài khác.";
-	                emailService.sendNotificationEmail(toEmail, subject, body);
+					if (toEmail != null && !toEmail.isEmpty()) {
+						emailService.sendNotificationEmail(toEmail, subject, body);
+						System.out.println("Đã gửi mail tới sinh viên: " + toEmail);
+					} else {
+						System.out.println("Email sinh viên bị null hoặc rỗng, không gửi được mail!");
+					}
 	            }
 	        }
 	        
@@ -91,5 +104,7 @@ public class SVApprovalService {
 	 	    return dangKyDeTaiRepository.countByGiangVienAndTheLoai(msgv, matheloai);
 	 	}
 
-	 
+	public EmailService getEmailService() {
+		return emailService;
+	}
 }

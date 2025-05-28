@@ -8,10 +8,7 @@ import ntu.granduationproject.ntu.repositories.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -34,8 +31,8 @@ public class UpdateProfileController {
                 Optional<SinhVien> svOpt = sinhVienRepository.findByMssv(maso);
                 if (svOpt.isPresent()) {
                     SinhVien sv = svOpt.get();
-                    session.setAttribute("cv",sv.getCvhoso());
-                    model.addAttribute("sinhVien",sv);
+                    session.setAttribute("cv", sv.getCvhoso());
+                    model.addAttribute("sinhVien", sv);
                 }
             }
             return "views/sinhvien/Profile";
@@ -45,7 +42,7 @@ public class UpdateProfileController {
                 if (gvOpt.isPresent()) {
                     GiangVien gv = gvOpt.get();
                     session.setAttribute("cv", gv.getCvnangluc());
-                    model.addAttribute("giangVien",gv);
+                    model.addAttribute("giangVien", gv);
                 }
             }
             return "views/giangvien/Profile";
@@ -62,7 +59,7 @@ public class UpdateProfileController {
         if ("sinhvien".equals(role)) {
             if (maso != null) {
                 Optional<SinhVien> svOpt = sinhVienRepository.findByMssv(maso);
-                svOpt.ifPresent(sinhVien -> model.addAttribute("sinhvien",sinhVien));
+                svOpt.ifPresent(sinhVien -> model.addAttribute("sinhvien", sinhVien));
             }
             return "views/sinhvien/editProfile";
         } else if ("giangvien".equals(role) || "admin".equals(role)) {
@@ -88,7 +85,7 @@ public class UpdateProfileController {
                 SinhVien sv = svOpt.get();
                 sv.setCvhoso(cv);
                 sinhVienRepository.save(sv);
-                session.setAttribute("cv",cv);
+                session.setAttribute("cv", cv);
             }
         } else if ("giangvien".equals(role) || "admin".equals(role)) {
             Optional<GiangVien> gvOpt = giangVienRepository.findByMsgv(maso);
@@ -96,9 +93,36 @@ public class UpdateProfileController {
                 GiangVien gv = gvOpt.get();
                 gv.setCvnangluc(cv);
                 giangVienRepository.save(gv);
-                session.setAttribute("cv",cv);
+                session.setAttribute("cv", cv);
             }
         }
         return "redirect:/profile";
+    }
+
+    @GetMapping("/profile/sinhvien/{id}")
+    public String ProfileInfo(@PathVariable("id") String mssv, Model model, HttpSession session) {
+        System.out.println("Received mssv: " + mssv);  // debug xem mssv có đúng không
+        SinhVien sinhVien = sinhVienRepository.findByMssv(mssv)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy mã số sinh viên"));
+
+        String role = (String) session.getAttribute("role");
+        String returnUrl = "/";
+        if ("giangvien".equals(role)) {
+            returnUrl = "/danhsachdetaicuatoi";
+        }
+        model.addAttribute("sinhvien", sinhVien);
+        model.addAttribute("returnUrl", returnUrl);
+
+        return "views/sinhvien/ProfileInfo";
+    }
+
+    @GetMapping("/profile/giangvien/{id}")
+    public String ProfileInfo(@PathVariable("id") String msgv, Model model) {
+        System.out.println("Received msgv: " + msgv);  // debug xem mssv có đúng không
+        GiangVien giangVien = giangVienRepository.findByMsgv(msgv)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy mã số giảng viên"));
+
+        model.addAttribute("giangvien", giangVien);
+        return "views/giangvien/ProfileInfo";
     }
 }

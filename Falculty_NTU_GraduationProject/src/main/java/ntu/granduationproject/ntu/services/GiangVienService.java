@@ -13,5 +13,6 @@ public interface GiangVienService {
 	Optional<GiangVien> forgotPasswordGiangVien(String maso, String email);
 	
 	void AddGiangVien (GiangVien giangvien);
-	
+
+	GiangVien findByMsgv(String id);
 }

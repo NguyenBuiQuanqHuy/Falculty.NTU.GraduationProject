@@ -11,6 +11,9 @@ import ntu.granduationproject.ntu.services.ProjectService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +58,7 @@ public class TruongKhoaController {
             @RequestParam(name = "linhvuc", required = false) String maLinhVuc,
             @RequestParam(name = "loai", required = false) String maTheLoai,
             @RequestParam(name = "truongkhoa", required = false) String truongkhoa,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
             Model model) {
 
         // Chuyển chuỗi rỗng sang null để tránh lỗi query
@@ -63,15 +67,19 @@ public class TruongKhoaController {
         if (maTheLoai != null && maTheLoai.isEmpty()) maTheLoai = null;
         if (truongkhoa != null && truongkhoa.isEmpty()) truongkhoa = null;
 
-        List<Project> projects;
+        int pageSize = 5;
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Project> projects;
 
         if (maNamHoc == null && maLinhVuc == null && maTheLoai == null && truongkhoa == null) {
-            projects = projectService.getAllProjects();
+            projects = projectService.getPagedProjects(pageable);
         } else {
-            projects = projectService.searchProjects(maNamHoc, maLinhVuc, maTheLoai, truongkhoa);
+            projects = projectService.searchProjectsPaged(maNamHoc,maLinhVuc, maTheLoai, truongkhoa, page, pageSize);
         }
 
         model.addAttribute("projects", projects);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", projects.getTotalPages());
         model.addAttribute("dsLinhVuc", linhVucRepository.findAll());
         model.addAttribute("dsNamHoc", namHocRepository.findAll());
         model.addAttribute("dsTheLoai", theLoaiRepository.findAll());
