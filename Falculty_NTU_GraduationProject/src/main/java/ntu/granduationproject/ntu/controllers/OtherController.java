@@ -1,6 +1,5 @@
 package ntu.granduationproject.ntu.controllers;
 
-
 import jakarta.servlet.http.HttpSession;
 import ntu.granduationproject.ntu.models.GiangVien;
 import ntu.granduationproject.ntu.models.Project;
@@ -31,23 +30,59 @@ public class OtherController {
     @Autowired
     OtherService pdfService;
 
-    @GetMapping("/export/{id}")
-    public ResponseEntity<byte[]> exportPdf(@PathVariable String id, HttpSession session) throws Exception {
+    private String cleanHtml(String rawHtml) {
+        String html = org.apache.commons.text.StringEscapeUtils.unescapeHtml4(rawHtml);
+
+        // Sửa các thẻ sai chuẩn XML
+        html = html.replaceAll("(?i)<br\\s*>", "<br/>")
+                .replaceAll("(?i)</br>", "")
+                .replaceAll("(?i)<hr\\s*>", "<hr/>")
+                .replaceAll("(?i)</hr>", "")
+                .replaceAll("&nbsp;", "&#160;");
+
+        return html;
+    }
+
+    @GetMapping("/export/sinhvien/{id}")
+    public ResponseEntity<byte[]> exportSinhVienPdf(@PathVariable String id, HttpSession session) throws Exception {
         String role = (String) session.getAttribute("role");
-        GiangVien giangVien = giangVienService.findByMsgv(id);
+        System.out.println("Role: " + role + ", ID: " + id);
+
         SinhVien sinhVien = sinhVienService.findByMssv(id);
-        String htmlRaw = "";
+        String htmlClean = cleanHtml(sinhVien.getCvhoso());
+        System.out.println("HTML after clean:\n" + htmlClean);
 
-        if ("sinhvien".equals(role)) {
-            htmlRaw = sinhVien.getCvhoso();
-        } else if ("giangvien".equals(role)){
-            htmlRaw = giangVien.getCvnangluc();
-        }
 
-        // Giải mã các HTML entity (&ocirc;, &agrave;, ...) về Unicode thật
-        String htmlClean = org.apache.commons.text.StringEscapeUtils.unescapeHtml4(htmlRaw);
+        String html = "<html><head>" +
+                "<style>" +
+                "  @font-face {" +
+                "    font-family: 'DejaVuSans';" +
+                "    src: url('file:src/main/resources/static/font/DejaVuSans.ttf') format('truetype');" +
+                "  }" +
+                "  body { font-family: 'DejaVuSans'; }" +
+                "</style>" +
+                "</head><body>" + htmlClean + "</body></html>";
 
-        // Gắn font vào HTML
+        byte[] pdfBytes = pdfService.generatePdf(html);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.inline()
+                .filename("hoso_" + id + ".pdf").build());
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/export/giangvien/{id}")
+    public ResponseEntity<byte[]> exportGiangVienPdf(@PathVariable String id, HttpSession session) throws Exception {
+        String role = (String) session.getAttribute("role");
+        System.out.println("Role: " + role + ", ID: " + id);
+
+        GiangVien giangVien = giangVienService.findByMsgv(id);
+        String htmlClean = cleanHtml(giangVien.getCvnangluc());
+        System.out.println("HTML after clean:\n" + htmlClean);
+
+
         String html = "<html><head>" +
                 "<style>" +
                 "  @font-face {" +
@@ -71,12 +106,10 @@ public class OtherController {
     @GetMapping("/export/detai{id}")
     public ResponseEntity<byte[]> exportPdf(@PathVariable int id) throws Exception {
         Project project = projectService.findByMsdt(id);
-        String htmlRaw = project.getNoidung();
+        String htmlClean = cleanHtml(project.getNoidung());
+        System.out.println("HTML after clean:\n" + htmlClean);
 
-        // Giải mã các HTML entity (&ocirc;, &agrave;, ...) về Unicode thật
-        String htmlClean = org.apache.commons.text.StringEscapeUtils.unescapeHtml4(htmlRaw);
 
-        // Gắn font vào HTML
         String html = "<html><head>" +
                 "<style>" +
                 "  @font-face {" +
