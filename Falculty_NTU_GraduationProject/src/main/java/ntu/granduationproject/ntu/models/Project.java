@@ -25,6 +25,7 @@ public class Project {
 	@ManyToOne
 	@JoinColumn(name = "theloai",referencedColumnName = "matheloai")
 	private TheLoai theLoai;
+	 @Column(columnDefinition = "LONGTEXT")
 	private String mota;
 	
 	 @Column(columnDefinition = "LONGTEXT")

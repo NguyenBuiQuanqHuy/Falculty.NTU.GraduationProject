@@ -109,6 +109,13 @@ public class DangKyDetaiController {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy đề tài"));
 
         String role = (String) session.getAttribute("role");
+        
+        if (project.getNoidung() != null) {
+            String noiDung = project.getNoidung();
+            // Thay tất cả src="uploads/... thành src="/uploads/...
+            noiDung = noiDung.replaceAll("src=\"(?!/)", "src=\"/");
+            project.setNoidung(noiDung);
+        }
 
         String returnUrl = "/";
         if ("admin".equals(role)) {
