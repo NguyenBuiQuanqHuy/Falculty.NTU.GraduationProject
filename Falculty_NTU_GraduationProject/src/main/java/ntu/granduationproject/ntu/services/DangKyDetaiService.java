@@ -36,13 +36,27 @@ public class DangKyDetaiService {
             return false;
         }
 
-        int countRegistered = dangKyDeTaiRepository.countByMsdt_Msdt(msdt);
+        int countRegistered = dangKyDeTaiRepository.countByMsdt_MsdtAndTrangthai(msdt,"đã duyệt");
         System.out.println("Số SV đã đăng ký: " + countRegistered + "/" + project.getSosvtoida());
 
         if (countRegistered >= project.getSosvtoida()) {
             System.out.println("Đề tài đã đủ số lượng");
             return false;
         }
+        
+        // Kiểm tra hạn mức giảng viên theo thể loại
+        int theLoai = project.getTheLoai().getMatheloai(); // ví dụ: 1 = ĐA, 2 = CĐ
+        int hanMuc = (theLoai == 1) ? project.getMsgv().getHMHDDA() : project.getMsgv().getHMHDCD();
+        int approvedCountForGV = dangKyDeTaiRepository.countByGiangVienAndTheLoai(
+            project.getMsgv().getMsgv(), theLoai
+        );
+
+        System.out.println("Số SV đã duyệt của GV: " + approvedCountForGV + "/" + hanMuc);
+        if (approvedCountForGV >= hanMuc) {
+            System.out.println("Giảng viên đã vượt hạn mức duyệt đề tài");
+            return false;
+        }
+
 
         SinhVien sv = sinhVienService.findByMssv(mssv);
         if (sv == null) {

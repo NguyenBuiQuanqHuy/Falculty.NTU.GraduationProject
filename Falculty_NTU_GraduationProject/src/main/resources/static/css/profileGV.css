@@ -135,7 +135,7 @@ body {
 /*main*/
 .form-container {
     padding: 10px;
-    max-width: 1000px;
+    max-width: 1200px;
     border-radius: 8px;
     margin: auto;
 }
@@ -164,6 +164,11 @@ body {
 
 .form-right {
     flex: 2;
+}
+
+.cv-readonly {
+    max-width: 100%;
+    width: 100%; /* Cho phép mở rộng theo form-right */
 }
 
 label {
@@ -226,7 +231,7 @@ a {
 }
 .cv-readonly {
     max-height: 405px;
-    max-width: 550px;
+    max-width: 700px;
     overflow-x: auto;
     overflow-y: auto;
     background-color: #f9f9f9 !important;

@@ -8,6 +8,9 @@ import ntu.granduationproject.ntu.services.GiangVienService;
 import ntu.granduationproject.ntu.services.OtherService;
 import ntu.granduationproject.ntu.services.ProjectService;
 import ntu.granduationproject.ntu.services.SinhVienService;
+import org.apache.commons.text.StringEscapeUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/pdf")
 public class OtherController {
+
     @Autowired
     SinhVienService sinhVienService;
 
@@ -30,28 +34,35 @@ public class OtherController {
     @Autowired
     OtherService pdfService;
 
-    private String cleanHtml(String rawHtml) {
-        String html = org.apache.commons.text.StringEscapeUtils.unescapeHtml4(rawHtml);
+    // Xuất PDF cho sinh viên
+    @GetMapping("/export/sinhvien/{mssv}")
+    public ResponseEntity<byte[]> exportPdfSinhVien(@PathVariable String mssv) throws Exception {
+        SinhVien sinhVien = sinhVienService.findByMssv(mssv);
+        if (sinhVien == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        String htmlRaw = sinhVien.getCvhoso();
 
-        // Sửa các thẻ sai chuẩn XML
-        html = html.replaceAll("(?i)<br\\s*>", "<br/>")
-                .replaceAll("(?i)</br>", "")
-                .replaceAll("(?i)<hr\\s*>", "<hr/>")
-                .replaceAll("(?i)</hr>", "")
-                .replaceAll("&nbsp;", "&#160;");
-
-        return html;
+        return buildPdfResponse(htmlRaw, "hoso_" + mssv + ".pdf");
     }
 
-    @GetMapping("/export/sinhvien/{id}")
-    public ResponseEntity<byte[]> exportSinhVienPdf(@PathVariable String id, HttpSession session) throws Exception {
-        String role = (String) session.getAttribute("role");
-        System.out.println("Role: " + role + ", ID: " + id);
+    // Xuất PDF cho giảng viên
+    @GetMapping("/export/giangvien/{msgv}")
+    public ResponseEntity<byte[]> exportPdfGiangVien(@PathVariable String msgv) throws Exception {
+        GiangVien giangVien = giangVienService.findByMsgv(msgv);
+        if (giangVien == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        String htmlRaw = giangVien.getCvnangluc();
 
-        SinhVien sinhVien = sinhVienService.findByMssv(id);
-        String htmlClean = cleanHtml(sinhVien.getCvhoso());
-        System.out.println("HTML after clean:\n" + htmlClean);
+        return buildPdfResponse(htmlRaw, "hoso_" + msgv + ".pdf");
+    }
 
+    private ResponseEntity<byte[]> buildPdfResponse(String htmlRaw, String filename) throws Exception {
+        String htmlClean = StringEscapeUtils.unescapeHtml4(htmlRaw);
+        Document document = Jsoup.parse(htmlClean);
+        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        String xhtml = document.html();
 
         String html = "<html><head>" +
                 "<style>" +
@@ -61,44 +72,13 @@ public class OtherController {
                 "  }" +
                 "  body { font-family: 'DejaVuSans'; }" +
                 "</style>" +
-                "</head><body>" + htmlClean + "</body></html>";
+                "</head><body>" + xhtml + "</body></html>";
 
         byte[] pdfBytes = pdfService.generatePdf(html);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.inline()
-                .filename("hoso_" + id + ".pdf").build());
-
-        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/export/giangvien/{id}")
-    public ResponseEntity<byte[]> exportGiangVienPdf(@PathVariable String id, HttpSession session) throws Exception {
-        String role = (String) session.getAttribute("role");
-        System.out.println("Role: " + role + ", ID: " + id);
-
-        GiangVien giangVien = giangVienService.findByMsgv(id);
-        String htmlClean = cleanHtml(giangVien.getCvnangluc());
-        System.out.println("HTML after clean:\n" + htmlClean);
-
-
-        String html = "<html><head>" +
-                "<style>" +
-                "  @font-face {" +
-                "    font-family: 'DejaVuSans';" +
-                "    src: url('file:src/main/resources/static/font/DejaVuSans.ttf') format('truetype');" +
-                "  }" +
-                "  body { font-family: 'DejaVuSans'; }" +
-                "</style>" +
-                "</head><body>" + htmlClean + "</body></html>";
-
-        byte[] pdfBytes = pdfService.generatePdf(html);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.inline()
-                .filename("hoso_" + id + ".pdf").build());
+        headers.setContentDisposition(ContentDisposition.inline().filename(filename).build());
 
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
@@ -106,9 +86,16 @@ public class OtherController {
     @GetMapping("/export/detai{id}")
     public ResponseEntity<byte[]> exportPdf(@PathVariable int id) throws Exception {
         Project project = projectService.findByMsdt(id);
-        String htmlClean = cleanHtml(project.getNoidung());
-        System.out.println("HTML after clean:\n" + htmlClean);
+        if (project == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        String htmlRaw = project.getNoidung();
 
+        String htmlClean = StringEscapeUtils.unescapeHtml4(htmlRaw);
+
+        Document document = Jsoup.parse(htmlClean);
+        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        String xhtml = document.html();
 
         String html = "<html><head>" +
                 "<style>" +
@@ -118,7 +105,7 @@ public class OtherController {
                 "  }" +
                 "  body { font-family: 'DejaVuSans'; }" +
                 "</style>" +
-                "</head><body>" + htmlClean + "</body></html>";
+                "</head><body>" + xhtml + "</body></html>";
 
         byte[] pdfBytes = pdfService.generatePdf(html);
 
