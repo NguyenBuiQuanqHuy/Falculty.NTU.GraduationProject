@@ -80,14 +80,15 @@
             <a class="chitiet" th:href="@{/listTopic/{id}(id=${detai.msdt})}">Xem</a>
           </td>
          <td>
-  <span th:text="${countApproved[detai.msdt] countRegistered[detai.msdt]?: 0}"
+  <span th:text="${countRegistered[detai.msdt] ?: 0}"></span>
+  /
+  <span th:text="${countApproved[detai.msdt] ?: 0}"
         th:classappend="${(countApproved[detai.msdt] ?: 0) < (detai.sosvtoida ?: 0)} ? 'reg-count red' : 'reg-count green'">
   </span>
-  /
-  <span th:text="${countRegistered[detai.msdt] ?: 0}"></span>
   :
   <span class="reg-count green" th:text="${detai.sosvtoida ?: 0}"></span>
 </td>
+
 
           <td>
             <form th:action="@{/registerTopic/{msdt}(msdt=${detai.msdt})}" method="post"
