@@ -9,6 +9,10 @@ import ntu.granduationproject.ntu.services.DangKyDetaiService;
 import ntu.granduationproject.ntu.services.ProjectService;
 import ntu.granduationproject.ntu.services.SinhVienService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +50,8 @@ public class DangKyDetaiController {
             @RequestParam(value = "namhoc", required = false) Integer namhoc,
             @RequestParam(value = "theloai", required = false) Integer theloai,
             @RequestParam(value = "linhvuc", required = false) Integer linhvuc,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
             Model model, HttpSession session, RedirectAttributes redirectAttrs) {
 
         String mssv = (String) session.getAttribute("maso");
@@ -54,46 +60,37 @@ public class DangKyDetaiController {
             return "redirect:/login";
         }
 
-        // Lấy danh sách đề tài đã lọc, trạng thái "Đã duyệt"
-        List<Project> dsFiltered = projectService.searchProjects(
-                null,
-                namhoc,
-                theloai,
-                linhvuc,
-                tendt,
-                "Đã duyệt"
-        );
+        Pageable pageable = PageRequest.of(page, size, Sort.by("msdt").descending());
+        Page<Project> pageProjects = projectService.searchProjectsPaged(tendt, namhoc, theloai, linhvuc, "Đã duyệt", pageable);
+        List<Project> dsFiltered = pageProjects.getContent();
+
         model.addAttribute("dsdetai", dsFiltered);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pageProjects.getTotalPages());
+        model.addAttribute("totalItems", pageProjects.getTotalElements());
 
-
+        // Đếm số sinh viên đã đăng ký và được duyệt cho từng đề tài
         Map<Integer, Integer> mapCountRegistered = new HashMap<>();
-        for (Project project : dsFiltered) {
-            int count = dangKyDeTaiRepository.countByMsdt_Msdt(project.getMsdt());
-            mapCountRegistered.put(project.getMsdt(), count);
-        }
-        model.addAttribute("countRegistered", mapCountRegistered);
-
-        dangKyDeTaiRepository.findByMssv_Mssv(mssv).ifPresent(dk -> {
-            model.addAttribute("dangKy", dk);
-        });
-
         Map<Integer, Integer> mapCountApproved = new HashMap<>();
 
         for (Project project : dsFiltered) {
-            int count = dangKyDeTaiRepository.countByMsdt_Msdt(project.getMsdt());
-            mapCountRegistered.put(project.getMsdt(), count);
-
-            int approved = dangKyDeTaiRepository.countApprovedByMsdt(project.getMsdt());
-            mapCountApproved.put(project.getMsdt(), approved);
+            int msdt = project.getMsdt();
+            int count = dangKyDeTaiRepository.countByMsdt_Msdt(msdt);
+            int approved = dangKyDeTaiRepository.countApprovedByMsdt(msdt);
+            mapCountRegistered.put(msdt, count);
+            mapCountApproved.put(msdt, approved);
         }
+
         model.addAttribute("countRegistered", mapCountRegistered);
         model.addAttribute("countApproved", mapCountApproved);
 
+        dangKyDeTaiRepository.findByMssv_Mssv(mssv).ifPresent(dk -> model.addAttribute("dangKy", dk));
 
         model.addAttribute("namhocs", namHocRepository.findAll());
         model.addAttribute("theloais", theLoaiRepository.findAll());
         model.addAttribute("linhvucs", linhVucRepository.findAll());
 
+        // Giữ lại filter
         model.addAttribute("tendt", tendt);
         model.addAttribute("selectedNamHoc", namhoc);
         model.addAttribute("selectedTheLoai", theloai);

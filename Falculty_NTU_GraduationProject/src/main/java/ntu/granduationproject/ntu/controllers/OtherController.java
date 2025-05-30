@@ -1,6 +1,5 @@
 package ntu.granduationproject.ntu.controllers;
 
-
 import jakarta.servlet.http.HttpSession;
 import ntu.granduationproject.ntu.models.GiangVien;
 import ntu.granduationproject.ntu.models.Project;
@@ -9,6 +8,9 @@ import ntu.granduationproject.ntu.services.GiangVienService;
 import ntu.granduationproject.ntu.services.OtherService;
 import ntu.granduationproject.ntu.services.ProjectService;
 import ntu.granduationproject.ntu.services.SinhVienService;
+import org.apache.commons.text.StringEscapeUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/pdf")
 public class OtherController {
+
     @Autowired
     SinhVienService sinhVienService;
 
@@ -31,23 +34,36 @@ public class OtherController {
     @Autowired
     OtherService pdfService;
 
-    @GetMapping("/export/{id}")
-    public ResponseEntity<byte[]> exportPdf(@PathVariable String id, HttpSession session) throws Exception {
-        String role = (String) session.getAttribute("role");
-        GiangVien giangVien = giangVienService.findByMsgv(id);
-        SinhVien sinhVien = sinhVienService.findByMssv(id);
-        String htmlRaw = "";
-
-        if ("sinhvien".equals(role)) {
-            htmlRaw = sinhVien.getCvhoso();
-        } else if ("giangvien".equals(role)){
-            htmlRaw = giangVien.getCvnangluc();
+    // Xuất PDF cho sinh viên
+    @GetMapping("/export/sinhvien/{mssv}")
+    public ResponseEntity<byte[]> exportPdfSinhVien(@PathVariable String mssv) throws Exception {
+        SinhVien sinhVien = sinhVienService.findByMssv(mssv);
+        if (sinhVien == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        String htmlRaw = sinhVien.getCvhoso();
 
-        // Giải mã các HTML entity (&ocirc;, &agrave;, ...) về Unicode thật
-        String htmlClean = org.apache.commons.text.StringEscapeUtils.unescapeHtml4(htmlRaw);
+        return buildPdfResponse(htmlRaw, "hoso_" + mssv + ".pdf");
+    }
 
-        // Gắn font vào HTML
+    // Xuất PDF cho giảng viên
+    @GetMapping("/export/giangvien/{msgv}")
+    public ResponseEntity<byte[]> exportPdfGiangVien(@PathVariable String msgv) throws Exception {
+        GiangVien giangVien = giangVienService.findByMsgv(msgv);
+        if (giangVien == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        String htmlRaw = giangVien.getCvnangluc();
+
+        return buildPdfResponse(htmlRaw, "hoso_" + msgv + ".pdf");
+    }
+
+    private ResponseEntity<byte[]> buildPdfResponse(String htmlRaw, String filename) throws Exception {
+        String htmlClean = StringEscapeUtils.unescapeHtml4(htmlRaw);
+        Document document = Jsoup.parse(htmlClean);
+        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        String xhtml = document.html();
+
         String html = "<html><head>" +
                 "<style>" +
                 "  @font-face {" +
@@ -56,14 +72,13 @@ public class OtherController {
                 "  }" +
                 "  body { font-family: 'DejaVuSans'; }" +
                 "</style>" +
-                "</head><body>" + htmlClean + "</body></html>";
+                "</head><body>" + xhtml + "</body></html>";
 
         byte[] pdfBytes = pdfService.generatePdf(html);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.inline()
-                .filename("hoso_" + id + ".pdf").build());
+        headers.setContentDisposition(ContentDisposition.inline().filename(filename).build());
 
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
@@ -71,12 +86,17 @@ public class OtherController {
     @GetMapping("/export/detai{id}")
     public ResponseEntity<byte[]> exportPdf(@PathVariable int id) throws Exception {
         Project project = projectService.findByMsdt(id);
+        if (project == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         String htmlRaw = project.getNoidung();
 
-        // Giải mã các HTML entity (&ocirc;, &agrave;, ...) về Unicode thật
-        String htmlClean = org.apache.commons.text.StringEscapeUtils.unescapeHtml4(htmlRaw);
+        String htmlClean = StringEscapeUtils.unescapeHtml4(htmlRaw);
 
-        // Gắn font vào HTML
+        Document document = Jsoup.parse(htmlClean);
+        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        String xhtml = document.html();
+
         String html = "<html><head>" +
                 "<style>" +
                 "  @font-face {" +
@@ -85,7 +105,7 @@ public class OtherController {
                 "  }" +
                 "  body { font-family: 'DejaVuSans'; }" +
                 "</style>" +
-                "</head><body>" + htmlClean + "</body></html>";
+                "</head><body>" + xhtml + "</body></html>";
 
         byte[] pdfBytes = pdfService.generatePdf(html);
 
