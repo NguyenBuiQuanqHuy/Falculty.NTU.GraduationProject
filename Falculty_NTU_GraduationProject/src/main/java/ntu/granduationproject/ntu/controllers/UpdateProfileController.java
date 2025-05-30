@@ -106,6 +106,13 @@ public class UpdateProfileController {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy mã số sinh viên"));
 
         String role = (String) session.getAttribute("role");
+        if (sinhVien.getCvhoso() != null) {
+            String noiDung = sinhVien.getCvhoso();
+            // Thay tất cả src="uploads/... thành src="/uploads/...
+            noiDung = noiDung.replaceAll("src=\"(?!/)", "src=\"/");
+            sinhVien.setCvhoso(noiDung);
+        }
+        
         String returnUrl = "/";
         if ("giangvien".equals(role)) {
             returnUrl = "/danhsachdetaicuatoi";
@@ -121,7 +128,15 @@ public class UpdateProfileController {
         System.out.println("Received msgv: " + msgv);  // debug xem mssv có đúng không
         GiangVien giangVien = giangVienRepository.findByMsgv(msgv)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy mã số giảng viên"));
-
+        
+        if (giangVien.getCvnangluc() != null) {
+            String noiDung = giangVien.getCvnangluc();
+            // Thay tất cả src="uploads/... thành src="/uploads/...
+            noiDung = noiDung.replaceAll("src=\"(?!/)", "src=\"/");
+            giangVien.setCvnangluc(noiDung);
+        }
+        
+        
         model.addAttribute("giangvien", giangVien);
         return "views/giangvien/ProfileInfo";
     }
