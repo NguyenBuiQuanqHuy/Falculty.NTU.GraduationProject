@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đánh giá đề tài</title>
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+    <link rel="stylesheet" th:href="@{/css/listDT.css}" />
+</head>
+<body>
+    <div th:replace="~{layout/header :: header}"></div>
+    <div th:fragment="content">
+        <div class="main">
+            <h2>DANH SÁCH ĐỀ TÀI CỦA TÔI</h2>
+            <form th:action="@{/danhsachdetaicuatoi}" method="get" class="filters">
+    <select name="namhoc">
+        <option value="">-- Năm học --</option>
+        <option th:each="nh : ${namhocs}" 
+                th:value="${nh.manamhoc}" 
+                th:text="${nh.tennamhoc}"
+                th:selected="${nh.manamhoc == selectedNamHoc}">
+        </option>
+    </select>
+
+    <select name="theloai">
+        <option value="">-- Loại --</option>
+        <option th:each="tl : ${theloais}" 
+                th:value="${tl.matheloai}" 
+                th:text="${tl.tentheloai}"
+                th:selected="${tl.matheloai == selectedTheLoai}">
+        </option>
+    </select>
+
+    <select name="linhvuc">
+        <option value="">-- Lĩnh vực --</option>
+        <option th:each="lv : ${linhvucs}" 
+                th:value="${lv.malinhvuc}" 
+                th:text="${lv.tenlinhvuc}"
+                th:selected="${lv.malinhvuc == selectedLinhVuc}">
+        </option>
+    </select>
+
+    <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
+
+    <button type="submit" class="search-btn">Tìm kiếm</button>
+    <button type="button" class="reset-btn" onclick="window.location.href='/danhsachdetai'">Làm mới</button>
+</form>
+
+    	</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên đề tài</th>
+                        <th>Loại</th>
+                        <th>Lĩnh vực</th>
+                        <th>Năm học</th>
+                        <th>Nội dung</th>
+                        <th>Đánh giá</th>
+                    </tr>
+                </thead>
+               <tbody>
+			    <tr th:each="project, stat : ${projects}">
+			        <td th:text="${stat.index + 1}">1</td>
+			        <td th:text="${project.tendt}">Tên đề tài</td>
+			        <td th:text="${project.theLoai.tentheloai}">Loại</td>
+			        <td th:text="${project.linhVuc.tenlinhvuc}">Lĩnh vực</td>
+			        <td th:text="${project.namHoc.tennamhoc}">Năm học</td>
+			      
+			        <td>
+			            <a th:href="@{/listTopic/{id}(id=${project.msdt})}" class="view-link">Xem</a>
+			        </td>
+			      <td>
+				  <span th:text="${soSvDaDuyetMap[project.msdt] ?: 0}"
+				      th:classappend="${(soSvDaDuyetMap[project.msdt] ?: 0) < (project.sosvtoida ?: 0)} ? ' reg-count red' : ' reg-count green'">
+				</span>
+				/
+				<span class="reg-count green" th:text="${project.sosvtoida ?: 0}"></span>
+
+			        <td>
+			            <button class="approve-btn" th:onclick="'location.href=\'/detai/duyetsv/' + ${project.msdt} + '\''">
+			                Duyệt
+			            </button>
+			        </td>
+			    </tr>	
+			</tbody>
+
+            </table>
+
+            <div class="pagination">
+                <span><strong>1</strong> &gt; 2 &gt; 3 .... &gt; 50</span>
+                
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{layout/footer :: footer}"></div>
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const rowsPerPage = 5;
+        const table = document.querySelector("table tbody");
+        const rows = table.querySelectorAll("tr");
+        const pagination = document.querySelector(".pagination");
+
+        let currentPage = 1;
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+        function showPage(page) {
+            currentPage = page;
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+
+            rows.forEach((row, index) => {
+                row.style.display = (index >= start && index < end) ? "" : "none";
+            });
+
+            updatePagination();
+        }
+
+        function updatePagination() {
+            pagination.innerHTML = "";
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                btn.className = (i === currentPage) ? "active" : "";
+                btn.style.margin = "0 5px";
+                btn.style.padding = "5px 10px";
+                btn.style.cursor = "pointer";
+
+                btn.addEventListener("click", () => showPage(i));
+                pagination.appendChild(btn);
+            }
+        }
+
+        showPage(currentPage);
+    });
+</script>
+
+</html>
