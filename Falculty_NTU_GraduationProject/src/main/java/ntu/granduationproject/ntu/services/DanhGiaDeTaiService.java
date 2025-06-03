@@ -1,5 +1,8 @@
 package ntu.granduationproject.ntu.services;
 
-public class DanhGiaDeTaiService {
+import org.springframework.stereotype.Service;
 
+@Service
+public class DanhGiaDeTaiService {
+	
 }
