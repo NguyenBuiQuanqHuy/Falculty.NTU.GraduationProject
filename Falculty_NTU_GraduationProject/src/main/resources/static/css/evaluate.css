@@ -1,0 +1,117 @@
+@charset "UTF-8";
+.evaluate-btn {
+    background-color: #8B0000;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.evaluate-btn:hover {
+    background-color: red;
+}
+
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* nền mờ đậm hơn */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInBackground 0.3s ease forwards;
+}
+
+@keyframes fadeInBackground {
+    from { background-color: rgba(0,0,0,0); }
+    to { background-color: rgba(0,0,0,0.5); }
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideDown 0.3s ease forwards;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    user-select: none;
+}
+
+.close:hover {
+    color: #e74c3c; /* đỏ khi hover */
+}
+
+/* Style cho form */
+form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+}
+
+form input[type="number"],
+form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.8px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    resize: vertical;
+    font-family: inherit;
+}
+
+form input[type="number"]:focus,
+form textarea:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
+.submit-btn {
+    margin-top: 22px;
+    background-color: #8B0000;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    padding: 12px 20px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    user-select: none;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+

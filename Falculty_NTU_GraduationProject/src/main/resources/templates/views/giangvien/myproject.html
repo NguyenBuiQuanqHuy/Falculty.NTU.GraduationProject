@@ -11,7 +11,7 @@
     <div th:fragment="content">
         <div class="main">
             <h2>DANH SÁCH ĐỀ TÀI CỦA TÔI</h2>
-            <form th:action="@{/danhsachdetaicuatoi}" method="get" class="filters">
+            <form th:action="@{/giangvien/approvedproject}" method="get" class="filters">
     <select name="namhoc">
         <option value="">-- Năm học --</option>
         <option th:each="nh : ${namhocs}" 
@@ -42,7 +42,7 @@
     <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
 
     <button type="submit" class="search-btn">Tìm kiếm</button>
-    <button type="button" class="reset-btn" onclick="window.location.href='/danhsachdetai'">Làm mới</button>
+    <button type="button" class="reset-btn" onclick="window.location.href='/giangvien/approvedproject'">Làm mới</button>
 </form>
 
     	<div class="quota-summary">

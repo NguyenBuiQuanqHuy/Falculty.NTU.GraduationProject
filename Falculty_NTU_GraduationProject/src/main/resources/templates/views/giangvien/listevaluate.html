@@ -5,13 +5,14 @@
     <title>Đánh giá đề tài</title>
     <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
     <link rel="stylesheet" th:href="@{/css/listDT.css}" />
+    <link rel="stylesheet" th:href="@{/css/evaluate.css}" />
 </head>
 <body>
     <div th:replace="~{layout/header :: header}"></div>
     <div th:fragment="content">
         <div class="main">
-            <h2>DANH SÁCH ĐỀ TÀI CỦA TÔI</h2>
-            <form th:action="@{/danhsachdetaicuatoi}" method="get" class="filters">
+            <h2>DANH SÁCH ĐỀ TÀI ĐANG THỰC HIỆN</h2>
+            <form th:action="@{/giangvien/evaluateproject}" method="get" class="filters">
     <select name="namhoc">
         <option value="">-- Năm học --</option>
         <option th:each="nh : ${namhocs}" 
@@ -42,7 +43,7 @@
     <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
 
     <button type="submit" class="search-btn">Tìm kiếm</button>
-    <button type="button" class="reset-btn" onclick="window.location.href='/danhsachdetai'">Làm mới</button>
+    <button type="button" class="reset-btn" onclick="window.location.href='/giangvien/evaluateproject'">Làm mới</button>
 </form>
 
     	</div>
@@ -69,18 +70,12 @@
 			        <td>
 			            <a th:href="@{/listTopic/{id}(id=${project.msdt})}" class="view-link">Xem</a>
 			        </td>
-			      <td>
-				  <span th:text="${soSvDaDuyetMap[project.msdt] ?: 0}"
-				      th:classappend="${(soSvDaDuyetMap[project.msdt] ?: 0) < (project.sosvtoida ?: 0)} ? ' reg-count red' : ' reg-count green'">
-				</span>
-				/
-				<span class="reg-count green" th:text="${project.sosvtoida ?: 0}"></span>
+			     
 
 			        <td>
-			            <button class="approve-btn" th:onclick="'location.href=\'/detai/duyetsv/' + ${project.msdt} + '\''">
-			                Duyệt
-			            </button>
-			        </td>
+					    <button type="button" class="evaluate-btn" th:attr="data-id=${project.msdt}" onclick="openModal(this)">Đánh giá</button>
+					</td>
+
 			    </tr>	
 			</tbody>
 
@@ -94,6 +89,27 @@
     </div>
     <div th:replace="~{layout/footer :: footer}"></div>
 </body>
+
+<!-- Modal -->
+<div id="evaluateProjectModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <form id="evaluateProjectForm" th:action="@{/giangvien/evaluateproject/submit}" method="post">
+            <input type="hidden" name="msdt" id="projectIdInput" />
+            
+            <label for="diem">Điểm:</label>
+            <input type="number" name="diem" id="diem" step="0.25" min="0" max="10" required />
+
+            <label for="binhluan">Bình luận:</label>
+            <textarea name="binhluan" id="binhluan" required></textarea>
+
+           <button id="submitEvaluationBtn" class="submit-btn" type="submit">Gửi đánh giá</button>
+
+        </form>
+    </div>
+</div>
+
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -135,6 +151,43 @@
 
         showPage(currentPage);
     });
+    
+    function openModal(button) {
+        const modal = document.getElementById("evaluateProjectModal");
+        const msdt = button.getAttribute("data-id");
+        document.getElementById("projectIdInput").value = msdt;
+
+        // reset input trước khi lấy dữ liệu cũ
+        document.getElementById("diem").value = "";
+        document.getElementById("binhluan").value = "";
+
+        // Gọi API lấy đánh giá nếu có
+        fetch(`/giangvien/evaluateproject/getEvaluation?msdt=${msdt}`)
+            .then(response => {
+                if (!response.ok) throw new Error("Không lấy được dữ liệu đánh giá");
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    if (data.diem !== undefined) {
+                        document.getElementById("diem").value = data.diem;
+                    }
+                    if (data.binhluan !== undefined) {
+                        document.getElementById("binhluan").value = data.binhluan;
+                    }
+                }
+                modal.style.display = "flex";
+            })
+            .catch(error => {
+                modal.style.display = "flex";
+            });
+    }
+
+    function closeModal() {
+        document.getElementById("evaluateProjectModal").style.display = "none";
+    }
+
+
 </script>
 
 </html>

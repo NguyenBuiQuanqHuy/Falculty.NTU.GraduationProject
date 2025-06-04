@@ -78,15 +78,16 @@
           </td>
           <td>
             <a class="chitiet" th:href="@{/listTopic/{id}(id=${detai.msdt})}">Xem</a>
-          </td>
          <td>
-  <span th:text="${countRegistered[detai.msdt] ?: 0}"></span>
+  <strong><span th:text="${countRegistered[detai.msdt] ?: 0}"></span></strong>
   /
-  <span th:text="${countApproved[detai.msdt] ?: 0}"
-        th:classappend="${(countApproved[detai.msdt] ?: 0) < (detai.sosvtoida ?: 0)} ? 'reg-count red' : 'reg-count green'">
-  </span>
+  <strong>
+    <span th:text="${countApproved[detai.msdt] ?: 0}"
+          th:classappend="${(countApproved[detai.msdt] ?: 0) < (detai.sosvtoida ?: 0)} ? 'reg-count red' : 'reg-count green'">
+    </span>
+  </strong>
   :
-  <span class="reg-count green" th:text="${detai.sosvtoida ?: 0}"></span>
+  <strong><span class="reg-count green" th:text="${detai.sosvtoida ?: 0}"></span></strong>
 </td>
 
 
