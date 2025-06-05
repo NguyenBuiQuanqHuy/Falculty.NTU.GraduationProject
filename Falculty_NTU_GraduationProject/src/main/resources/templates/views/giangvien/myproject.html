@@ -76,11 +76,14 @@
 			            <a th:href="@{/detai/{id}(id=${project.msdt})}" class="view-link">Xem</a>
 			        </td>
 			      <td>
-				  <span th:text="${soSvDaDuyetMap[project.msdt] ?: 0}"
-				      th:classappend="${(soSvDaDuyetMap[project.msdt] ?: 0) < (project.sosvtoida ?: 0)} ? ' reg-count red' : ' reg-count green'">
-				</span>
-				/
-				<span class="reg-count green" th:text="${project.sosvtoida ?: 0}"></span>
+    <span th:text="${soSvDaDuyetMap[project.msdt] ?: 0}"
+          th:classappend="${(soSvDaDuyetMap[project.msdt] ?: 0) < (project.sosvtoida ?: 0)} ? 'reg-count red' : 'reg-count green'">
+    </span>
+    /
+    <span class="reg-count green" th:text="${project.sosvtoida ?: 0}"></span>
+    <small>(Đăng ký: <span th:text="${soSvDangKyMap[project.msdt] ?: 0}"></span>)</small>
+</td>
+
 
 			        <td>
 			            <button class="approve-btn" th:onclick="'location.href=\'/detai/duyetsv/' + ${project.msdt} + '\''">

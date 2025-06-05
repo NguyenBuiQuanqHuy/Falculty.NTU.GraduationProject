@@ -35,6 +35,8 @@ public class SVAprovalController {
 	@Autowired
 	NamHocRepository namHocRepository;
 	@Autowired
+	DangKyDeTaiRepository dangKyDeTaiRepository;
+	@Autowired
 	SVApprovalService svApprovalService;
 
 	@Autowired
@@ -68,6 +70,13 @@ public class SVAprovalController {
 	        soSvDaDuyetMap.put(p.getMsdt(), count);
 	    }
 	    
+	    Map<Integer, Integer> soSvDangKyMap = new HashMap<>();
+	    for (Project p : projects) {
+	        int total = dangKyDeTaiRepository.countByMsdt_Msdt(p.getMsdt()); // lấy tất cả
+	        soSvDangKyMap.put(p.getMsdt(), total);
+	    }
+
+	    
 	    int soSvDaDuyetDA = svApprovalService.countByGiangVienAndLoai(msgv, 1); 
 	    int soSvDaDuyetCD = svApprovalService.countByGiangVienAndLoai(msgv, 2); 
 
@@ -76,6 +85,8 @@ public class SVAprovalController {
 
 	    model.addAttribute("projects", projects);
 	    model.addAttribute("soSvDaDuyetMap", soSvDaDuyetMap);
+	    model.addAttribute("soSvDangKyMap", soSvDangKyMap);
+
 	    // Gửi dữ liệu về view
 	    model.addAttribute("projects", projects);
 	    model.addAttribute("namhocs", namHocRepository.findAll());
