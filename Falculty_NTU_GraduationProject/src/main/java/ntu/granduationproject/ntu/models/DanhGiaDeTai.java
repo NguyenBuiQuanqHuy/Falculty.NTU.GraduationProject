@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 public class DanhGiaDeTai {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int ID;
+	private int id;
 	
 	@ManyToOne
 	@JoinColumn(name = "msdt",referencedColumnName = "msdt")
@@ -32,12 +32,14 @@ public class DanhGiaDeTai {
 	@Column(columnDefinition = "TEXT")
 	private String binhluan;
 
-	public int getID() {
-		return ID;
+	
+
+	public int getId() {
+		return id;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Project getMsdt() {

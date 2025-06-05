@@ -34,7 +34,7 @@
     padding: 25px 30px;
     border-radius: 12px;
     width: 400px;
-    max-width: 90%;
+    max-width: 95%;
     box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     position: relative;
     animation: slideDown 0.3s ease forwards;
@@ -68,6 +68,17 @@
     color: #e74c3c; /* đỏ khi hover */
 }
 
+.project-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #8B0000;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 /* Style cho form */
 form label {
     display: block;
@@ -77,10 +88,31 @@ form label {
     color: #444;
 }
 
-form input[type="number"],
+form input[type="number"] {
+    width: 100%;
+    max-width: 100%; /* tránh vượt khỏi form */
+    padding: 10px 12px;
+    border: 1.8px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    font-family: inherit;
+    box-sizing: border-box; /* đảm bảo padding không làm to input */
+}
+
+
+form input[type="number"]:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
 form textarea {
     width: 100%;
-    padding: 10px 12px;
+    min-height: 160px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 12px 14px;
     border: 1.8px solid #ccc;
     border-radius: 6px;
     font-size: 16px;
@@ -89,12 +121,12 @@ form textarea {
     font-family: inherit;
 }
 
-form input[type="number"]:focus,
 form textarea:focus {
     outline: none;
     border-color: #007BFF;
     box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
 }
+
 
 .submit-btn {
     margin-top: 22px;
@@ -113,5 +145,138 @@ form textarea:focus {
 
 .submit-btn:hover {
     background-color: #0056b3;
+}
+
+/* Danh sách đánh giá trong modal */
+@charset "UTF-8";
+
+.evaluate-btn {
+    background-color: #8B0000;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.evaluate-btn:hover {
+    background-color: red;
+}
+
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* nền mờ đậm hơn */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInBackground 0.3s ease forwards;
+}
+
+@keyframes fadeInBackground {
+    from { background-color: rgba(0,0,0,0); }
+    to { background-color: rgba(0,0,0,0.5); }
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 95%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideDown 0.3s ease forwards;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    user-select: none;
+}
+
+.close:hover {
+    color: #e74c3c; /* đỏ khi hover */
+}
+
+.project-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #8B0000;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+}
+
+/* Danh sách đánh giá trong modal */
+#evaluationsList {
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#evaluationsList .evaluation-item {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+#evaluationsList .evaluation-item:last-child {
+  border-bottom: none;
+}
+
+#evaluationsList .giangvien {
+  font-weight: 600;
+  color: #8B0000;
+  margin-bottom: 6px;
+}
+
+#evaluationsList .diem {
+  font-weight: 700;
+  color: #007BFF;
+  margin-bottom: 6px;
+}
+
+#evaluationsList .binhluan {
+  white-space: pre-wrap;
+  font-size: 15px;
+  color: #333;
+  line-height: 1.4;
+  max-height: 300px;
+  height: 300px;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fafafa;
+
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  display: block;
 }
 

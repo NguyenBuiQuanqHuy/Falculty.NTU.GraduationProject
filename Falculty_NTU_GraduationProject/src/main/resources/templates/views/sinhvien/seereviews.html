@@ -6,13 +6,14 @@
     <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
     <link rel="stylesheet" th:href="@{/css/listDT.css}" />
     <link rel="stylesheet" th:href="@{/css/evaluate.css}" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
     <div th:replace="~{layout/header :: header}"></div>
     <div th:fragment="content">
         <div class="main">
             <h2>DANH SÁCH ĐỀ TÀI ĐANG THỰC HIỆN</h2>
-            <form th:action="@{/giangvien/evaluateproject}" method="get" class="filters">
+            <form th:action="@{/sinhvien/evaluateproject}" method="get" class="filters">
     <select name="namhoc">
         <option value="">-- Năm học --</option>
         <option th:each="nh : ${namhocs}" 
@@ -43,7 +44,7 @@
     <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
 
     <button type="submit" class="search-btn">Tìm kiếm</button>
-    <button type="button" class="reset-btn" onclick="window.location.href='/giangvien/evaluateproject'">Làm mới</button>
+    <button type="button" class="reset-btn" onclick="window.location.href='/sinhvien/evaluateproject'">Làm mới</button>
 </form>
 
     	</div>
@@ -53,6 +54,7 @@
                         <th>STT</th>
                         <th>Tên đề tài</th>
                         <th>Loại</th>
+                        <th>Giảng viên ra đề</th>
                         <th>Lĩnh vực</th>
                         <th>Năm học</th>
                         <th>Nội dung</th>
@@ -64,6 +66,14 @@
 			        <td th:text="${stat.index + 1}">1</td>
 			        <td th:text="${project.tendt}">Tên đề tài</td>
 			        <td th:text="${project.theLoai.tentheloai}">Loại</td>
+			        
+			         <td>
+            <a th:href="@{/profile/giangvien/{id}(id=${project.msgv.msgv})}">
+              <span th:text="${project.msgv.hoten}"></span>
+              <i class="fas fa-user" style="margin-left: 6px; color: #8B0000;"></i>
+            </a>
+          </td>
+			        
 			        <td th:text="${project.linhVuc.tenlinhvuc}">Lĩnh vực</td>
 			        <td th:text="${project.namHoc.tennamhoc}">Năm học</td>
 			      
@@ -73,7 +83,9 @@
 			     
 
 			        <td>
-					    <button type="button" class="evaluate-btn" th:attr="data-id=${project.msdt},data-tendt=${project.tendt}" onclick="openModal(this)">Đánh giá</button>
+					    <button type="button" class="evaluate-btn" th:attr="data-id=${project.msdt},data-tendt=${project.tendt}" onclick="openModal(this)">
+						  Đánh giá
+						</button>
 					</td>
 
 			    </tr>	
@@ -91,26 +103,19 @@
 </body>
 
 <!-- Modal -->
+<!-- Modal -->
 <div id="evaluateProjectModal" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="projectTitleDisplay" class="project-title"></h2>
 
-        <h2 id="projectTitleDisplay" class="project-title"></h2>
-
-
-        <form id="evaluateProjectForm" th:action="@{/giangvien/evaluateproject/submit}" method="post">
-            <input type="hidden" name="msdt" id="projectIdInput" />
-
-            <label for="diem">Điểm:</label>
-            <input type="number" name="diem" id="diem" step="0.25" min="0" max="10" required />
-
-            <label for="binhluan">Bình luận:</label>
-            <textarea name="binhluan" id="binhluan" required></textarea>
-
-            <button id="submitEvaluationBtn" class="submit-btn" type="submit">Gửi đánh giá</button>
-        </form>
+    <div id="evaluationsList">
+      <!-- Đánh giá sẽ được load vào đây -->
     </div>
+  </div>
 </div>
+
+
 
 
 
@@ -161,39 +166,49 @@
         const msdt = button.getAttribute("data-id");
         const tendt = button.getAttribute("data-tendt");
 
-        document.getElementById("projectIdInput").value = msdt;
         document.getElementById("projectTitleDisplay").innerText = tendt;
 
-        // reset input trước khi lấy dữ liệu cũ
-        document.getElementById("diem").value = "";
-        document.getElementById("binhluan").value = "";
+        const evaluationsList = document.getElementById("evaluationsList");
+        evaluationsList.innerHTML = "<p>Đang tải đánh giá...</p>";
 
-        // Gọi API lấy đánh giá nếu có
-        fetch(`/giangvien/evaluateproject/getEvaluation?msdt=${msdt}`)
+        fetch(`/sinhvien/evaluateproject/getEvaluations?msdt=${msdt}`)
             .then(response => {
                 if (!response.ok) throw new Error("Không lấy được dữ liệu đánh giá");
                 return response.json();
             })
             .then(data => {
-                if (data) {
-                    if (data.diem !== undefined) {
-                        document.getElementById("diem").value = data.diem;
-                    }
-                    if (data.binhluan !== undefined) {
-                        document.getElementById("binhluan").value = data.binhluan;
-                    }
+                evaluationsList.innerHTML = "";
+
+                if (data.length === 0) {
+                    evaluationsList.innerHTML = "<p>Chưa có đánh giá nào.</p>";
+                    return;
                 }
-                modal.style.display = "flex";
+
+                data.forEach(evaluation => {
+                    const div = document.createElement("div");
+                    div.className = "evaluation-item";
+                    div.style.marginBottom = "15px";
+                    div.innerHTML = `
+                        <p class="giangvien">Giảng viên: ${evaluation.giangvien}</p>
+                        <p class="diem">Điểm: ${evaluation.diem}</p>
+                        <div class="binhluan"><strong>Bình luận:</strong><br>${evaluation.binhluan}</div>
+                    `;
+                    evaluationsList.appendChild(div);
+                });
             })
             .catch(error => {
-                modal.style.display = "flex"; // vẫn mở modal nếu lỗi
+                evaluationsList.innerHTML = "<p style='color:red;'>Không thể tải đánh giá.</p>";
+                console.error(error);
             });
-    }
 
+        modal.style.display = "flex";
+    }
 
     function closeModal() {
         document.getElementById("evaluateProjectModal").style.display = "none";
     }
+
+
 
 
 </script>

@@ -23,6 +23,7 @@ import ntu.granduationproject.ntu.models.Project;
 import ntu.granduationproject.ntu.repositories.DanhGiaDeTaiRepository;
 import ntu.granduationproject.ntu.repositories.LinhVucRepository;
 import ntu.granduationproject.ntu.repositories.NamHocRepository;
+import ntu.granduationproject.ntu.repositories.ProjectRepository;
 import ntu.granduationproject.ntu.repositories.TheLoaiRepository;
 import ntu.granduationproject.ntu.services.DanhGiaDeTaiService;
 import ntu.granduationproject.ntu.services.ProjectService;
@@ -41,6 +42,8 @@ public class DanhGiaDeTaiController {
 	DanhGiaDeTaiRepository danhGiaDeTaiRepository;
 	@Autowired
 	DanhGiaDeTaiService danhGiaDeTaiService;
+	@Autowired
+	ProjectRepository projectRepository;
 	
 	@GetMapping("giangvien/evaluateproject")
 	public String listProjects( @RequestParam(required = false) Integer namhoc,
@@ -130,6 +133,52 @@ public class DanhGiaDeTaiController {
 	    }
 	}
 
+	@GetMapping("/sinhvien/evaluateproject")
+	public String Seeevaluate( @RequestParam(required = false) Integer namhoc,
+	        @RequestParam(required = false) Integer theloai,
+	        @RequestParam(required = false) Integer linhvuc,
+	        @RequestParam(required = false) String tendt,
+	        HttpSession session,
+	        ModelMap model) {
+		
+
+	    List<Project> projects = projectRepository.allProjectsByConditions(
+	  namhoc, theloai, linhvuc, tendt, true
+	    );
+	    
+	    model.addAttribute("projects", projects);
+	    model.addAttribute("namhocs", namHocRepository.findAll());
+	    model.addAttribute("theloais", theLoaiRepository.findAll());
+	    model.addAttribute("linhvucs", linhVucRepository.findAll());
+
+	    model.addAttribute("selectedNamHoc", namhoc);
+	    model.addAttribute("selectedTheLoai", theloai);
+	    model.addAttribute("selectedLinhVuc", linhvuc);
+	    model.addAttribute("tendt", tendt);
+	    
+	    return "views/sinhvien/seereviews";
+	}
+	
+	@GetMapping("/sinhvien/evaluateproject/getEvaluations")
+	@ResponseBody
+	public ResponseEntity<?> getEvaluationsForProject(@RequestParam("msdt") int msdt) {
+	    Project project = projectService.findById(msdt).orElse(null);
+	    if (project == null) {
+	        return ResponseEntity.badRequest().body("Project not found");
+	    }
+
+	    List<DanhGiaDeTai> danhGiaList = danhGiaDeTaiRepository.findByMsdt(project);
+
+	    List<Map<String, Object>> response = danhGiaList.stream().map(dg -> {
+	        Map<String, Object> item = new HashMap<>();
+	        item.put("giangvien", dg.getMsgv().getHoten()); // hoặc msgv.getUsername()
+	        item.put("diem", dg.getDiem());
+	        item.put("binhluan", dg.getBinhluan());
+	        return item;
+	    }).toList();
+
+	    return ResponseEntity.ok(response);
+	}
 
 
 }

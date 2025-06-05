@@ -107,4 +107,19 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 		        @Param("tendt") String tendt,
 		        @Param("cosv") Boolean cosv);
 
+	
+	@Query("SELECT p FROM Project p WHERE " +
+		       "(:namhoc IS NULL OR p.namHoc.manamhoc = :namhoc) AND " +
+		       "(:theloai IS NULL OR p.theLoai.matheloai = :theloai) AND " +
+		       "(:linhvuc IS NULL OR p.linhVuc.malinhvuc = :linhvuc) AND " +
+		       "(:tendt IS NULL OR LOWER(p.tendt) LIKE LOWER(CONCAT('%', :tendt, '%'))) AND " +
+		       "(:cosv IS NULL OR p.cosvthuchien = :cosv) " +
+		       "ORDER BY p.msdt DESC")
+		List<Project> allProjectsByConditions(
+		        @Param("namhoc") Integer namhoc,
+		        @Param("theloai") Integer theloai,
+		        @Param("linhvuc") Integer linhvuc,
+		        @Param("tendt") String tendt,
+		        @Param("cosv") Boolean cosv);
+
 }
