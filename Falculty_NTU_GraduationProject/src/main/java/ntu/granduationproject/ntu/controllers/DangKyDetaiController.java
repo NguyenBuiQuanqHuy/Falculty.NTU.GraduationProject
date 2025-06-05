@@ -95,6 +95,29 @@ public class DangKyDetaiController {
         model.addAttribute("selectedNamHoc", namhoc);
         model.addAttribute("selectedTheLoai", theloai);
         model.addAttribute("selectedLinhVuc", linhvuc);
+        
+        Map<Integer, Boolean> canRegisterMap = new HashMap<>();
+        for (Project project : dsFiltered) {
+            int msdt = project.getMsdt();
+            boolean canRegister = true;
+
+            int countRegistered = dangKyDeTaiRepository.countByMsdt_MsdtAndTrangthai(msdt, "đã duyệt");
+            if (countRegistered >= project.getSosvtoida()) {
+                canRegister = false; // đề tài đầy sinh viên
+            } else {
+                int theLoai = project.getTheLoai().getMatheloai();
+                int hanMuc = (theLoai == 1) ? project.getMsgv().getHMHDDA() : project.getMsgv().getHMHDCD();
+                int approvedCountForGV = dangKyDeTaiRepository.countByGiangVienAndTheLoai(project.getMsgv().getMsgv(), theLoai);
+
+                if (approvedCountForGV >= hanMuc) {
+                    canRegister = false; // giảng viên vượt hạn mức
+                }
+            }
+            canRegisterMap.put(msdt, canRegister);
+        }
+
+        model.addAttribute("canRegisterMap", canRegisterMap);
+
 
         return "views/sinhvien/listTopic";
     }

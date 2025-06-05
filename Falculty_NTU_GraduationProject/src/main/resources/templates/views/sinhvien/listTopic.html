@@ -91,12 +91,14 @@
 </td>
 
 
-          <td>
-            <form th:action="@{/registerTopic/{msdt}(msdt=${detai.msdt})}" method="post"
-                  onsubmit="return confirm('Bạn có chắc chắn muốn đăng ký đề tài này không?');">
-              <button type="submit" class="btn-register" th:disabled="${dangKy != null}">Đăng ký</button>
-            </form>
-          </td>
+         <td>
+  <form th:action="@{/registerTopic/{msdt}(msdt=${detai.msdt})}" method="post"
+        onsubmit="return confirm('Bạn có chắc chắn muốn đăng ký đề tài này không?');">
+    <button type="submit" class="btn-register"
+            th:disabled="${dangKy != null or !canRegisterMap[detai.msdt]}">Đăng ký</button>
+  </form>
+</td>
+
         </tr>
         </tbody>
       </table>
