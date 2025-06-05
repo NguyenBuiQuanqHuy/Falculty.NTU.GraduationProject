@@ -73,7 +73,7 @@
 			        <td th:text="${project.namHoc.tennamhoc}">Năm học</td>
 			      
 			        <td>
-			            <a th:href="@{/listTopic/{id}(id=${project.msdt})}" class="view-link">Xem</a>
+			            <a th:href="@{/detai/{id}(id=${project.msdt})}" class="view-link">Xem</a>
 			        </td>
 			      <td>
 				  <span th:text="${soSvDaDuyetMap[project.msdt] ?: 0}"
@@ -94,7 +94,6 @@
 
             <div class="pagination">
                 <span><strong>1</strong> &gt; 2 &gt; 3 .... &gt; 50</span>
-                
             </div>
         </div>
     </div>

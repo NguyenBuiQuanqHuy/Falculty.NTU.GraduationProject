@@ -41,7 +41,7 @@ public class SVAprovalController {
 	EmailService emailService;
 
 	
-	@GetMapping("/giangvien/approvedproject")
+	@GetMapping("/giangvien/detaidaduyet")
 	public String listProjects(
 	        @RequestParam(required = false) Integer namhoc,
 	        @RequestParam(required = false) Integer theloai,

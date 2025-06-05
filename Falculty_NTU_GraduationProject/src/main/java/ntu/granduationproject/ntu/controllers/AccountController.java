@@ -48,7 +48,7 @@ public class AccountController {
 	}
 
 	
-    @PostMapping("/createaccount")
+    @PostMapping("/truongkhoa/taotaikhoan")
     public String createaccount (@RequestParam("maso") String maso,
                                  @RequestParam("hoten") String hoten,
                                  @RequestParam("email") String email,

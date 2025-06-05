@@ -44,7 +44,7 @@ public class DangKyDetaiController {
     @Autowired
     private NamHocRepository namHocRepository;
 
-    @GetMapping("/listTopic")
+    @GetMapping("/sinhvien/dangkydetai")
     public String ListTopic(
             @RequestParam(value = "tendt", required = false) String tendt,
             @RequestParam(value = "namhoc", required = false) Integer namhoc,
@@ -100,7 +100,7 @@ public class DangKyDetaiController {
     }
 
 
-    @GetMapping("/listTopic/{id}")
+    @GetMapping("/detai/{id}")
     public String TopicInfo(@PathVariable("id") int msdt, Model model, HttpSession session) {
         Project project = projectService.findById(msdt)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy đề tài"));
@@ -143,7 +143,7 @@ public class DangKyDetaiController {
         } else {
             redirectAttrs.addFlashAttribute("message", "Đăng ký đề tài thành công, chờ phê duyệt.");
         }
-        return "redirect:/listTopic";
+        return "redirect:/sinhvien/dangkydetai";
     }
 
     @PostMapping("/cancelRegister/{msdt}")
@@ -160,6 +160,6 @@ public class DangKyDetaiController {
         } else {
             redirectAttrs.addFlashAttribute("error", "Không thể hủy đăng ký");
         }
-        return "redirect:/listTopic";
+        return "redirect:/sinhvien/dangkydetai";
     }
 }

@@ -22,7 +22,7 @@
             <div id="listTopic" class="tab-content active">
                 <h2>DANH SÁCH ĐỀ TÀI ĐÃ THỰC HIỆN</h2>
 
-                <form th:action="@{/sinhvien/evaluateproject}" method="get" class="filters">
+                <form th:action="@{/sinhvien/xemdanhgiadetai}" method="get" class="filters">
                     <select name="namhoc">
                         <option value="">-- Năm học --</option>
                         <option th:each="nh : ${namhocs}" 
@@ -146,11 +146,7 @@
     </div>
     
     <div th:if="${myTopics == null or #lists.isEmpty(myTopics)}" style="text-align:center; margin-top: 30px;">
-        <p>Bạn chưa đăng ký đề tài nào.</p>
-        <button onclick="window.location.href='/listTopic'" 
-                style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
-            Đăng ký đề tài ngay
-        </button>
+        <p>Bạn chưa có đề tài nào.</p>
     </div>
 </div>
 

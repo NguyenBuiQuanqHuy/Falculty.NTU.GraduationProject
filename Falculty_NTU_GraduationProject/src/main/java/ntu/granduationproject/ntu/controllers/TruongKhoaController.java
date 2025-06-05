@@ -39,7 +39,7 @@ public class TruongKhoaController {
     @Autowired
     ProjectService projectService;
     
-	@GetMapping("/truongkhoa/home")
+	@GetMapping("/truongkhoa")
 	public String adminHome(HttpSession session) {
 	    if ("admin".equals(session.getAttribute("role"))) {
 	        return "views/truongkhoa/Home"; // KHÔNG có .html
@@ -47,12 +47,12 @@ public class TruongKhoaController {
 	    return "redirect:/login?unauthorized=true";
 	}
 
-    @GetMapping("/createaccount")
+    @GetMapping("/truongkhoa/taotaikhoan")
     public String createAccount() {
     	return "views/truongkhoa/CreateAccount";
     }
     
-    @GetMapping("/duyetdetai")
+    @GetMapping("/truongkhoa/duyetdetai")
     public String duyetdetai(
             @RequestParam(name = "namhoc", required = false) String maNamHoc,
             @RequestParam(name = "linhvuc", required = false) String maLinhVuc,
@@ -90,7 +90,7 @@ public class TruongKhoaController {
     
     
     
-    @PostMapping("/duyetdetai")
+    @PostMapping("/truongkhoa/duyetdetai")
     public String duyetDeTai(@RequestParam("msdt") int msdt, RedirectAttributes redirectAttributes) {
         try {
             Project project = projectService.getProjectById(msdt);
@@ -112,12 +112,12 @@ public class TruongKhoaController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi duyệt đề tài.");
         }
-        return "redirect:/duyetdetai";
+        return "redirect:/truongkhoa/duyetdetai";
     }
 
     
     
-    @PostMapping("/tuchoidetai")
+    @PostMapping("/truongkhoa/tuchoidetai")
     public String tuChoiDeTai(@RequestParam("msdt") int msdt, RedirectAttributes redirectAttributes) {
         Project project = projectService.getProjectById(msdt);
         if (project != null) {
@@ -126,7 +126,7 @@ public class TruongKhoaController {
         } else {
             redirectAttributes.addFlashAttribute("error", "Không tìm thấy đề tài.");
         }
-        return "redirect:/duyetdetai";
+        return "redirect:/truongkhoa/duyetdetai";
     }
 
     

@@ -49,7 +49,7 @@ public class DanhGiaDeTaiController {
 	@Autowired
 	DangKyDeTaiRepository dangKyDeTaiRepository;
 	
-	@GetMapping("giangvien/evaluateproject")
+	@GetMapping("giangvien/danhgiadetai")
 	public String listProjects( @RequestParam(required = false) Integer namhoc,
 	        @RequestParam(required = false) Integer theloai,
 	        @RequestParam(required = false) Integer linhvuc,
@@ -93,7 +93,7 @@ public class DanhGiaDeTaiController {
 	    GiangVien gv = (GiangVien) userObj;
 	    Project project = projectService.findById(msdt).orElse(null);
 	    if (project == null) {
-	        return "redirect:/giangvien/evaluateproject?error=notfound";
+	        return "redirect:/giangvien/danhgiadetai?error=notfound";
 	    }
 
 	    // Kiểm tra đã đánh giá hay chưa
@@ -107,7 +107,7 @@ public class DanhGiaDeTaiController {
 
 	    danhGiaDeTaiRepository.save(danhGiaDeTai); // sẽ update nếu đã có
 
-	    return "redirect:/giangvien/evaluateproject?success=true";
+	    return "redirect:/giangvien/danhgiadetai?success=true";
 	}
 	
 	@GetMapping("/giangvien/evaluateproject/getEvaluation")
@@ -137,7 +137,7 @@ public class DanhGiaDeTaiController {
 	    }
 	}
 
-	@GetMapping("/sinhvien/evaluateproject")
+	@GetMapping("/sinhvien/xemdanhgiadetai")
 	public String Seeevaluate( @RequestParam(required = false) Integer namhoc,
 	        @RequestParam(required = false) Integer theloai,
 	        @RequestParam(required = false) Integer linhvuc,

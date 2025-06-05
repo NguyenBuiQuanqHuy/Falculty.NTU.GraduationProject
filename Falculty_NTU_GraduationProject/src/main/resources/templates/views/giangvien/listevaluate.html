@@ -12,7 +12,7 @@
     <div th:fragment="content">
         <div class="main">
             <h2>DANH SÁCH ĐỀ TÀI ĐANG THỰC HIỆN</h2>
-            <form th:action="@{/giangvien/evaluateproject}" method="get" class="filters">
+            <form th:action="@{/giangvien/danhgiadetai}" method="get" class="filters">
     <select name="namhoc">
         <option value="">-- Năm học --</option>
         <option th:each="nh : ${namhocs}" 
@@ -68,7 +68,7 @@
 			        <td th:text="${project.namHoc.tennamhoc}">Năm học</td>
 			      
 			        <td>
-			            <a th:href="@{/listTopic/{id}(id=${project.msdt})}" class="view-link">Xem</a>
+			            <a th:href="@{/detai/{id}(id=${project.msdt})}" class="view-link">Xem</a>
 			        </td>
 			     
 

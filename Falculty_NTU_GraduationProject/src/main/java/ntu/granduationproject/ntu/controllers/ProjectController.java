@@ -43,7 +43,7 @@ public class ProjectController {
 	@Autowired
 	DangKyDeTaiRepository dangKyDeTaiRepository;
 
-	@GetMapping("/taodetai")
+	@GetMapping("/giangvien/taodetai")
 	public String showCreateProjectForm(ModelMap model, HttpSession session) {
 	    Object userObj = session.getAttribute("user");
 	    if (userObj != null && userObj instanceof GiangVien) {
@@ -79,7 +79,7 @@ public class ProjectController {
 
 
 
-	@PostMapping("/taodetai")
+	@PostMapping("/giangvien/taodetai")
 	public String taodetai(
 	                       @RequestParam String tendt,
 	                       @RequestParam int theloai,
@@ -108,7 +108,7 @@ public class ProjectController {
 
 	    if (giangVien == null || loai == null || linhVucObj == null || namHoc == null) {
 	        redirectAttributes.addFlashAttribute("error", "Một trong các thông tin không hợp lệ.");
-	        return "redirect:/taodetai"; 
+	        return "redirect:/giangvien/taodetai"; 
 	    }
 
 	    Project deTai = new Project();
@@ -125,10 +125,10 @@ public class ProjectController {
 	    projectService.createProject(deTai);
 
 	    redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
-		return "redirect:/giangvien/listTopic?tab=MyTopics";
+		return "redirect:/giangvien/danhsachdetai?tab=MyTopics";
 	}
 
-	@GetMapping("/giangvien/listTopic")
+	@GetMapping("/giangvien/danhsachdetai")
 	public String listTopic(
 			@RequestParam(value = "tendt", required = false) String tendt,
 			@RequestParam(value = "namhoc", required = false) Integer namhoc,
