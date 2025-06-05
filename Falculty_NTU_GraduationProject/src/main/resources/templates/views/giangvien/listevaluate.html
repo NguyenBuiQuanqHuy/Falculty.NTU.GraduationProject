@@ -2,16 +2,17 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Đề tài của tôi</title>
+    <title>Đánh giá đề tài</title>
     <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
     <link rel="stylesheet" th:href="@{/css/listDT.css}" />
+    <link rel="stylesheet" th:href="@{/css/evaluate.css}" />
 </head>
 <body>
     <div th:replace="~{layout/header :: header}"></div>
     <div th:fragment="content">
         <div class="main">
-            <h2>DANH SÁCH ĐỀ TÀI CỦA TÔI</h2>
-            <form th:action="@{/giangvien/detaidaduyet}" method="get" class="filters">
+            <h2>DANH SÁCH ĐỀ TÀI ĐANG THỰC HIỆN</h2>
+            <form th:action="@{/giangvien/danhgiadetai}" method="get" class="filters">
     <select name="namhoc">
         <option value="">-- Năm học --</option>
         <option th:each="nh : ${namhocs}" 
@@ -42,13 +43,8 @@
     <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
 
     <button type="submit" class="search-btn">Tìm kiếm</button>
-    <button type="button" class="reset-btn" onclick="window.location.href='/giangvien/detaidaduyet'">Làm mới</button>
+    <button type="button" class="reset-btn" onclick="window.location.href='/giangvien/danhgiadetai'">Làm mới</button>
 </form>
-
-    	<div class="quota-summary">
-      		<p>Hạn mức Đồ án: <strong>[[${soSvDaDuyetDA}]] / [[${hanMucDA}]]</strong></p>
-			<p>Hạn mức Chuyên đề: <strong>[[${soSvDaDuyetCD}]] / [[${hanMucCD}]]</strong></p>
-
 
     	</div>
             <table>
@@ -60,8 +56,7 @@
                         <th>Lĩnh vực</th>
                         <th>Năm học</th>
                         <th>Nội dung</th>
-                        <th>Đã duyệt / Tối đa SV</th>
-                        <th>Duyệt sinh viên</th>
+                        <th>Đánh giá</th>
                     </tr>
                 </thead>
                <tbody>
@@ -75,21 +70,12 @@
 			        <td>
 			            <a th:href="@{/detai/{id}(id=${project.msdt})}" class="view-link">Xem</a>
 			        </td>
-			      <td>
-    <span th:text="${soSvDaDuyetMap[project.msdt] ?: 0}"
-          th:classappend="${(soSvDaDuyetMap[project.msdt] ?: 0) < (project.sosvtoida ?: 0)} ? 'reg-count red' : 'reg-count green'">
-    </span>
-    /
-    <span class="reg-count green" th:text="${project.sosvtoida ?: 0}"></span>
-    <small>(Đăng ký: <span th:text="${soSvDangKyMap[project.msdt] ?: 0}"></span>)</small>
-</td>
-
+			     
 
 			        <td>
-			            <button class="approve-btn" th:onclick="'location.href=\'/detai/duyetsv/' + ${project.msdt} + '\''">
-			                Duyệt
-			            </button>
-			        </td>
+					    <button type="button" class="evaluate-btn" th:attr="data-id=${project.msdt},data-tendt=${project.tendt}" onclick="openModal(this)">Đánh giá</button>
+					</td>
+
 			    </tr>	
 			</tbody>
 
@@ -97,11 +83,37 @@
 
             <div class="pagination">
                 <span><strong>1</strong> &gt; 2 &gt; 3 .... &gt; 50</span>
+                
             </div>
         </div>
     </div>
     <div th:replace="~{layout/footer :: footer}"></div>
 </body>
+
+<!-- Modal -->
+<div id="evaluateProjectModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+
+        <h2 id="projectTitleDisplay" class="project-title"></h2>
+
+
+        <form id="evaluateProjectForm" th:action="@{/giangvien/evaluateproject/submit}" method="post">
+            <input type="hidden" name="msdt" id="projectIdInput" />
+
+            <label for="diem">Điểm:</label>
+            <input type="number" name="diem" id="diem" step="0.25" min="0" max="10" required />
+
+            <label for="binhluan">Bình luận:</label>
+            <textarea name="binhluan" id="binhluan" required></textarea>
+
+            <button id="submitEvaluationBtn" class="submit-btn" type="submit">Gửi đánh giá</button>
+        </form>
+    </div>
+</div>
+
+
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -143,6 +155,47 @@
 
         showPage(currentPage);
     });
+    
+    function openModal(button) {
+        const modal = document.getElementById("evaluateProjectModal");
+        const msdt = button.getAttribute("data-id");
+        const tendt = button.getAttribute("data-tendt");
+
+        document.getElementById("projectIdInput").value = msdt;
+        document.getElementById("projectTitleDisplay").innerText = tendt;
+
+        // reset input trước khi lấy dữ liệu cũ
+        document.getElementById("diem").value = "";
+        document.getElementById("binhluan").value = "";
+
+        // Gọi API lấy đánh giá nếu có
+        fetch(`/giangvien/evaluateproject/getEvaluation?msdt=${msdt}`)
+            .then(response => {
+                if (!response.ok) throw new Error("Không lấy được dữ liệu đánh giá");
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    if (data.diem !== undefined) {
+                        document.getElementById("diem").value = data.diem;
+                    }
+                    if (data.binhluan !== undefined) {
+                        document.getElementById("binhluan").value = data.binhluan;
+                    }
+                }
+                modal.style.display = "flex";
+            })
+            .catch(error => {
+                modal.style.display = "flex"; // vẫn mở modal nếu lỗi
+            });
+    }
+
+
+    function closeModal() {
+        document.getElementById("evaluateProjectModal").style.display = "none";
+    }
+
+
 </script>
 
 </html>

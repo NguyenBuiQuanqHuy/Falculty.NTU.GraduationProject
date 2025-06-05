@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class SinhVienController {
 
-    @GetMapping("/sinhvien/home")
+    @GetMapping("/sinhvien")
     public String sinhVienHome(HttpSession session) {
         if ("sinhvien".equals(session.getAttribute("role"))) {
             return "views/sinhvien/Home";

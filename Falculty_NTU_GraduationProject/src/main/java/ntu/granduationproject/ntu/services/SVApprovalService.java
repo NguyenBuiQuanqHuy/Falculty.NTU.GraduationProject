@@ -79,7 +79,6 @@ public class SVApprovalService {
 	        
 	        tongSoDaDuyetTheoLoai = dangKyDeTaiRepository.countByGiangVienAndTheLoai(msgv, theloai);
 	        if (tongSoDaDuyetTheoLoai >= hanMuc) {
-	            // Gửi mail thông báo cho các sinh viên chưa duyệt của giảng viên này theo loại đề tài
 	            List<DangKyDetai> chuaDuyetGVList = dangKyDeTaiRepository.findByMsdt_Msgv_MsgvAndTrangthaiAndMsdt_TheLoai_Matheloai(msgv, "chưa duyệt", theloai);
 	            for (DangKyDetai cho : chuaDuyetGVList) {
 	                String toEmail = cho.getMssv().getEmail();

@@ -17,7 +17,7 @@
                 <h2>TẠO ĐỀ TÀI</h2>
             </div>
 
-            <form class="form-box" method="post" th:action="@{/taodetai}" onsubmit="return confirm('Bạn có chắc chắn muốn tạo đề tài này không?');">
+            <form class="form-box" method="post" th:action="@{/giangvien/taodetai}" onsubmit="return confirm('Bạn có chắc chắn muốn tạo đề tài này không?');">
                 <div class="form-columns">
                     <!-- Cột trái -->
                     <div class="left-column">
@@ -34,7 +34,11 @@
                         <div class="input-group-item">
                             <div>
                                 <label for="namhoc">Năm học</label>
-                                <input type="number" id="namhoc" name="namhoc" value="2025" min="2000" max="2100" readonly style="margin-left: 86px; width: 60px; text-align: center"/>
+                                <input type="number" id="namhoc" name="namhoc" 
+							       th:value="${namHocHienTai.tennamhoc}" 
+							       min="2000" max="2100" readonly 
+							       style="margin-left: 86px; width: 60px; text-align: center"/>
+
                             </div>
                             <div>
                                 <label style="margin-left: 10px;">Lĩnh vực</label>
@@ -62,7 +66,10 @@
                             </div>
                             <div>
                                 <label style="margin-left: 74px;">Dành cho khóa</label>
-                                <input type="number" name="khoasv" min="1" value="66" class="short-input"/>
+								<input type="number" name="khoasv" min="1" 
+								       th:value="${khoaMacDinh}" 
+								       class="short-input" readonly />
+
                             </div>
                         </div>
 

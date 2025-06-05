@@ -43,19 +43,24 @@ public class ProjectController {
 	@Autowired
 	DangKyDeTaiRepository dangKyDeTaiRepository;
 
-	@GetMapping("/taodetai")
+	@GetMapping("/giangvien/taodetai")
 	public String showCreateProjectForm(ModelMap model, HttpSession session) {
 	    Object userObj = session.getAttribute("user");
 	    if (userObj != null && userObj instanceof GiangVien) {
 	        GiangVien giangVien = (GiangVien) userObj;
-
 	        model.addAttribute("tenGiangVien", giangVien.getHoten());
 	    }
-	    
+
 	    int currentYear = LocalDate.now().getYear();
 
-	    Optional<NamHoc> existingNamHoc = namHocRepository.findByTennamhoc(currentYear);
+	    // Tính khóa SV từ năm hiện tại (VD: 2025 => 63, 2026 => 64, ...)
+	    int baseYear = 2025;   // Mốc năm hiện tại
+	    int baseKhoa = 63;     // Khóa tương ứng với năm 2025
 
+	    int khoaMacDinh = baseKhoa + (currentYear - baseYear);
+	    model.addAttribute("khoaMacDinh", khoaMacDinh);
+
+	    Optional<NamHoc> existingNamHoc = namHocRepository.findByTennamhoc(currentYear);
 	    NamHoc namHoc;
 	    if (existingNamHoc.isPresent()) {
 	        namHoc = existingNamHoc.get();
@@ -73,7 +78,8 @@ public class ProjectController {
 	}
 
 
-	@PostMapping("/taodetai")
+
+	@PostMapping("/giangvien/taodetai")
 	public String taodetai(
 	                       @RequestParam String tendt,
 	                       @RequestParam int theloai,
@@ -102,7 +108,7 @@ public class ProjectController {
 
 	    if (giangVien == null || loai == null || linhVucObj == null || namHoc == null) {
 	        redirectAttributes.addFlashAttribute("error", "Một trong các thông tin không hợp lệ.");
-	        return "redirect:/taodetai"; 
+	        return "redirect:/giangvien/taodetai"; 
 	    }
 
 	    Project deTai = new Project();
@@ -119,10 +125,10 @@ public class ProjectController {
 	    projectService.createProject(deTai);
 
 	    redirectAttributes.addFlashAttribute("success", "Đề tài đã được tạo thành công!");
-		return "redirect:/giangvien/listTopic?tab=MyTopics";
+		return "redirect:/giangvien/danhsachdetai?tab=MyTopics";
 	}
 
-	@GetMapping("/giangvien/listTopic")
+	@GetMapping("/giangvien/danhsachdetai")
 	public String listTopic(
 			@RequestParam(value = "tendt", required = false) String tendt,
 			@RequestParam(value = "namhoc", required = false) Integer namhoc,

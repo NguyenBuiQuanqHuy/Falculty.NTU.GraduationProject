@@ -130,5 +130,14 @@ public class ProjectServiceImpl implements ProjectService {
 	public Page<Project> searchProjectsPaged(String tendt, Integer namhoc, Integer theloai, Integer linhvuc, String trangthai, Pageable pageable) {
 		return projectRepository.searchWithFiltersPaged(tendt, namhoc, theloai, linhvuc, trangthai, pageable);
 	}
+
+	@Override
+	public List<Project> filterProjectsByConditions(String msgv, Integer namhoc, Integer theloai, Integer linhvuc,
+			String tendt, Boolean cosvthuchien) {
+		// TODO Auto-generated method stub
+		return projectRepository.filterProjectsByConditions(msgv, namhoc, theloai, linhvuc, tendt, cosvthuchien);
+	}
+
+	
 }
 

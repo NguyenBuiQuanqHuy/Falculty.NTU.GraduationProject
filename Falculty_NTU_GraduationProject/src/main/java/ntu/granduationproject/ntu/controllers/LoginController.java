@@ -45,7 +45,7 @@ public class LoginController {
                 session.setAttribute("maso", sv.get().getMssv());
                 session.setAttribute("email",sv.get().getEmail());
             }
-            return "redirect:/sinhvien/home";
+            return "redirect:/sinhvien";
         }
 
         
@@ -60,9 +60,9 @@ public class LoginController {
             session.setAttribute("hmda",gv.get().getHMHDDA());
 
             if (gv.get().isIsAdmin()) {
-                return "redirect:/truongkhoa/home";
+                return "redirect:/truongkhoa";
             } else {
-                return "redirect:/giangvien/home";
+                return "redirect:/giangvien";
             }
         }
 
@@ -82,7 +82,7 @@ public class LoginController {
     	return "views/ForgotPassword";
     }
     
-    @GetMapping("/home")
+    @GetMapping("/trangchu")
     public String Home(HttpSession session, Model model) {
         String role = (String) session.getAttribute("role");
         if ("sinhvien".equals(role)) {

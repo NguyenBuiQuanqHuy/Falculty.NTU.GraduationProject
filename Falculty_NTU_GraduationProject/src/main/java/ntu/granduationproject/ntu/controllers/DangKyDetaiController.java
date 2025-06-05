@@ -44,7 +44,7 @@ public class DangKyDetaiController {
     @Autowired
     private NamHocRepository namHocRepository;
 
-    @GetMapping("/listTopic")
+    @GetMapping("/sinhvien/dangkydetai")
     public String ListTopic(
             @RequestParam(value = "tendt", required = false) String tendt,
             @RequestParam(value = "namhoc", required = false) Integer namhoc,
@@ -95,12 +95,35 @@ public class DangKyDetaiController {
         model.addAttribute("selectedNamHoc", namhoc);
         model.addAttribute("selectedTheLoai", theloai);
         model.addAttribute("selectedLinhVuc", linhvuc);
+        
+        Map<Integer, Boolean> canRegisterMap = new HashMap<>();
+        for (Project project : dsFiltered) {
+            int msdt = project.getMsdt();
+            boolean canRegister = true;
+
+            int countRegistered = dangKyDeTaiRepository.countByMsdt_MsdtAndTrangthai(msdt, "đã duyệt");
+            if (countRegistered >= project.getSosvtoida()) {
+                canRegister = false; // đề tài đầy sinh viên
+            } else {
+                int theLoai = project.getTheLoai().getMatheloai();
+                int hanMuc = (theLoai == 1) ? project.getMsgv().getHMHDDA() : project.getMsgv().getHMHDCD();
+                int approvedCountForGV = dangKyDeTaiRepository.countByGiangVienAndTheLoai(project.getMsgv().getMsgv(), theLoai);
+
+                if (approvedCountForGV >= hanMuc) {
+                    canRegister = false; // giảng viên vượt hạn mức
+                }
+            }
+            canRegisterMap.put(msdt, canRegister);
+        }
+
+        model.addAttribute("canRegisterMap", canRegisterMap);
+
 
         return "views/sinhvien/listTopic";
     }
 
 
-    @GetMapping("/listTopic/{id}")
+    @GetMapping("/detai/{id}")
     public String TopicInfo(@PathVariable("id") int msdt, Model model, HttpSession session) {
         Project project = projectService.findById(msdt)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy đề tài"));
@@ -143,7 +166,7 @@ public class DangKyDetaiController {
         } else {
             redirectAttrs.addFlashAttribute("message", "Đăng ký đề tài thành công, chờ phê duyệt.");
         }
-        return "redirect:/listTopic";
+        return "redirect:/sinhvien/dangkydetai";
     }
 
     @PostMapping("/cancelRegister/{msdt}")
@@ -160,6 +183,6 @@ public class DangKyDetaiController {
         } else {
             redirectAttrs.addFlashAttribute("error", "Không thể hủy đăng ký");
         }
-        return "redirect:/listTopic";
+        return "redirect:/sinhvien/dangkydetai";
     }
 }

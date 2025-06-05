@@ -23,7 +23,7 @@
     <h2 style="color: #8B0000; text-align: center;">DUYỆT ĐỀ TÀI</h2>
 
     <!-- Tìm kiếm -->
-    <form th:action="@{/duyetdetai}" method="get" class="filters">
+    <form th:action="@{/truongkhoa/duyetdetai}" method="get" class="filters">
         <select name="namhoc">
             <option value="">-- Năm học --</option>
             <option th:each="n : ${dsNamHoc}" th:value="${n.manamhoc}" th:text="${n.tennamhoc}"></option>
@@ -71,11 +71,11 @@
                 </td>
                 <td>
                     <div th:if="${p.trangthai == 'Chưa duyệt' or p.trangthai == 'chưa duyệt'}">
-                        <form th:action="@{/duyetdetai}" method="post" style="display:inline-block;">
+                        <form th:action="@{/truongkhoa/duyetdetai}" method="post" style="display:inline-block;">
                             <input type="hidden" name="msdt" th:value="${p.msdt}" />
                             <button type="submit" class="approve-btn">Duyệt</button>
                         </form>
-                        <form th:action="@{/tuchoidetai}" method="post" style="display:inline-block;">
+                        <form th:action="@{/truongkhoa/tuchoidetai}" method="post" style="display:inline-block;">
                             <input type="hidden" name="msdt" th:value="${p.msdt}" />
                            <button type="submit" class="deny-btn">Từ chối</button>
                         </form>
@@ -92,7 +92,7 @@
     </table>
     <div class="pagination" style="text-align:center; margin-top: 20px;">
         <div th:if="${totalPages > 1}">
-            <a th:if="${currentPage > 0}" th:href="@{/duyetdetai(page=${currentPage - 1},
+            <a th:if="${currentPage > 0}" th:href="@{/truongkhoa/duyetdetai(page=${currentPage - 1},
                                                               namhoc=${param.namhoc},
                                                               linhvuc=${param.linhvuc},
                                                               loai=${param.loai},
@@ -101,7 +101,7 @@
             </a>
 
             <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-            <a th:href="@{/duyetdetai(page=${i},
+            <a th:href="@{/truongkhoa/duyetdetai(page=${i},
                                       namhoc=${param.namhoc},
                                       linhvuc=${param.linhvuc},
                                       loai=${param.loai},
@@ -111,7 +111,7 @@
             </a>
         </span>
 
-            <a th:if="${currentPage < totalPages - 1}" th:href="@{/duyetdetai(page=${currentPage + 1},
+            <a th:if="${currentPage < totalPages - 1}" th:href="@{/truongkhoa/duyetdetai(page=${currentPage + 1},
                                                                            namhoc=${param.namhoc},
                                                                            linhvuc=${param.linhvuc},
                                                                            loai=${param.loai},

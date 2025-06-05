@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tạo đề tài</title>
+    <title>Danh sách đề tài</title>
     <link rel="stylesheet" th:href="@{/css/listTopic.css}" />
     <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
     <link rel="stylesheet" th:href="@{/css/FilterSearch.css}" />
@@ -17,7 +17,7 @@
             <span class="tab-item" onclick="showTab('MyTopics', event)">ĐỀ TÀI CỦA TÔI</span>
         </div>
         <div id="listTopic" class="tab-content active">
-            <form th:action="@{/giangvien/listTopic}" method="get" class="filters">
+            <form th:action="@{/giangvien/danhsachdetasi}" method="get" class="filters">
                 <select name="namhoc">
                     <option value="">-- Năm học --</option>
                     <option th:each="nh : ${namhocs}"
@@ -48,7 +48,7 @@
                 <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
 
                 <button type="submit" class="search-btn">Tìm kiếm</button>
-                <button type="button" class="reset-btn" onclick="window.location.href='/giangvien/listTopic'">Làm mới</button>
+                <button type="button" class="reset-btn" onclick="window.location.href='/giangvien/danhsachdetai'">Làm mới</button>
             </form>
 
             <table>
@@ -71,7 +71,7 @@
                     <td th:text="${detai.theLoai.tentheloai}"></td>
                     <td th:text="${detai.msgv.hoten}"></td>
                     <td>
-                        <a class="chitiet" th:href="@{/listTopic/{id}(id=${detai.msdt})}">Xem</a>
+                        <a class="chitiet" th:href="@{/detai/{id}(id=${detai.msdt})}">Xem</a>
                     </td>
                     <td>
                         <span th:text="${countRegistered[detai.msdt]}" class="count-regist"></span> /
@@ -84,7 +84,7 @@
                 <div th:if="${totalPages > 1}">
                     <!-- Link trang trước -->
                     <a th:if="${currentPage > 0}"
-                       th:href="@{/giangvien/listTopic(page=${currentPage - 1},
+                       th:href="@{/giangvien/danhsachdetai(page=${currentPage - 1},
                                             namhoc=${selectedNamHoc},
                                             linhvuc=${selectedLinhVuc},
                                             theloai=${selectedTheLoai},
@@ -94,7 +94,7 @@
 
                     <!-- Các trang số -->
                     <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                        <a th:href="@{/giangvien/listTopic(page=${i},
+                        <a th:href="@{/giangvien/danhsachdetai(page=${i},
                                                            namhoc=${selectedNamHoc},
                                                            linhvuc=${selectedLinhVuc},
                                                            theloai=${selectedTheLoai},
@@ -106,7 +106,7 @@
 
                     <!-- Link trang sau -->
                     <a th:if="${currentPage < totalPages - 1}"
-                       th:href="@{/giangvien/listTopic(page=${currentPage + 1},
+                       th:href="@{/giangvien/danhsachdetai(page=${currentPage + 1},
                                             namhoc=${selectedNamHoc},
                                             linhvuc=${selectedLinhVuc},
                                             theloai=${selectedTheLoai},
@@ -141,7 +141,7 @@
                         <td th:text="${project.theLoai.tentheloai}"></td>
                         <td th:text="${project.linhVuc.tenlinhvuc}"></td>
                         <td th:text="${project.namHoc.tennamhoc}"></td>
-                        <td><a th:href="@{/listTopic/{id}(id=${project.msdt})}" class="chitiet">Xem</a></td>
+                        <td><a th:href="@{/detai/{id}(id=${project.msdt})}" class="chitiet">Xem</a></td>
                         <td>
                 <span th:if="${project.trangthai.equalsIgnoreCase('Chưa duyệt')}"
                       style="color: #800000; font-weight: bold;">

@@ -13,6 +13,8 @@ public interface ProjectService {
 	List<Project> getAllProjects();
 	List<Project> getProjects();
 	public List<Project> searchProjects(String msgv, Integer namhoc, Integer theloai, Integer linhvuc, String tendt, String trangthai);
+	public List<Project> filterProjectsByConditions(String msgv, Integer namhoc, Integer theloai, Integer linhvuc, String tendt, Boolean cosvthuchien);
+
 	
 	public Project findByMsdt(int msdt);
 
@@ -38,6 +40,7 @@ public interface ProjectService {
     Page<Project> getPagedProjects(Pageable pageable);
 
     Page<Project> searchProjectsPaged(String tendt, Integer namhoc, Integer theloai, Integer linhvuc, String trangthai, Pageable pageable);
+    
 
 }
     

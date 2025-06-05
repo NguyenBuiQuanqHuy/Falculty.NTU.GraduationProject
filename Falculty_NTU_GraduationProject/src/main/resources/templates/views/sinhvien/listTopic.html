@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tạo đề tài</title>
+  <title>Đăng ký đề tài</title>
   <link rel="stylesheet" th:href="@{/css/listTopic.css}" />
   <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
   <link rel="stylesheet" th:href="@{/css/FilterSearch.css}" />
@@ -17,7 +17,7 @@
       <span class="tab-item" onclick="showTab('TopicRegistered')">ĐÃ ĐĂNG KÝ</span>
     </div>
     <div id="listTopic" class="tab-content active">
-      <form th:action="@{/listTopic}" method="get" class="filters">
+      <form th:action="@{/sinhvien/dangkydetai}" method="get" class="filters">
         <select name="namhoc">
           <option value="">-- Năm học --</option>
           <option th:each="nh : ${namhocs}"
@@ -48,7 +48,7 @@
         <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
 
         <button type="submit" class="search-btn">Tìm kiếm</button>
-        <button type="button" class="reset-btn" onclick="window.location.href='/listTopic'">Làm mới</button>
+        <button type="button" class="reset-btn" onclick="window.location.href='/sinhvien/dangkydetai'">Làm mới</button>
       </form>
 
       <table>
@@ -77,25 +77,28 @@
             </a>
           </td>
           <td>
-            <a class="chitiet" th:href="@{/listTopic/{id}(id=${detai.msdt})}">Xem</a>
-          </td>
+            <a class="chitiet" th:href="@{/detai/{id}(id=${detai.msdt})}">Xem</a>
          <td>
-  <span th:text="${countRegistered[detai.msdt] ?: 0}"></span>
+  <strong><span th:text="${countRegistered[detai.msdt] ?: 0}"></span></strong>
   /
-  <span th:text="${countApproved[detai.msdt] ?: 0}"
-        th:classappend="${(countApproved[detai.msdt] ?: 0) < (detai.sosvtoida ?: 0)} ? 'reg-count red' : 'reg-count green'">
-  </span>
+  <strong>
+    <span th:text="${countApproved[detai.msdt] ?: 0}"
+          th:classappend="${(countApproved[detai.msdt] ?: 0) < (detai.sosvtoida ?: 0)} ? 'reg-count red' : 'reg-count green'">
+    </span>
+  </strong>
   :
-  <span class="reg-count green" th:text="${detai.sosvtoida ?: 0}"></span>
+  <strong><span class="reg-count green" th:text="${detai.sosvtoida ?: 0}"></span></strong>
 </td>
 
 
-          <td>
-            <form th:action="@{/registerTopic/{msdt}(msdt=${detai.msdt})}" method="post"
-                  onsubmit="return confirm('Bạn có chắc chắn muốn đăng ký đề tài này không?');">
-              <button type="submit" class="btn-register" th:disabled="${dangKy != null}">Đăng ký</button>
-            </form>
-          </td>
+         <td>
+  <form th:action="@{/registerTopic/{msdt}(msdt=${detai.msdt})}" method="post"
+        onsubmit="return confirm('Bạn có chắc chắn muốn đăng ký đề tài này không?');">
+    <button type="submit" class="btn-register"
+            th:disabled="${dangKy != null or !canRegisterMap[detai.msdt]}">Đăng ký</button>
+  </form>
+</td>
+
         </tr>
         </tbody>
       </table>
@@ -103,7 +106,7 @@
         <div th:if="${totalPages > 1}">
           <!-- Link trang trước -->
           <a th:if="${currentPage > 0}"
-             th:href="@{/listTopic(page=${currentPage - 1},
+             th:href="@{/sinhvien/dangkydetai(page=${currentPage - 1},
                                             namhoc=${selectedNamHoc},
                                             linhvuc=${selectedLinhVuc},
                                             theloai=${selectedTheLoai},
@@ -113,7 +116,7 @@
 
           <!-- Các trang số -->
           <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                        <a th:href="@{/listTopic(page=${i},
+                        <a th:href="@{/sinhvien/dangkydetai(page=${i},
                                                            namhoc=${selectedNamHoc},
                                                            linhvuc=${selectedLinhVuc},
                                                            theloai=${selectedTheLoai},
@@ -125,7 +128,7 @@
 
           <!-- Link trang sau -->
           <a th:if="${currentPage < totalPages - 1}"
-             th:href="@{/listTopic(page=${currentPage + 1},
+             th:href="@{/sinhvien/dangkydetai(page=${currentPage + 1},
                                             namhoc=${selectedNamHoc},
                                             linhvuc=${selectedLinhVuc},
                                             theloai=${selectedTheLoai},
@@ -157,7 +160,7 @@
             <td th:text="${dangKy.msdt.theLoai.tentheloai}"></td>
             <td th:text="${dangKy.msdt.msgv.hoten}"></td>
             <td>
-              <a class="chitiet" th:href="@{/listTopic/{id}(id=${dangKy.msdt.getMsdt()})}">Xem</a>
+              <a class="chitiet" th:href="@{/detai/{id}(id=${dangKy.msdt.getMsdt()})}">Xem</a>
             </td>
             <td>
                 <span th:if="${dangKy.trangthai.equalsIgnoreCase('chưa duyệt')}"
