@@ -43,7 +43,7 @@
                th:value="${truongkhoa != null ? truongkhoa : ''}" />
 
         <button type="submit" class="search-btn">Tìm kiếm</button>
-        <button type="button" class="reset-btn" onclick="window.location.href='/duyetdetai'">Làm mới</button>
+        <button type="button" class="reset-btn" onclick="window.location.href='/truongkhoa/duyetdetai'">Làm mới</button>
     </form>
 
     <!-- BẢNG DỮ LIỆU -->
@@ -67,7 +67,7 @@
                 <td th:text="${p.linhVuc?.tenlinhvuc ?: 'Chưa có'}">Lĩnh vực</td>
                 <td th:text="${p.msgv?.hoten ?: 'Chưa có'}">GV</td>
                 <td>
-                    <a th:href="@{/listTopic/{id}(id=${p.msdt})}" class="view-link">Xem</a>
+                    <a th:href="@{/detai/{id}(id=${p.msdt})}" class="view-link">Xem</a>
                 </td>
                 <td>
                     <div th:if="${p.trangthai == 'Chưa duyệt' or p.trangthai == 'chưa duyệt'}">
