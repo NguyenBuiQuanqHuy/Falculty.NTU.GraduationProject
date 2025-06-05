@@ -53,7 +53,7 @@
                     <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
 
                     <button type="submit" class="search-btn">Tìm kiếm</button>
-                    <button type="button" class="reset-btn" onclick="window.location.href='/sinhvien/evaluateproject'">Làm mới</button>
+                    <button type="button" class="reset-btn" onclick="window.location.href='/sinhvien/xemdanhgiadetai'">Làm mới</button>
                 </form>
 
                 <table>
@@ -83,7 +83,7 @@
                             <td th:text="${project.linhVuc.tenlinhvuc}">Lĩnh vực</td>
                             <td th:text="${project.namHoc.tennamhoc}">Năm học</td>
                             <td>
-                                <a th:href="@{/listTopic/{id}(id=${project.msdt})}" class="view-link">Xem</a>
+                                <a th:href="@{/detai/{id}(id=${project.msdt})}" class="view-link">Xem</a>
                             </td>
                             <td>
                                 <button type="button" class="evaluate-btn"
@@ -131,7 +131,7 @@
                     </td>
                     <td th:text="${dk.msdt.linhVuc.tenlinhvuc}"></td>
                     <td>
-                          <a th:href="@{/listTopic/{id}(id=${dk.msdt.msdt})}" class="view-link">Xem</a>
+                          <a th:href="@{/detai/{id}(id=${dk.msdt.msdt})}" class="view-link">Xem</a>
                     </td>
                     <td>
                                  <button type="button" class="evaluate-btn"

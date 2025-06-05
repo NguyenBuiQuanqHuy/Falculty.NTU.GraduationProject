@@ -17,7 +17,7 @@
             <span class="tab-item" onclick="showTab('MyTopics', event)">ĐỀ TÀI CỦA TÔI</span>
         </div>
         <div id="listTopic" class="tab-content active">
-            <form th:action="@{/giangvien/danhsachdetai}" method="get" class="filters">
+            <form th:action="@{/giangvien/danhsachdetasi}" method="get" class="filters">
                 <select name="namhoc">
                     <option value="">-- Năm học --</option>
                     <option th:each="nh : ${namhocs}"
@@ -141,7 +141,7 @@
                         <td th:text="${project.theLoai.tentheloai}"></td>
                         <td th:text="${project.linhVuc.tenlinhvuc}"></td>
                         <td th:text="${project.namHoc.tennamhoc}"></td>
-                        <td><a th:href="@{/listTopic/{id}(id=${project.msdt})}" class="chitiet">Xem</a></td>
+                        <td><a th:href="@{/detai/{id}(id=${project.msdt})}" class="chitiet">Xem</a></td>
                         <td>
                 <span th:if="${project.trangthai.equalsIgnoreCase('Chưa duyệt')}"
                       style="color: #800000; font-weight: bold;">
