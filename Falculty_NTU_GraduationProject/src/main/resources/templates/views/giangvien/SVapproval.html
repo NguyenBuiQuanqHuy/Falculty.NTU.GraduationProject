@@ -30,6 +30,11 @@
         </tr>
     </thead>
     <tbody>
+    <tr th:if="${#lists.isEmpty(danhSachDK)}">
+        <td colspan="5" style="text-align: center; font-style: italic; color: gray;">
+            Đề tài này chưa có sinh viên đăng ký.
+        </td>
+    </tr>
         <tr th:each="dangKy, stat : ${danhSachDK}">
             <td th:text="${stat.index + 1}"></td>
             <td th:text="${dangKy.mssv.mssv}"></td>

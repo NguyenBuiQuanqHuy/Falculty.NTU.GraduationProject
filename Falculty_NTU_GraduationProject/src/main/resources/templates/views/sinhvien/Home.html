@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+    <title>Trang chủ</title>
 <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
 <div th:replace="~{layout/header :: header}"></div>
 <div th:fragment="content">
@@ -12,24 +14,26 @@
                 <p>Đăng ký đề tài</p>
             </div>
         </div>
+        
+          <div class="menu-item" onclick="window.location.href='/sinhvien/evaluateproject'">
+            <div class="menu-icon">
+                <img src="/icon/Chamdiem.png" alt="Tạo mới">
+            </div>
+            <div class="menu-text">
+                <p>Các đề tài đã đánh giá</p>
+            </div>
+        </div>
 
         <div class="menu-item">
             <div class="menu-icon">
-                <img src="/icon/Chamdiem.png" alt="Chấm điểm">
+                <img src="/icon/Taomoi.png" alt="Chấm điểm">
             </div>
             <div class="menu-text">
-                <p>Giảng viên hướng dẫn</p>
+                <p>Đề xuất đề tài</p>
             </div>
         </div>
 
-        <div class="menu-item" onclick="window.location.href='/sinhvien/evaluateproject'">
-            <div class="menu-icon">
-                <img src="/icon/Taomoi.png" alt="Tạo mới">
-            </div>
-            <div class="menu-text">
-                <p>Các đề tài đã thực hiện</p>
-            </div>
-        </div>
+      
 
         <div class="menu-item" onclick="window.location.href='/profile'">
             <div class="menu-icon">

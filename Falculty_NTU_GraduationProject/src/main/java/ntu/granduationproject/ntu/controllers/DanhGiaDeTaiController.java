@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
+import ntu.granduationproject.ntu.models.DangKyDetai;
 import ntu.granduationproject.ntu.models.DanhGiaDeTai;
 import ntu.granduationproject.ntu.models.GiangVien;
 import ntu.granduationproject.ntu.models.Project;
+import ntu.granduationproject.ntu.repositories.DangKyDeTaiRepository;
 import ntu.granduationproject.ntu.repositories.DanhGiaDeTaiRepository;
 import ntu.granduationproject.ntu.repositories.LinhVucRepository;
 import ntu.granduationproject.ntu.repositories.NamHocRepository;
@@ -44,6 +46,8 @@ public class DanhGiaDeTaiController {
 	DanhGiaDeTaiService danhGiaDeTaiService;
 	@Autowired
 	ProjectRepository projectRepository;
+	@Autowired
+	DangKyDeTaiRepository dangKyDeTaiRepository;
 	
 	@GetMapping("giangvien/evaluateproject")
 	public String listProjects( @RequestParam(required = false) Integer namhoc,
@@ -141,12 +145,20 @@ public class DanhGiaDeTaiController {
 	        HttpSession session,
 	        ModelMap model) {
 		
-
+		String mssv = (String) session.getAttribute("maso");
+	    if (mssv == null) {
+	        return "redirect:/login";
+	    }
+		
 	    List<Project> projects = projectRepository.allProjectsByConditions(
 	  namhoc, theloai, linhvuc, tendt, true
 	    );
 	    
+	    List<DangKyDetai> myApprovedTopics = dangKyDeTaiRepository
+	            .findByMssv_MssvAndTrangthai(mssv, "Đã duyệt");
+	    
 	    model.addAttribute("projects", projects);
+	    model.addAttribute("myTopics", myApprovedTopics);
 	    model.addAttribute("namhocs", namHocRepository.findAll());
 	    model.addAttribute("theloais", theLoaiRepository.findAll());
 	    model.addAttribute("linhvucs", linhVucRepository.findAll());

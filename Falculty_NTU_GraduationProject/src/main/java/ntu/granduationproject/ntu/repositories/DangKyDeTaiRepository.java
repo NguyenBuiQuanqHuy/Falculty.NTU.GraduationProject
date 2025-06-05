@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import ntu.granduationproject.ntu.models.DangKyDetai;
+import ntu.granduationproject.ntu.models.SinhVien;
 
 public interface DangKyDeTaiRepository extends JpaRepository<DangKyDetai, Integer> {
-
+	
+	List<DangKyDetai> findByMssv_MssvAndTrangthai(String mssv, String trangthai);
     List<DangKyDetai> findByMsdt_Msdt(int msdt);
 
     int countByMsdt_MsdtAndTrangthai(int msdt, String trangthai);

@@ -6,211 +6,265 @@
     <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
     <link rel="stylesheet" th:href="@{/css/listDT.css}" />
     <link rel="stylesheet" th:href="@{/css/evaluate.css}" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/listTopic.css}" /> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
     <div th:replace="~{layout/header :: header}"></div>
     <div th:fragment="content">
         <div class="main">
-            <h2>DANH SÁCH ĐỀ TÀI ĐANG THỰC HIỆN</h2>
-            <form th:action="@{/sinhvien/evaluateproject}" method="get" class="filters">
-    <select name="namhoc">
-        <option value="">-- Năm học --</option>
-        <option th:each="nh : ${namhocs}" 
-                th:value="${nh.manamhoc}" 
-                th:text="${nh.tennamhoc}"
-                th:selected="${nh.manamhoc == selectedNamHoc}">
-        </option>
-    </select>
+            <div class="tab">
+                <span class="tab-item active" onclick="showTab(event, 'listTopic')">DANH SÁCH ĐỀ TÀI</span>
+                <span class="tab-item" onclick="showTab(event, 'TopicRegistered')">ĐỀ TÀI CỦA TÔI</span>
+            </div>
 
-    <select name="theloai">
-        <option value="">-- Loại --</option>
-        <option th:each="tl : ${theloais}" 
-                th:value="${tl.matheloai}" 
-                th:text="${tl.tentheloai}"
-                th:selected="${tl.matheloai == selectedTheLoai}">
-        </option>
-    </select>
+            <!-- Tab: Danh sách đề tài -->
+            <div id="listTopic" class="tab-content active">
+                <h2>DANH SÁCH ĐỀ TÀI ĐÃ THỰC HIỆN</h2>
 
-    <select name="linhvuc">
-        <option value="">-- Lĩnh vực --</option>
-        <option th:each="lv : ${linhvucs}" 
-                th:value="${lv.malinhvuc}" 
-                th:text="${lv.tenlinhvuc}"
-                th:selected="${lv.malinhvuc == selectedLinhVuc}">
-        </option>
-    </select>
+                <form th:action="@{/sinhvien/evaluateproject}" method="get" class="filters">
+                    <select name="namhoc">
+                        <option value="">-- Năm học --</option>
+                        <option th:each="nh : ${namhocs}" 
+                                th:value="${nh.manamhoc}" 
+                                th:text="${nh.tennamhoc}"
+                                th:selected="${nh.manamhoc == selectedNamHoc}">
+                        </option>
+                    </select>
 
-    <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
+                    <select name="theloai">
+                        <option value="">-- Loại --</option>
+                        <option th:each="tl : ${theloais}" 
+                                th:value="${tl.matheloai}" 
+                                th:text="${tl.tentheloai}"
+                                th:selected="${tl.matheloai == selectedTheLoai}">
+                        </option>
+                    </select>
 
-    <button type="submit" class="search-btn">Tìm kiếm</button>
-    <button type="button" class="reset-btn" onclick="window.location.href='/sinhvien/evaluateproject'">Làm mới</button>
-</form>
+                    <select name="linhvuc">
+                        <option value="">-- Lĩnh vực --</option>
+                        <option th:each="lv : ${linhvucs}" 
+                                th:value="${lv.malinhvuc}" 
+                                th:text="${lv.tenlinhvuc}"
+                                th:selected="${lv.malinhvuc == selectedLinhVuc}">
+                        </option>
+                    </select>
 
-    	</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên đề tài</th>
-                        <th>Loại</th>
-                        <th>Giảng viên ra đề</th>
-                        <th>Lĩnh vực</th>
-                        <th>Năm học</th>
-                        <th>Nội dung</th>
-                        <th>Đánh giá</th>
-                    </tr>
-                </thead>
-               <tbody>
-			    <tr th:each="project, stat : ${projects}">
-			        <td th:text="${stat.index + 1}">1</td>
-			        <td th:text="${project.tendt}">Tên đề tài</td>
-			        <td th:text="${project.theLoai.tentheloai}">Loại</td>
-			        
-			         <td>
-            <a th:href="@{/profile/giangvien/{id}(id=${project.msgv.msgv})}">
-              <span th:text="${project.msgv.hoten}"></span>
-              <i class="fas fa-user" style="margin-left: 6px; color: #8B0000;"></i>
-            </a>
-          </td>
-			        
-			        <td th:text="${project.linhVuc.tenlinhvuc}">Lĩnh vực</td>
-			        <td th:text="${project.namHoc.tennamhoc}">Năm học</td>
-			      
-			        <td>
-			            <a th:href="@{/listTopic/{id}(id=${project.msdt})}" class="view-link">Xem</a>
-			        </td>
-			     
+                    <input type="text" name="tendt" placeholder="Nhập tên đề tài" th:value="${tendt}" />
 
-			        <td>
-					    <button type="button" class="evaluate-btn" th:attr="data-id=${project.msdt},data-tendt=${project.tendt}" onclick="openModal(this)">
-						  Đánh giá
-						</button>
-					</td>
+                    <button type="submit" class="search-btn">Tìm kiếm</button>
+                    <button type="button" class="reset-btn" onclick="window.location.href='/sinhvien/evaluateproject'">Làm mới</button>
+                </form>
 
-			    </tr>	
-			</tbody>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên đề tài</th>
+                            <th>Loại</th>
+                            <th>Giảng viên ra đề</th>
+                            <th>Lĩnh vực</th>
+                            <th>Năm học</th>
+                            <th>Nội dung</th>
+                            <th>Đánh giá</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="project, stat : ${projects}">
+                            <td th:text="${stat.index + 1}">1</td>
+                            <td th:text="${project.tendt}">Tên đề tài</td>
+                            <td th:text="${project.theLoai.tentheloai}">Loại</td>
+                            <td>
+                                <a th:href="@{/profile/giangvien/{id}(id=${project.msgv.msgv})}">
+                                    <span th:text="${project.msgv.hoten}"></span>
+                                    <i class="fas fa-user" style="margin-left: 6px; color: #8B0000;"></i>
+                                </a>
+                            </td>
+                            <td th:text="${project.linhVuc.tenlinhvuc}">Lĩnh vực</td>
+                            <td th:text="${project.namHoc.tennamhoc}">Năm học</td>
+                            <td>
+                                <a th:href="@{/listTopic/{id}(id=${project.msdt})}" class="view-link">Xem</a>
+                            </td>
+                            <td>
+                                <button type="button" class="evaluate-btn"
+                                        th:attr="data-id=${project.msdt},data-tendt=${project.tendt}"
+                                        onclick="openModal(this)">
+                                    Xem đánh giá
+                                </button>
+                            </td>
+                        </tr>    
+                    </tbody>
+                </table>
 
-            </table>
+                <div class="pagination">
+                    <span><strong>1</strong> &gt; 2 &gt; 3 .... &gt; 50</span>
+                </div>
+            </div>
 
-            <div class="pagination">
-                <span><strong>1</strong> &gt; 2 &gt; 3 .... &gt; 50</span>
-                
+            <!-- Tab: Đã đăng ký -->
+            <!-- Tab: Đã đăng ký -->
+<div id="TopicRegistered" class="tab-content">
+    <h2>ĐỀ TÀI BẠN ĐANG THỰC HIỆN</h2>
+    
+    <div th:if="${myTopics != null and !#lists.isEmpty(myTopics)}">
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên đề tài</th>
+                    <th>Loại</th>
+                    <th>Giảng viên</th>
+                    <th>Lĩnh vực</th>
+                    <th>Nội dung</th>
+                    <th>Đánh giá</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="dk, stat : ${myTopics}">
+                    <td th:text="${stat.index + 1}"></td>
+                    <td th:text="${dk.msdt.tendt}"></td>
+                    <td th:text="${dk.msdt.theLoai.tentheloai}"></td>
+                    <td>
+                        <a th:href="@{/profile/giangvien/{id}(id=${dk.msdt.msgv.msgv})}">
+                            <span th:text="${dk.msdt.msgv.hoten}"></span>
+                        </a>
+                    </td>
+                    <td th:text="${dk.msdt.linhVuc.tenlinhvuc}"></td>
+                    <td>
+                          <a th:href="@{/listTopic/{id}(id=${dk.msdt.msdt})}" class="view-link">Xem</a>
+                    </td>
+                    <td>
+                                 <button type="button" class="evaluate-btn"
+                                        th:attr="data-id=${dk.msdt.msdt},data-tendt=${dk.msdt.tendt}"
+                                        onclick="openModal(this)">
+                                    Xem đánh giá
+                                </button>
+                            </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div th:if="${myTopics == null or #lists.isEmpty(myTopics)}" style="text-align:center; margin-top: 30px;">
+        <p>Bạn chưa đăng ký đề tài nào.</p>
+        <button onclick="window.location.href='/listTopic'" 
+                style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+            Đăng ký đề tài ngay
+        </button>
+    </div>
+</div>
+
+        </div>
+    </div>
+
+    <div th:replace="~{layout/footer :: footer}"></div>
+
+    <!-- Modal -->
+    <div id="evaluateProjectModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="projectTitleDisplay" class="project-title"></h2>
+            <div id="evaluationsList">
+                <!-- Đánh giá sẽ được load vào đây -->
             </div>
         </div>
     </div>
-    <div th:replace="~{layout/footer :: footer}"></div>
-</body>
 
-<!-- Modal -->
-<!-- Modal -->
-<div id="evaluateProjectModal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h2 id="projectTitleDisplay" class="project-title"></h2>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const rowsPerPage = 5;
+            const table = document.querySelector("table tbody");
+            const rows = table.querySelectorAll("tr");
+            const pagination = document.querySelector(".pagination");
 
-    <div id="evaluationsList">
-      <!-- Đánh giá sẽ được load vào đây -->
-    </div>
-  </div>
-</div>
+            let currentPage = 1;
+            const totalPages = Math.ceil(rows.length / rowsPerPage);
 
+            function showPage(page) {
+                currentPage = page;
+                const start = (page - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
 
-
-
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const rowsPerPage = 5;
-        const table = document.querySelector("table tbody");
-        const rows = table.querySelectorAll("tr");
-        const pagination = document.querySelector(".pagination");
-
-        let currentPage = 1;
-        const totalPages = Math.ceil(rows.length / rowsPerPage);
-
-        function showPage(page) {
-            currentPage = page;
-            const start = (page - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-
-            rows.forEach((row, index) => {
-                row.style.display = (index >= start && index < end) ? "" : "none";
-            });
-
-            updatePagination();
-        }
-
-        function updatePagination() {
-            pagination.innerHTML = "";
-
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement("button");
-                btn.textContent = i;
-                btn.className = (i === currentPage) ? "active" : "";
-                btn.style.margin = "0 5px";
-                btn.style.padding = "5px 10px";
-                btn.style.cursor = "pointer";
-
-                btn.addEventListener("click", () => showPage(i));
-                pagination.appendChild(btn);
-            }
-        }
-
-        showPage(currentPage);
-    });
-    
-    function openModal(button) {
-        const modal = document.getElementById("evaluateProjectModal");
-        const msdt = button.getAttribute("data-id");
-        const tendt = button.getAttribute("data-tendt");
-
-        document.getElementById("projectTitleDisplay").innerText = tendt;
-
-        const evaluationsList = document.getElementById("evaluationsList");
-        evaluationsList.innerHTML = "<p>Đang tải đánh giá...</p>";
-
-        fetch(`/sinhvien/evaluateproject/getEvaluations?msdt=${msdt}`)
-            .then(response => {
-                if (!response.ok) throw new Error("Không lấy được dữ liệu đánh giá");
-                return response.json();
-            })
-            .then(data => {
-                evaluationsList.innerHTML = "";
-
-                if (data.length === 0) {
-                    evaluationsList.innerHTML = "<p>Chưa có đánh giá nào.</p>";
-                    return;
-                }
-
-                data.forEach(evaluation => {
-                    const div = document.createElement("div");
-                    div.className = "evaluation-item";
-                    div.style.marginBottom = "15px";
-                    div.innerHTML = `
-                        <p class="giangvien">Giảng viên: ${evaluation.giangvien}</p>
-                        <p class="diem">Điểm: ${evaluation.diem}</p>
-                        <div class="binhluan"><strong>Bình luận:</strong><br>${evaluation.binhluan}</div>
-                    `;
-                    evaluationsList.appendChild(div);
+                rows.forEach((row, index) => {
+                    row.style.display = (index >= start && index < end) ? "" : "none";
                 });
-            })
-            .catch(error => {
-                evaluationsList.innerHTML = "<p style='color:red;'>Không thể tải đánh giá.</p>";
-                console.error(error);
+
+                updatePagination();
+            }
+
+            function updatePagination() {
+                pagination.innerHTML = "";
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement("button");
+                    btn.textContent = i;
+                    btn.className = (i === currentPage) ? "active" : "";
+                    btn.style.margin = "0 5px";
+                    btn.style.padding = "5px 10px";
+                    btn.style.cursor = "pointer";
+                    btn.addEventListener("click", () => showPage(i));
+                    pagination.appendChild(btn);
+                }
+            }
+
+            showPage(currentPage);
+        });
+
+        function openModal(button) {
+            const modal = document.getElementById("evaluateProjectModal");
+            const msdt = button.getAttribute("data-id");
+            const tendt = button.getAttribute("data-tendt");
+
+            document.getElementById("projectTitleDisplay").innerText = tendt;
+
+            const evaluationsList = document.getElementById("evaluationsList");
+            evaluationsList.innerHTML = "<p>Đang tải đánh giá...</p>";
+
+            fetch(`/sinhvien/evaluateproject/getEvaluations?msdt=${msdt}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Không lấy được dữ liệu đánh giá");
+                    return response.json();
+                })
+                .then(data => {
+                    evaluationsList.innerHTML = "";
+                    if (data.length === 0) {
+                        evaluationsList.innerHTML = "<p>Chưa có đánh giá nào.</p>";
+                        return;
+                    }
+
+                    data.forEach(evaluation => {
+                        const div = document.createElement("div");
+                        div.className = "evaluation-item";
+                        div.style.marginBottom = "15px";
+                        div.innerHTML = `
+                            <p class="giangvien">Giảng viên: ${evaluation.giangvien}</p>
+                            <p class="diem">Điểm: ${evaluation.diem}</p>
+                            <div class="binhluan"><strong>Bình luận:</strong><br>${evaluation.binhluan}</div>
+                        `;
+                        evaluationsList.appendChild(div);
+                    });
+                })
+                .catch(error => {
+                    evaluationsList.innerHTML = "<p style='color:red;'>Không thể tải đánh giá.</p>";
+                    console.error(error);
+                });
+
+            modal.style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("evaluateProjectModal").style.display = "none";
+        }
+
+        function showTab(event, tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
             });
-
-        modal.style.display = "flex";
-    }
-
-    function closeModal() {
-        document.getElementById("evaluateProjectModal").style.display = "none";
-    }
-
-
-
-
-</script>
-
+            document.querySelectorAll('.tab-item').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
 </html>
