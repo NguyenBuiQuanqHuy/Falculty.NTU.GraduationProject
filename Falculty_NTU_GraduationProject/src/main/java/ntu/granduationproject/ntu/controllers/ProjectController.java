@@ -48,14 +48,19 @@ public class ProjectController {
 	    Object userObj = session.getAttribute("user");
 	    if (userObj != null && userObj instanceof GiangVien) {
 	        GiangVien giangVien = (GiangVien) userObj;
-
 	        model.addAttribute("tenGiangVien", giangVien.getHoten());
 	    }
-	    
+
 	    int currentYear = LocalDate.now().getYear();
 
-	    Optional<NamHoc> existingNamHoc = namHocRepository.findByTennamhoc(currentYear);
+	    // Tính khóa SV từ năm hiện tại (VD: 2025 => 63, 2026 => 64, ...)
+	    int baseYear = 2025;   // Mốc năm hiện tại
+	    int baseKhoa = 63;     // Khóa tương ứng với năm 2025
 
+	    int khoaMacDinh = baseKhoa + (currentYear - baseYear);
+	    model.addAttribute("khoaMacDinh", khoaMacDinh);
+
+	    Optional<NamHoc> existingNamHoc = namHocRepository.findByTennamhoc(currentYear);
 	    NamHoc namHoc;
 	    if (existingNamHoc.isPresent()) {
 	        namHoc = existingNamHoc.get();
@@ -71,6 +76,7 @@ public class ProjectController {
 	    model.addAttribute("giangviens", giangVienRepository.findAll());
 	    return "views/giangvien/CreateProject";
 	}
+
 
 
 	@PostMapping("/taodetai")
