@@ -1,6 +1,5 @@
 package ntu.granduationproject.ntu.controllers;
 
-import jakarta.servlet.http.HttpSession;
 import ntu.granduationproject.ntu.models.GiangVien;
 import ntu.granduationproject.ntu.models.Project;
 import ntu.granduationproject.ntu.models.SinhVien;
@@ -11,6 +10,7 @@ import ntu.granduationproject.ntu.services.SinhVienService;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Entities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -59,18 +59,28 @@ public class OtherController {
     }
 
     private ResponseEntity<byte[]> buildPdfResponse(String htmlRaw, String filename) throws Exception {
-        String htmlClean = StringEscapeUtils.unescapeHtml4(htmlRaw);
-        Document document = Jsoup.parse(htmlClean);
-        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
-        String xhtml = document.html();
+        // 1. Unescape các entity HTML
+        String unescapedHtml = StringEscapeUtils.unescapeHtml4(htmlRaw);
 
+        // 2. Thay thế &nbsp; thành ký tự thật (space không ngắt)
+        unescapedHtml = unescapedHtml.replace("\u00A0", " ").replace("&nbsp;", " ");
+
+        // 3. Parse với Jsoup
+        Document document = Jsoup.parse(unescapedHtml);
+
+        // 4. Thiết lập xuất xhtml, không escape entity
+        document.outputSettings()
+                .syntax(Document.OutputSettings.Syntax.xml)
+                .escapeMode(Entities.EscapeMode.xhtml)
+                .charset("UTF-8")
+                .prettyPrint(true);
+
+        String xhtml = document.outerHtml();  // lấy toàn bộ document
+
+        // 5. Build HTML với style font
         String html = "<html><head>" +
                 "<style>" +
-                "  @font-face {" +
-                "    font-family: 'DejaVuSans';" +
-                "    src: url('file:src/main/resources/static/font/DejaVuSans.ttf') format('truetype');" +
-                "  }" +
-                "  body { font-family: 'DejaVuSans'; }" +
+                "  body { font-family: 'Times New Roman'; }" +
                 "</style>" +
                 "</head><body>" + xhtml + "</body></html>";
 
@@ -83,6 +93,7 @@ public class OtherController {
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 
+    // Xuất PDF cho đề tài
     @GetMapping("/export/detai{id}")
     public ResponseEntity<byte[]> exportPdf(@PathVariable int id) throws Exception {
         Project project = projectService.findByMsdt(id);
@@ -91,29 +102,6 @@ public class OtherController {
         }
         String htmlRaw = project.getNoidung();
 
-        String htmlClean = StringEscapeUtils.unescapeHtml4(htmlRaw);
-
-        Document document = Jsoup.parse(htmlClean);
-        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
-        String xhtml = document.html();
-
-        String html = "<html><head>" +
-                "<style>" +
-                "  @font-face {" +
-                "    font-family: 'DejaVuSans';" +
-                "    src: url('file:src/main/resources/static/font/DejaVuSans.ttf') format('truetype');" +
-                "  }" +
-                "  body { font-family: 'DejaVuSans'; }" +
-                "</style>" +
-                "</head><body>" + xhtml + "</body></html>";
-
-        byte[] pdfBytes = pdfService.generatePdf(html);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.inline()
-                .filename("detai_" + id + ".pdf").build());
-
-        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+        return buildPdfResponse(htmlRaw, "detai_" + id + ".pdf");
     }
 }
