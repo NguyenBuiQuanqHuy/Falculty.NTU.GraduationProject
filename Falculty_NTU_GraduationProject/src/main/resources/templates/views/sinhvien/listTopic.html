@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Đăng ký đề tài</title>
   <link rel="stylesheet" th:href="@{/css/listTopic.css}" />
-  <link rel="stylesheet" th:href="@{/css/listDT.css}" />
   <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
   <link rel="stylesheet" th:href="@{/css/FilterSearch.css}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -14,8 +13,8 @@
 <div th:fragment="content">
   <div class="main">
     <div class="tab">
-      <span class="tab-item active" onclick="showTab(event, 'listTopic')">DANH SÁCH ĐỀ TÀI</span>
-      <span class="tab-item" onclick="showTab(event, 'TopicRegistered')">ĐÃ ĐĂNG KÝ</span>
+      <span class="tab-item active" onclick="showTab('listTopic')">DANH SÁCH ĐỀ TÀI</span>
+      <span class="tab-item" onclick="showTab('TopicRegistered')">ĐÃ ĐĂNG KÝ</span>
     </div>
     <div id="listTopic" class="tab-content active">
    
@@ -165,16 +164,6 @@
 </div>
 <div th:replace="~{layout/footer :: footer}"></div>
 <script>
-function showTab(event, tabId) {
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-    });
-    document.querySelectorAll('.tab-item').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    document.getElementById(tabId).classList.add('active');
-    event.target.classList.add('active');
-}
   
   document.addEventListener("DOMContentLoaded", function () {
       const rowsPerPage = 5;
@@ -199,6 +188,7 @@ function showTab(event, tabId) {
 
       function updatePagination() {
           pagination.innerHTML = "";
+
           for (let i = 1; i <= totalPages; i++) {
               const btn = document.createElement("button");
               btn.textContent = i;
@@ -206,6 +196,7 @@ function showTab(event, tabId) {
               btn.style.margin = "0 5px";
               btn.style.padding = "5px 10px";
               btn.style.cursor = "pointer";
+
               btn.addEventListener("click", () => showPage(i));
               pagination.appendChild(btn);
           }
@@ -213,7 +204,40 @@ function showTab(event, tabId) {
 
       showPage(currentPage);
   });
-
+  
+  function showTab(event, tabId) {
+      document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-item').forEach(tab => {
+          tab.classList.remove('active');
+      });
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+  }
 </script>
 </body>
 </html>
+<style>
+  .pagination a {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 4px;
+    border: 1px solid #ccc;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  .pagination a:hover {
+    background-color: #f2f2f2;
+  }
+
+  .pagination a.active {
+    background-color: #8B0000;
+    color: white;
+    font-weight: bold;
+    border-color: #8B0000;
+  }
+
+</style>
