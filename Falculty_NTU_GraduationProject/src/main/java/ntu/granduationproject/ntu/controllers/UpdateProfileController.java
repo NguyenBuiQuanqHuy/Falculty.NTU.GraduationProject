@@ -109,7 +109,7 @@ public class UpdateProfileController {
         if (sinhVien.getCvhoso() != null) {
             String noiDung = sinhVien.getCvhoso();
             // Thay tất cả src="uploads/... thành src="/uploads/...
-            noiDung = noiDung.replaceAll("src=\"(?!/)", "src=\"/");
+            noiDung = noiDung.replaceAll("src=\"(?!/|http)([^\"]+)\"", "src=\"/$1\"");
             sinhVien.setCvhoso(noiDung);
         }
         
@@ -132,7 +132,7 @@ public class UpdateProfileController {
         if (giangVien.getCvnangluc() != null) {
             String noiDung = giangVien.getCvnangluc();
             // Thay tất cả src="uploads/... thành src="/uploads/...
-            noiDung = noiDung.replaceAll("src=\"(?!/)", "src=\"/");
+            noiDung = noiDung.replaceAll("src=\"(?!/|http)([^\"]+)\"", "src=\"/$1\"");
             giangVien.setCvnangluc(noiDung);
         }
         

@@ -112,50 +112,8 @@
     </div>
 </div>
 
-
-
-
+<script src="/js/pagination.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const rowsPerPage = 5;
-        const table = document.querySelector("table tbody");
-        const rows = table.querySelectorAll("tr");
-        const pagination = document.querySelector(".pagination");
-
-        let currentPage = 1;
-        const totalPages = Math.ceil(rows.length / rowsPerPage);
-
-        function showPage(page) {
-            currentPage = page;
-            const start = (page - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-
-            rows.forEach((row, index) => {
-                row.style.display = (index >= start && index < end) ? "" : "none";
-            });
-
-            updatePagination();
-        }
-
-        function updatePagination() {
-            pagination.innerHTML = "";
-
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement("button");
-                btn.textContent = i;
-                btn.className = (i === currentPage) ? "active" : "";
-                btn.style.margin = "0 5px";
-                btn.style.padding = "5px 10px";
-                btn.style.cursor = "pointer";
-
-                btn.addEventListener("click", () => showPage(i));
-                pagination.appendChild(btn);
-            }
-        }
-
-        showPage(currentPage);
-    });
-    
     function openModal(button) {
         const modal = document.getElementById("evaluateProjectModal");
         const msdt = button.getAttribute("data-id");

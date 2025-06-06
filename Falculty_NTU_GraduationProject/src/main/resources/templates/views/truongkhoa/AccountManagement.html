@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Giảng viên</title>
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+    <link rel="stylesheet" th:href="@{/css/listDT.css}" />
+    <link rel="stylesheet" th:href="@{/css/listTopic.css}" /> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+<body>
+    <div th:replace="~{layout/header :: header}"></div>
+    <div th:fragment="content">
+        <div class="main">
+            <div class="tab">
+                <span class="tab-item active" onclick="showTab(event, 'listGiangVien')">DANH SÁCH GIẢNG VIÊN</span>
+                 <span class="tab-item" onclick="showTab(event, 'listSinhVien')">DANH SÁCH SINH VIÊN</span>
+            </div>
+
+            <!-- Tab: Danh sách giảng viên -->
+            <div id="listGiangVien" class="tab-content active">
+                <h2>DANH SÁCH GIẢNG VIÊN</h2>
+
+             <form th:action="@{/truongkhoa/quanlytaikhoan}" method="get" class="filters"
+			      style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: nowrap;">
+			    <input type="text" name="msgv" placeholder="Nhập mã giảng viên" th:value="${msgv}"
+			           style="padding: 8px 10px; flex: 1;" />
+			    <input type="text" name="hotengv" placeholder="Nhập họ tên giảng viên" th:value="${hotengv}"
+			           style="padding: 8px 10px; flex: 1;" />
+			    <button type="submit" class="search-btn" style="padding: 8px 15px; white-space: nowrap;">Tìm kiếm</button>
+			    <button type="button" class="reset-btn" onclick="window.location.href='/truongkhoa/quanlytaikhoan'"
+			            style="padding: 8px 15px; white-space: nowrap;">Làm mới</button>
+			</form>
+                <table id="tableGiangVien">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã giảng viên</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Hệ môn học đồ án</th>
+                            <th>Hệ môn học chuyên đề</th>
+                           <th>Hoạt động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="gv, stat : ${giangviens}">
+                            <td th:text="${stat.index + 1}">1</td>
+                            <td th:text="${gv.msgv}">GV001</td>
+                            <td th:text="${gv.hoten}">Nguyễn Văn A</td>
+                            <td th:text="${gv.email}">nguyenvana@example.com</td>
+                            <td th:text="${gv.HMHDDA}">2</td>
+                            <td th:text="${gv.HMHDCD}">3</td>
+                             <td>
+                <!-- Link Sửa -->
+                <a th:href="@{'/truongkhoa/sua-giangvien/' + ${gv.msgv}}" title="Sửa">
+                    <i class="fas fa-edit" style="color: blue; cursor: pointer;"></i>
+                </a>
+                &nbsp;&nbsp;
+                <!-- Link Xóa, kèm confirm -->
+                <a th:href="@{'/truongkhoa/xoa-giangvien/' + ${gv.msgv}}" 
+                   onclick="return confirm('Bạn có chắc chắn muốn xóa giảng viên này?');" title="Xóa">
+                    <i class="fas fa-trash-alt" style="color: red; cursor: pointer;"></i>
+                </a>
+            </td>
+                        </tr>    
+                    </tbody>
+                </table>
+
+                <div class="pagination" id="paginationGiangVien"></div>
+            </div>
+
+            <!-- Tab: Đề tài của tôi (giữ nguyên) -->
+            <div id="listSinhVien" class="tab-content">
+            <h2>DANH SÁCH SINH VIÊN</h2>
+
+             <form th:action="@{/truongkhoa/quanlytaikhoan}" method="get" class="filters"
+			      style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: nowrap;">
+			    <input type="text" name="mssv" placeholder="Nhập mã sinh viên" th:value="${mssv}"
+			           style="padding: 8px 10px; flex: 1;" />
+			    <input type="text" name="hotensv" placeholder="Nhập họ tên sinh viên" th:value="${hotensv}"
+			           style="padding: 8px 10px; flex: 1;" />
+			    <button type="submit" class="search-btn" style="padding: 8px 15px; white-space: nowrap;">Tìm kiếm</button>
+			    <button type="button" class="reset-btn" onclick="window.location.href='/truongkhoa/quanlytaikhoan'"
+			            style="padding: 8px 15px; white-space: nowrap;">Làm mới</button>
+			</form>
+
+            <table border="1" cellpadding="8" cellspacing="0" id="tableSinhVien">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã sinh viên</th>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Hoạt động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="sv, stat : ${sinhviens}">
+                        <td th:text="${stat.index + 1}"></td>
+                        <td th:text="${sv.mssv}"></td>
+                        <td th:text="${sv.hoten}"></td>
+                        <td th:text="${sv.email}"></td>
+                         <td>
+                <!-- Link Sửa -->
+                <a th:href="@{'/truongkhoa/sua-sinhvien/' + ${sv.mssv}}" title="Sửa">
+                    <i class="fas fa-edit" style="color: blue; cursor: pointer;"></i>
+                </a>
+                &nbsp;&nbsp;
+                <!-- Link Xóa, kèm confirm -->
+                <a th:href="@{'/truongkhoa/xoa-sinhvien/' + ${sv.mssv}}" 
+                   onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên này?');" title="Xóa">
+                    <i class="fas fa-trash-alt" style="color: red; cursor: pointer;"></i>
+                </a>
+            </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="paginationSinhVien" class="pagination"></div>
+        </div>
+
+        </div>
+    </div>
+
+    <div th:replace="~{layout/footer :: footer}"></div>
+
+    <script>
+        function showTab(event, tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-item').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        
+        function paginate(tableId, paginationId) {
+            const rowsPerPage = 5;
+            const table = document.getElementById(tableId);
+            const pagination = document.getElementById(paginationId);
+            if (!table || !pagination) return;
+
+            const rows = table.querySelectorAll("tbody tr");
+            const totalPages = Math.ceil(rows.length / rowsPerPage);
+            let currentPage = 1;
+
+            function showPage(page) {
+                currentPage = page;
+                const start = (page - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+                rows.forEach((row, i) => {
+                    row.style.display = i >= start && i < end ? "" : "none";
+                });
+                renderPagination();
+            }
+
+            function renderPagination() {
+                pagination.innerHTML = "";
+
+                const maxVisible = 5;
+                let startPage = Math.max(currentPage - Math.floor(maxVisible / 2), 1);
+                let endPage = startPage + maxVisible - 1;
+
+                if (endPage > totalPages) {
+                    endPage = totalPages;
+                    startPage = Math.max(endPage - maxVisible + 1, 1);
+                }
+
+                // Nút "Trước"
+                const prev = document.createElement("button");
+                prev.textContent = "Trước";
+                prev.disabled = currentPage === 1;
+                prev.style.margin = "0 5px";
+                prev.style.padding = "6px 12px";
+                prev.style.cursor = "pointer";
+                prev.onclick = () => showPage(currentPage - 1);
+                pagination.appendChild(prev);
+
+                // Dấu "..." đầu
+                if (startPage > 1) {
+                    const firstPageBtn = document.createElement("button");
+                    firstPageBtn.textContent = "1";
+                    firstPageBtn.style.margin = "0 5px";
+                    firstPageBtn.style.padding = "6px 12px";
+                    firstPageBtn.onclick = () => showPage(1);
+                    pagination.appendChild(firstPageBtn);
+
+                    const dot = document.createElement("span");
+                    dot.textContent = "...";
+                    dot.style.margin = "0 5px";
+                    pagination.appendChild(dot);
+                }
+
+                // Nút số trang từ startPage đến endPage
+                for (let i = startPage; i <= endPage; i++) {
+                    const btn = document.createElement("button");
+                    btn.textContent = i;
+                    btn.className = (i === currentPage) ? "active" : "";
+                    btn.style.margin = "0 5px";
+                    btn.style.padding = "6px 12px";
+                    btn.style.cursor = "pointer";
+                    btn.onclick = () => showPage(i);
+                    pagination.appendChild(btn);
+                }
+
+                // Dấu "..." cuối
+                if (endPage < totalPages) {
+                    const dot = document.createElement("span");
+                    dot.textContent = "...";
+                    dot.style.margin = "0 5px";
+                    pagination.appendChild(dot);
+
+                    const lastPageBtn = document.createElement("button");
+                    lastPageBtn.textContent = totalPages;
+                    lastPageBtn.style.margin = "0 5px";
+                    lastPageBtn.style.padding = "6px 12px";
+                    lastPageBtn.onclick = () => showPage(totalPages);
+                    pagination.appendChild(lastPageBtn);
+                }
+
+                // Nút "Sau"
+                const next = document.createElement("button");
+                next.textContent = "Sau";
+                next.disabled = currentPage === totalPages;
+                next.style.margin = "0 5px";
+                next.style.padding = "6px 12px";
+                next.style.cursor = "pointer";
+                next.onclick = () => showPage(currentPage + 1);
+                pagination.appendChild(next);
+            }
+
+
+            showPage(1);
+
+            return { showPage };
+        }
+
+        let gvPag, svPag;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            gvPag = paginate("tableGiangVien", "paginationGiangVien");
+            svPag = paginate("tableSinhVien", "paginationSinhVien");
+        });
+
+        function showTab(event, tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabId === "listGiangVien") gvPag.showPage(1);
+            if (tabId === "listSinhVien") svPag.showPage(1);
+        }
+
+    </script>
+</body>
+</html>

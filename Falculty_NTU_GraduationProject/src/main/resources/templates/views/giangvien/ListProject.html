@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Danh sách đề tài</title>
     <link rel="stylesheet" th:href="@{/css/listTopic.css}" />
     <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
     <link rel="stylesheet" th:href="@{/css/FilterSearch.css}" />
+    <link rel="stylesheet" th:href="@{/css/pagination.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
@@ -17,7 +18,7 @@
             <span class="tab-item" onclick="showTab('MyTopics', event)">ĐỀ TÀI CỦA TÔI</span>
         </div>
         <div id="listTopic" class="tab-content active">
-            <form th:action="@{/giangvien/danhsachdetasi}" method="get" class="filters">
+            <form th:action="@{/giangvien/danhsachdetai}" method="get" class="filters">
                 <select name="namhoc">
                     <option value="">-- Năm học --</option>
                     <option th:each="nh : ${namhocs}"
@@ -159,6 +160,8 @@
     </div>
 </div>
 <div th:replace="~{layout/footer :: footer}"></div>
+
+
 <script>
     function showTab(tabId, event) {
         // Ẩn tất cả tab content
@@ -200,25 +203,3 @@
 </script>
 </body>
 </html>
-<style>
-    .pagination a {
-        display: inline-block;
-        padding: 6px 12px;
-        margin: 0 4px;
-        border: 1px solid #ccc;
-        color: #333;
-        text-decoration: none;
-        border-radius: 4px;
-    }
-
-    .pagination a:hover {
-        background-color: #f2f2f2;
-    }
-
-    .pagination a.active {
-        background-color: #8B0000;
-        color: white;
-        font-weight: bold;
-        border-color: #8B0000;
-    }
-</style>
