@@ -133,7 +133,7 @@ public class DangKyDetaiController {
         if (project.getNoidung() != null) {
             String noiDung = project.getNoidung();
             // Thay tất cả src="uploads/... thành src="/uploads/...
-            noiDung = noiDung.replaceAll("src=\"(?!/)", "src=\"/");
+            noiDung = noiDung.replaceAll("src=\"(?!/|http)([^\"]+)\"", "src=\"/$1\"");
             project.setNoidung(noiDung);
         }
         

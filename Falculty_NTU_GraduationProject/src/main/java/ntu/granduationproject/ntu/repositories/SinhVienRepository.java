@@ -1,5 +1,6 @@
 package ntu.granduationproject.ntu.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +21,8 @@ public interface SinhVienRepository extends JpaRepository<SinhVien, String> {
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
 	@Query("DELETE FROM SinhVien s WHERE s.mssv = :id")
 	void deleteImmediatelyById(@Param("id") String id);
-	
+	@Query("SELECT sv FROM SinhVien sv " +
+	           "WHERE (:mssv IS NULL OR :mssv = '' OR sv.mssv = :mssv) " +
+	           "AND (:hoten IS NULL OR :hoten = '' OR LOWER(sv.hoten) LIKE LOWER(CONCAT('%', :hoten, '%')))")
+	    List<SinhVien> searchByMssvAndHoten(@Param("mssv") String mssv, @Param("hoten") String hoten);
 }

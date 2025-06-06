@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Sửa thông tin sinh viên</title>
+    <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
+        <link rel="stylesheet" th:href="@{/css/accountmanager.css}" />
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<div th:fragment="content">
+    <div class="form-container">
+        <h2>Sửa thông tin sinh viên</h2>
+        <form th:action="@{/truongkhoa/sua-sinhvien}" method="post" th:object="${sinhvien}">
+            <div class="form-group">
+                <label for="mssv">Mã số sinh viên</label>
+                <input type="text" id="mssv" th:field="*{mssv}" readonly />
+            </div>
+
+            <div class="form-group">
+                <label for="hoten">Họ tên</label>
+                <input type="text" id="hoten" th:field="*{hoten}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" th:field="*{email}" required />
+            </div>
+
+            <button type="submit">Lưu thay đổi</button>
+        </form>
+
+        <a th:href="@{/truongkhoa/quanlytaikhoan}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Quay lại quản lý tài khoản
+        </a>
+    </div>
+</div>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+</body>
+</html>
