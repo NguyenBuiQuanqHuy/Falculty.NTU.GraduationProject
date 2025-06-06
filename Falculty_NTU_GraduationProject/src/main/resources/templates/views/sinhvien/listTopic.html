@@ -17,6 +17,8 @@
       <span class="tab-item" onclick="showTab('TopicRegistered')">ĐÃ ĐĂNG KÝ</span>
     </div>
     <div id="listTopic" class="tab-content active">
+   
+    
       <form th:action="@{/sinhvien/dangkydetai}" method="get" class="filters">
         <select name="namhoc">
           <option value="">-- Năm học --</option>
@@ -50,6 +52,10 @@
         <button type="submit" class="search-btn">Tìm kiếm</button>
         <button type="button" class="reset-btn" onclick="window.location.href='/sinhvien/dangkydetai'">Làm mới</button>
       </form>
+      
+       <div style="color: #d9534f; font-weight: bold; margin-bottom: 10px;">
+	  Lưu ý: Các đề tài đã duyệt đủ số lượng hoặc giảng viên đã đủ hạn mức sẽ không thể đăng ký.
+	</div>
 
       <table>
         <thead>
@@ -144,7 +150,6 @@
         <table>
           <thead>
           <tr>
-            <th>Mã số đề tài</th>
             <th>Tên đề tài</th>
             <th>Loại</th>
             <th>Giảng viên ra đề</th>
@@ -155,7 +160,6 @@
           </thead>
           <tbody>
           <tr>
-            <td th:text="${dangKy.msdt.getMsdt()}"></td>
             <td th:text="${dangKy.msdt.tendt}"></td>
             <td th:text="${dangKy.msdt.theLoai.tentheloai}"></td>
             <td th:text="${dangKy.msdt.msgv.hoten}"></td>
