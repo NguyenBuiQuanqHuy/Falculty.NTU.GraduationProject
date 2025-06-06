@@ -6,6 +6,7 @@
   <link rel="stylesheet" th:href="@{/css/listTopic.css}" />
   <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
   <link rel="stylesheet" th:href="@{/css/FilterSearch.css}" />
+  <link rel="stylesheet" th:href="@{/css/pagination.css}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
@@ -13,8 +14,8 @@
 <div th:fragment="content">
   <div class="main">
     <div class="tab">
-      <span class="tab-item active" onclick="showTab('listTopic')">DANH SÁCH ĐỀ TÀI</span>
-      <span class="tab-item" onclick="showTab('TopicRegistered')">ĐÃ ĐĂNG KÝ</span>
+      <span class="tab-item active" onclick="showTab(event,'listTopic')">DANH SÁCH ĐỀ TÀI</span>
+      <span class="tab-item" onclick="showTab(event,'TopicRegistered')">ĐÃ ĐĂNG KÝ</span>
     </div>
     <div id="listTopic" class="tab-content active">
    
@@ -195,47 +196,6 @@
   </div>
 </div>
 <div th:replace="~{layout/footer :: footer}"></div>
-<script>
-  function showTab(tabId) {
-    // Ẩn tất cả tab content
-    document.querySelectorAll('.tab-content').forEach(content => {
-      content.classList.remove('active');
-    });
-
-    // Gỡ 'active' khỏi tất cả tab
-    document.querySelectorAll('.tab-item').forEach(tab => {
-      tab.classList.remove('active');
-    });
-
-    // Hiện tab đã chọn
-    document.getElementById(tabId).classList.add('active');
-
-    // Đánh dấu tab đã chọn là active
-    event.target.classList.add('active');
-  }
-</script>
+<script src="/js/tab.js"></script>
 </body>
 </html>
-<style>
-  .pagination a {
-    display: inline-block;
-    padding: 6px 12px;
-    margin: 0 4px;
-    border: 1px solid #ccc;
-    color: #333;
-    text-decoration: none;
-    border-radius: 4px;
-  }
-
-  .pagination a:hover {
-    background-color: #f2f2f2;
-  }
-
-  .pagination a.active {
-    background-color: #8B0000;
-    color: white;
-    font-weight: bold;
-    border-color: #8B0000;
-  }
-
-</style>

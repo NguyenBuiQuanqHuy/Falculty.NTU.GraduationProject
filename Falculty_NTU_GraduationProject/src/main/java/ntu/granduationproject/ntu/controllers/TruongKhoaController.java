@@ -236,7 +236,7 @@ public class TruongKhoaController {
         Optional<SinhVien> svOpt = sinhVienRepository.findById(mssv);
         if (svOpt.isPresent()) {
             model.addAttribute("sinhvien", svOpt.get());
-            return "views/truongkhoa/editSinhVien";
+            return "views/truongkhoa/editSinhVien"; // view form sửa
         } else {
             return "redirect:/truongkhoa/quanlytaikhoan";
         }
