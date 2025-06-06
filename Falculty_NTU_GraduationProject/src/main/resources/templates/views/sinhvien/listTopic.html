@@ -108,9 +108,41 @@
         </tr>
         </tbody>
       </table>
-       <div class="pagination">
-                <span><strong>1</strong> &gt; 2 &gt; 3 .... &gt; 50</span>
-            </div>
+      <div class="pagination" style="text-align:center; margin-top: 20px;">
+        <div th:if="${totalPages > 1}">
+          <!-- Link trang trước -->
+          <a th:if="${currentPage > 0}"
+             th:href="@{/sinhvien/dangkydetai(page=${currentPage - 1},
+                                            namhoc=${selectedNamHoc},
+                                            linhvuc=${selectedLinhVuc},
+                                            theloai=${selectedTheLoai},
+                                            tendt=${tendt})}">
+            &laquo; Trước
+          </a>
+
+          <!-- Các trang số -->
+          <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                        <a th:href="@{/sinhvien/dangkydetai(page=${i},
+                                                           namhoc=${selectedNamHoc},
+                                                           linhvuc=${selectedLinhVuc},
+                                                           theloai=${selectedTheLoai},
+                                                           tendt=${tendt})}"
+                           th:text="${i + 1}"
+                           th:classappend="${i == currentPage} ? ' active' : ''">
+                        </a>
+                    </span>
+
+          <!-- Link trang sau -->
+          <a th:if="${currentPage < totalPages - 1}"
+             th:href="@{/sinhvien/dangkydetai(page=${currentPage + 1},
+                                            namhoc=${selectedNamHoc},
+                                            linhvuc=${selectedLinhVuc},
+                                            theloai=${selectedTheLoai},
+                                            tendt=${tendt})}">
+            Sau &raquo;
+          </a>
+        </div>
+      </div>
     </div>
 
     <div id="TopicRegistered" class="tab-content">
@@ -164,56 +196,22 @@
 </div>
 <div th:replace="~{layout/footer :: footer}"></div>
 <script>
-  
-  document.addEventListener("DOMContentLoaded", function () {
-      const rowsPerPage = 5;
-      const table = document.querySelector("table tbody");
-      const rows = table.querySelectorAll("tr");
-      const pagination = document.querySelector(".pagination");
+  function showTab(tabId) {
+    // Ẩn tất cả tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.remove('active');
+    });
 
-      let currentPage = 1;
-      const totalPages = Math.ceil(rows.length / rowsPerPage);
+    // Gỡ 'active' khỏi tất cả tab
+    document.querySelectorAll('.tab-item').forEach(tab => {
+      tab.classList.remove('active');
+    });
 
-      function showPage(page) {
-          currentPage = page;
-          const start = (page - 1) * rowsPerPage;
-          const end = start + rowsPerPage;
+    // Hiện tab đã chọn
+    document.getElementById(tabId).classList.add('active');
 
-          rows.forEach((row, index) => {
-              row.style.display = (index >= start && index < end) ? "" : "none";
-          });
-
-          updatePagination();
-      }
-
-      function updatePagination() {
-          pagination.innerHTML = "";
-
-          for (let i = 1; i <= totalPages; i++) {
-              const btn = document.createElement("button");
-              btn.textContent = i;
-              btn.className = (i === currentPage) ? "active" : "";
-              btn.style.margin = "0 5px";
-              btn.style.padding = "5px 10px";
-              btn.style.cursor = "pointer";
-
-              btn.addEventListener("click", () => showPage(i));
-              pagination.appendChild(btn);
-          }
-      }
-
-      showPage(currentPage);
-  });
-  
-  function showTab(event, tabId) {
-      document.querySelectorAll('.tab-content').forEach(content => {
-          content.classList.remove('active');
-      });
-      document.querySelectorAll('.tab-item').forEach(tab => {
-          tab.classList.remove('active');
-      });
-      document.getElementById(tabId).classList.add('active');
-      event.target.classList.add('active');
+    // Đánh dấu tab đã chọn là active
+    event.target.classList.add('active');
   }
 </script>
 </body>
