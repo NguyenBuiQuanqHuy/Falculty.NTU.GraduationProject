@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Đăng ký đề tài</title>
   <link rel="stylesheet" th:href="@{/css/listTopic.css}" />
+  <link rel="stylesheet" th:href="@{/css/listDT.css}" />
   <link rel="stylesheet" th:href="@{/css/trangchu.css}" />
   <link rel="stylesheet" th:href="@{/css/FilterSearch.css}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -13,8 +14,8 @@
 <div th:fragment="content">
   <div class="main">
     <div class="tab">
-      <span class="tab-item active" onclick="showTab('listTopic')">DANH SÁCH ĐỀ TÀI</span>
-      <span class="tab-item" onclick="showTab('TopicRegistered')">ĐÃ ĐĂNG KÝ</span>
+      <span class="tab-item active" onclick="showTab(event, 'listTopic')">DANH SÁCH ĐỀ TÀI</span>
+      <span class="tab-item" onclick="showTab(event, 'TopicRegistered')">ĐÃ ĐĂNG KÝ</span>
     </div>
     <div id="listTopic" class="tab-content active">
    
@@ -108,41 +109,9 @@
         </tr>
         </tbody>
       </table>
-      <div class="pagination" style="text-align:center; margin-top: 20px;">
-        <div th:if="${totalPages > 1}">
-          <!-- Link trang trước -->
-          <a th:if="${currentPage > 0}"
-             th:href="@{/sinhvien/dangkydetai(page=${currentPage - 1},
-                                            namhoc=${selectedNamHoc},
-                                            linhvuc=${selectedLinhVuc},
-                                            theloai=${selectedTheLoai},
-                                            tendt=${tendt})}">
-            &laquo; Trước
-          </a>
-
-          <!-- Các trang số -->
-          <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                        <a th:href="@{/sinhvien/dangkydetai(page=${i},
-                                                           namhoc=${selectedNamHoc},
-                                                           linhvuc=${selectedLinhVuc},
-                                                           theloai=${selectedTheLoai},
-                                                           tendt=${tendt})}"
-                           th:text="${i + 1}"
-                           th:classappend="${i == currentPage} ? ' active' : ''">
-                        </a>
-                    </span>
-
-          <!-- Link trang sau -->
-          <a th:if="${currentPage < totalPages - 1}"
-             th:href="@{/sinhvien/dangkydetai(page=${currentPage + 1},
-                                            namhoc=${selectedNamHoc},
-                                            linhvuc=${selectedLinhVuc},
-                                            theloai=${selectedTheLoai},
-                                            tendt=${tendt})}">
-            Sau &raquo;
-          </a>
-        </div>
-      </div>
+       <div class="pagination">
+                <span><strong>1</strong> &gt; 2 &gt; 3 .... &gt; 50</span>
+            </div>
     </div>
 
     <div id="TopicRegistered" class="tab-content">
@@ -196,46 +165,55 @@
 </div>
 <div th:replace="~{layout/footer :: footer}"></div>
 <script>
-  function showTab(tabId) {
-    // Ẩn tất cả tab content
+function showTab(event, tabId) {
     document.querySelectorAll('.tab-content').forEach(content => {
-      content.classList.remove('active');
+        content.classList.remove('active');
     });
-
-    // Gỡ 'active' khỏi tất cả tab
     document.querySelectorAll('.tab-item').forEach(tab => {
-      tab.classList.remove('active');
+        tab.classList.remove('active');
     });
-
-    // Hiện tab đã chọn
     document.getElementById(tabId).classList.add('active');
-
-    // Đánh dấu tab đã chọn là active
     event.target.classList.add('active');
-  }
+}
+  
+  document.addEventListener("DOMContentLoaded", function () {
+      const rowsPerPage = 5;
+      const table = document.querySelector("table tbody");
+      const rows = table.querySelectorAll("tr");
+      const pagination = document.querySelector(".pagination");
+
+      let currentPage = 1;
+      const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+      function showPage(page) {
+          currentPage = page;
+          const start = (page - 1) * rowsPerPage;
+          const end = start + rowsPerPage;
+
+          rows.forEach((row, index) => {
+              row.style.display = (index >= start && index < end) ? "" : "none";
+          });
+
+          updatePagination();
+      }
+
+      function updatePagination() {
+          pagination.innerHTML = "";
+          for (let i = 1; i <= totalPages; i++) {
+              const btn = document.createElement("button");
+              btn.textContent = i;
+              btn.className = (i === currentPage) ? "active" : "";
+              btn.style.margin = "0 5px";
+              btn.style.padding = "5px 10px";
+              btn.style.cursor = "pointer";
+              btn.addEventListener("click", () => showPage(i));
+              pagination.appendChild(btn);
+          }
+      }
+
+      showPage(currentPage);
+  });
+
 </script>
 </body>
 </html>
-<style>
-  .pagination a {
-    display: inline-block;
-    padding: 6px 12px;
-    margin: 0 4px;
-    border: 1px solid #ccc;
-    color: #333;
-    text-decoration: none;
-    border-radius: 4px;
-  }
-
-  .pagination a:hover {
-    background-color: #f2f2f2;
-  }
-
-  .pagination a.active {
-    background-color: #8B0000;
-    color: white;
-    font-weight: bold;
-    border-color: #8B0000;
-  }
-
-</style>
