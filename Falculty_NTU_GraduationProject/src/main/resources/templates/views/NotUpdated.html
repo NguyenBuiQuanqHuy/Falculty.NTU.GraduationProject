@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Chỉnh sửa hồ sơ</title>
+  <link rel="stylesheet" th:href="@{/css/updateProfile.css}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <style>
+    a { text-decoration: none; }
+    .container {
+      text-align: center;
+      padding: 100px 20px;
+    }
+    .message {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .back-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #8B0000;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<div th:replace="~{layout/header :: header}"></div>
+
+<div th:fragment="content">
+  <div class="container">
+    <div class="message">
+      <i class="fas fa-tools"></i> Chức năng này hiện chưa được cập nhật.
+    </div>
+    <a href="javascript:history.back()" class="back-button"><i class="fas fa-arrow-left"></i> Quay lại</a>
+  </div>
+</div>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+</body>
+</html>

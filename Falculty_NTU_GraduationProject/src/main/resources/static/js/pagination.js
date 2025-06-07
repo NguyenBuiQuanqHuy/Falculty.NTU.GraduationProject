@@ -25,9 +25,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Nút Trước
         const prevBtn = document.createElement("button");
-        prevBtn.textContent = "Trước";
+        prevBtn.textContent = "<< Trước";
         prevBtn.disabled = currentPage === 1;
         prevBtn.style.margin = "0 5px";
+		prevBtn.style.padding = "6px 12px";
+		prevBtn.style.cursor = "pointer";
         prevBtn.addEventListener("click", () => showPage(currentPage - 1));
         pagination.appendChild(prevBtn);
 
@@ -53,9 +55,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Nút Sau
         const nextBtn = document.createElement("button");
-        nextBtn.textContent = "Sau";
+        nextBtn.textContent = "Sau >>";
         nextBtn.disabled = currentPage === totalPages;
         nextBtn.style.margin = "0 5px";
+		nextBtn.style.padding = "6px 12px";
+		nextBtn.style.cursor = "pointer";
         nextBtn.addEventListener("click", () => showPage(currentPage + 1));
         pagination.appendChild(nextBtn);
     }

@@ -15,4 +15,11 @@ public class SinhVienController {
         }
         return "redirect:/login?unauthorized=true";
     }
+    
+    
+    @GetMapping("sinhvien/dexuatdetai")
+    public String dexuatdetai() {
+    	return "views/NotUpdated";
+    }
+
 }

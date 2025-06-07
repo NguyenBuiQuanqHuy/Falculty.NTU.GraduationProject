@@ -263,6 +263,10 @@ public class TruongKhoaController {
         sinhVienRepository.deleteById(mssv);
         return "redirect:/truongkhoa/quanlytaikhoan";
     }
-
+    
+    @GetMapping("truongkhoa/dexuatdetai")
+    public String dexuatdetai() {
+    	return "views/NotUpdated";
+    }
 
 }
