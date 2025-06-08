@@ -6,7 +6,7 @@
 # Công cụ thực hiện dự án : Spring boot, Ngôn ngữ Java
 # Triển khai dự án: 
 - Đăng nhập:
-![image](https://github.com/user-attachments/assets/a10a07e7-f34d-4967-acbd-fc6b643ebeaf)
+  ![image](https://github.com/user-attachments/assets/a10a07e7-f34d-4967-acbd-fc6b643ebeaf)
 
 _ Giao diện của trường khoa: 
 ![image](https://github.com/user-attachments/assets/3df94cdd-ac8a-4656-9ac6-f16e1d6c9450)
@@ -27,4 +27,5 @@ _ Giao diện của trường khoa:
 ![image](https://github.com/user-attachments/assets/148d3280-74b4-4a41-8736-e73ec7e08aa2)
 ![image](https://github.com/user-attachments/assets/7ecad841-5e2d-4f15-98f4-8fe3a2df4fd4)
 ![image](https://github.com/user-attachments/assets/2ce54924-e71c-468e-beae-b8119c54256c)
+![image](https://github.com/user-attachments/assets/e3902c12-9d4c-46be-bae9-5cd76bdf30df)
 
