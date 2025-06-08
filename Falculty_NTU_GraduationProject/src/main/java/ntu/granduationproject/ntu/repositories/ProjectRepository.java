@@ -57,7 +57,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 	
 	List<Project> findByMsgv_Msgv(String msgv);
 	
-	// Hiện toàn bộ đề tài bao gồm cả đề tài chưa duyệt
+	// Hiện toàn bộ đề tài bao gồm cả đề tài chưa duyệt 
 	@Query("SELECT p FROM Project p " +
 			"JOIN p.msgv gv " +
 			"JOIN p.theLoai tl " +
