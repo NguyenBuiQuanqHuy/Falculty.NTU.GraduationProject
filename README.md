@@ -18,8 +18,11 @@ _ Giao diện của trường khoa:
 ![image](https://github.com/user-attachments/assets/dee40ac0-ee80-4b28-a79a-ce29e0589d0a)
 ![image](https://github.com/user-attachments/assets/0882f9df-2dce-4322-b423-b3bb4d29fc3f)
 ![image](https://github.com/user-attachments/assets/24947e6f-1f9f-4ae6-941b-3ae336121c1a)
+![image](https://github.com/user-attachments/assets/d25d298b-a005-4919-b8b2-fc5a372ffe36)
 ![image](https://github.com/user-attachments/assets/f7debe3c-8b94-4c19-b41e-e9f964609511)
 ![image](https://github.com/user-attachments/assets/af78283b-3ff8-4aef-828c-7567548dea64)
+![image](https://github.com/user-attachments/assets/f3a5f171-292e-43c0-aded-f97f27332b2f)
+
 
 
 - Giao diện của sinh viên:
