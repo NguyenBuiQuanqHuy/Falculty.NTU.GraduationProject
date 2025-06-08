@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import ntu.granduationproject.ntu.models.Project;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
-    
+    // Lấy toàn bộ đề tài với tất cả quan hệ
     @Query("SELECT p FROM Project p " +
            "JOIN FETCH p.msgv " +
            "JOIN FETCH p.theLoai " +
@@ -22,7 +22,8 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     List<Project> findAllWithRelations();
     
     List<Project> findByTrangthai(String trangthai);
-
+    
+ // Tìm kiếm cho chức năng duyệt đề tài của trưởng khoa
     @Query("SELECT p FROM Project p " +
  	       "JOIN FETCH p.msgv gv " +
  	       "JOIN FETCH p.theLoai tl " +
@@ -36,12 +37,14 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
  	                               @Param("linhvuc") String linhvuc,
  	                               @Param("loai") String loai,
  	                               @Param("truongkhoa") String truongkhoa);
+    
+    // Tìm kiếm đề tài đã được duyệt theo mã giảng viên
 	@Query("SELECT p FROM Project p WHERE " +
 			"(:namhoc IS NULL OR p.namHoc.manamhoc = :namhoc) AND " +
 			"(:theloai IS NULL OR p.theLoai.matheloai = :theloai) AND " +
 			"(:linhvuc IS NULL OR p.linhVuc.malinhvuc = :linhvuc) AND " +
 			"(:tendt IS NULL OR LOWER(p.tendt) LIKE LOWER(CONCAT('%', :tendt, '%'))) AND " +
-			"(:msgv IS NULL OR p.msgv.msgv = :msgv) AND " +  // <-- Sửa chỗ này
+			"(:msgv IS NULL OR p.msgv.msgv = :msgv) AND " + 
 			"(:trangthai IS NULL OR LOWER(p.trangthai) = LOWER(:trangthai)) " +
 			"ORDER BY p.msdt DESC")
 	List<Project> searchProjects(
@@ -51,8 +54,10 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			@Param("linhvuc") Integer linhvuc,
 			@Param("tendt") String tendt,
 			@Param("trangthai") String trangthai);
+	
 	List<Project> findByMsgv_Msgv(String msgv);
-
+	
+	// Hiện toàn bộ đề tài bao gồm cả đề tài chưa duyệt
 	@Query("SELECT p FROM Project p " +
 			"JOIN p.msgv gv " +
 			"JOIN p.theLoai tl " +
@@ -69,7 +74,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			@Param("loai") String loai,
 			@Param("truongkhoa") String truongkhoa,
 			Pageable pageable);
-
+	
 	@Query("SELECT p FROM Project p " +
 			"JOIN FETCH p.msgv gv " +
 			"JOIN FETCH p.theLoai tl " +
@@ -77,7 +82,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 			"JOIN FETCH p.namHoc nh " +
 			"ORDER BY CASE WHEN p.trangthai = 'Chưa duyệt' THEN 0 ELSE 1 END, p.msdt DESC")
 	Page<Project> findAllOrderByTrangthai(Pageable pageable);
-
+	
 	@Query("SELECT p FROM Project p " +
 			"WHERE (:tendt IS NULL OR LOWER(p.tendt) LIKE LOWER(CONCAT('%', :tendt, '%'))) " +
 			"AND (:namhoc IS NULL OR p.namHoc.manamhoc = :namhoc) " +
@@ -91,6 +96,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 										 @Param("trangthai") String trangthai,
 										 Pageable pageable);
 
+	// Tìm kiếm giảng viên
 	@Query("SELECT p FROM Project p WHERE " +
 		       "(:namhoc IS NULL OR p.namHoc.manamhoc = :namhoc) AND " +
 		       "(:theloai IS NULL OR p.theLoai.matheloai = :theloai) AND " +
@@ -107,7 +113,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 		        @Param("tendt") String tendt,
 		        @Param("cosv") Boolean cosv);
 
-	
+	// Tìm kiếm sinh viên
 	@Query("SELECT p FROM Project p WHERE " +
 		       "(:namhoc IS NULL OR p.namHoc.manamhoc = :namhoc) AND " +
 		       "(:theloai IS NULL OR p.theLoai.matheloai = :theloai) AND " +

@@ -16,7 +16,8 @@ public interface DangKyDeTaiRepository extends JpaRepository<DangKyDetai, Intege
     List<DangKyDetai> findByMsdt_Msdt(int msdt);
 
     int countByMsdt_MsdtAndTrangthai(int msdt, String trangthai);
-
+    
+    // Đếm các đề tài đã duyệt để kiểm tra xem đã đặt hạn mức chưa
     @Query("SELECT COUNT(d) FROM DangKyDetai d WHERE d.msdt.msgv.msgv = :msgv AND d.msdt.theLoai.matheloai = :matheloai AND d.trangthai = 'Đã duyệt'")
     int countByGiangVienAndTheLoai(@Param("msgv") String msgv, @Param("matheloai") int matheloai);
 
@@ -30,7 +31,8 @@ public interface DangKyDeTaiRepository extends JpaRepository<DangKyDetai, Intege
     DangKyDetai findByMsdt_MsdtAndMssv_Mssv(int msdt, String mssv);
 
     int countByMsdt_Msdt(int msdt);
-
+    
+    // Đếm các sinh viên đã duyệt
     @Query("SELECT COUNT(dk) FROM DangKyDetai dk WHERE dk.msdt.msdt = :msdt AND dk.trangthai = 'Đã duyệt'")
     int countApprovedByMsdt(@Param("msdt") int msdt);
 }

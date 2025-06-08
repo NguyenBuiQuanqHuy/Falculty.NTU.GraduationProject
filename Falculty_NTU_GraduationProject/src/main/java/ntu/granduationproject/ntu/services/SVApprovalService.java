@@ -27,10 +27,12 @@ public class SVApprovalService {
 		return dangKyDeTaiRepository.findByMsdt_Msdt(msdt);
 	}
 	 
+	
 	public boolean approveStudent(int msdt, String mssv) {
 	    Project project = projectService.findByMsdt(msdt);
 	    if (project == null) return false;
-
+	    
+	    // Kiểm tra xem đã đủ sinh viên đc duyệt chưa
 	    long soSvDaDuyetTrongDeTai = dangKyDeTaiRepository.countByMsdt_MsdtAndTrangthai(msdt, "Đã duyệt");
 	    if (soSvDaDuyetTrongDeTai >= project.getSosvtoida()) {
 	        return false; 
@@ -77,6 +79,8 @@ public class SVApprovalService {
 	            }
 	        }
 	        
+	        
+	        // Kiểm tra xem giảng viên đó đã đủ hạn mức theo thể loại ch
 	        tongSoDaDuyetTheoLoai = dangKyDeTaiRepository.countByGiangVienAndTheLoai(msgv, theloai);
 	        if (tongSoDaDuyetTheoLoai >= hanMuc) {
 	            List<DangKyDetai> chuaDuyetGVList = dangKyDeTaiRepository.findByMsdt_Msgv_MsgvAndTrangthaiAndMsdt_TheLoai_Matheloai(msgv, "chưa duyệt", theloai);

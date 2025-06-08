@@ -42,7 +42,7 @@ public class SVAprovalController {
 	@Autowired
 	EmailService emailService;
 
-	
+	// Lấy danh sách đề tài đã duyệt
 	@GetMapping("/giangvien/detaidaduyet")
 	public String listProjects(
 	        @RequestParam(required = false) Integer namhoc,
@@ -64,12 +64,14 @@ public class SVAprovalController {
 	        giangVien.getMsgv(), namhoc, theloai, linhvuc, tendt, "Đã duyệt"
 	    );
 	    
+	    // Kiếm tra số sinh viên đã duyệt
 	    Map<Integer, Integer> soSvDaDuyetMap = new HashMap<>();
 	    for (Project p : projects) {
 	        int count = svApprovalService.countByMsdt_MsdtAndTrangthai(p.getMsdt(), "Đã duyệt");
 	        soSvDaDuyetMap.put(p.getMsdt(), count);
 	    }
 	    
+	    // Kiểm tra số sinh viên đã đăng ký
 	    Map<Integer, Integer> soSvDangKyMap = new HashMap<>();
 	    for (Project p : projects) {
 	        int total = dangKyDeTaiRepository.countByMsdt_Msdt(p.getMsdt()); // lấy tất cả
@@ -105,7 +107,7 @@ public class SVAprovalController {
 	    return "views/giangvien/myproject";
 	}
 	
-	
+	// Hiện danh sách sinh viên đăng ký đề tài
 	@GetMapping("/detai/duyetsv/{msdt}")
 	public String viewStudentsForApproval(@PathVariable("msdt") int msdt, ModelMap model, HttpSession session) {
 	    Object userObj = session.getAttribute("user");
@@ -139,7 +141,7 @@ public class SVAprovalController {
 
 	
 	
-	
+	// Duyệt sinh viên
 	@PostMapping("/detai/duyetsv/{msdt}/duyet/{mssv}")
 	public String duyetSinhVien(
 	    @PathVariable("msdt") int msdt,

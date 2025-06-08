@@ -13,7 +13,8 @@ import ntu.granduationproject.ntu.models.GiangVien;
 @Repository
 public interface GiangVienRepository extends JpaRepository<GiangVien, String> {
 	Optional<GiangVien> findByMsgvAndMatkhau(String msgv, String matkhau);
-
+	
+	// Tìm giảng viên
 	Optional<GiangVien> findByMsgv(String msgv);
 	@Query("SELECT gv FROM GiangVien gv WHERE " +
 		       "(:msgv = '' OR gv.msgv LIKE %:msgv%) AND " +

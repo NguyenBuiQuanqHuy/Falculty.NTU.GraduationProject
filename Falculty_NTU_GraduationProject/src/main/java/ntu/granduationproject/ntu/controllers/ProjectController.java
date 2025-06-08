@@ -42,7 +42,8 @@ public class ProjectController {
 
 	@Autowired
 	DangKyDeTaiRepository dangKyDeTaiRepository;
-
+	
+	// Tạo đề tài
 	@GetMapping("/giangvien/taodetai")
 	public String showCreateProjectForm(ModelMap model, HttpSession session) {
 	    Object userObj = session.getAttribute("user");

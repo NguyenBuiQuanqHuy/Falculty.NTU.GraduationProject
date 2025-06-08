@@ -49,6 +49,7 @@ public class DanhGiaDeTaiController {
 	@Autowired
 	DangKyDeTaiRepository dangKyDeTaiRepository;
 	
+	// Giảng viên đánh giá đề tài
 	@GetMapping("giangvien/danhgiadetai")
 	public String listProjects( @RequestParam(required = false) Integer namhoc,
 	        @RequestParam(required = false) Integer theloai,
@@ -110,8 +111,9 @@ public class DanhGiaDeTaiController {
 	    return "redirect:/giangvien/danhgiadetai?success=true";
 	}
 	
+	// Trả về nội dung của bảng đánh giá
 	@GetMapping("/giangvien/evaluateproject/getEvaluation")
-	@ResponseBody
+	@ResponseBody // trả về dữ liệu json
 	public ResponseEntity<?> getEvaluation(@RequestParam("msdt") int msdt, HttpSession session) {
 	    Object userObj = session.getAttribute("user");
 	    if (!(userObj instanceof GiangVien)) {
@@ -125,7 +127,8 @@ public class DanhGiaDeTaiController {
 	    }
 
 	    Optional<DanhGiaDeTai> evaluation = danhGiaDeTaiRepository.findByMsgvAndMsdt(gv, project);
-
+	    
+	    // Kiểm tra nếu có đánh giá thì hiện lên màn hình
 	    if (evaluation.isPresent()) {
 	        DanhGiaDeTai dg = evaluation.get();
 	        Map<String, Object> data = new HashMap<>();
