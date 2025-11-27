@@ -1,8 +1,8 @@
 # Falculty.NTU.GraduationProject
 # Group 5:
-# - Nguyễn Bùi Quang Huy - 64130854
-# - Đỗ Xuân Trường - 64132775
-# - Võ Xuân Trường - 64132791
+- Nguyễn Bùi Quang Huy - 64130854
+- Đỗ Xuân Trường - 64132775
+- Võ Xuân Trường - 64132791
 # Công cụ thực hiện dự án : Spring boot, Ngôn ngữ Java
 # Triển khai dự án: 
 # Đăng nhập:
